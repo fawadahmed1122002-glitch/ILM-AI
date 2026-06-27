@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Data (per Master Doc 3.10 security checklist)
+chroma_db/
+data/pdfs/
+*.sqlite
+
+# Node/Next.js
+node_modules/
+.next/
+
+# OS/IDE
+.DS_Store
+.vscode/
