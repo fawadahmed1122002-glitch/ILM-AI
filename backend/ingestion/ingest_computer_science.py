@@ -8,6 +8,8 @@ from pypdf import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 import chromadb
+import re
+
 
 # ---- CONFIG ----
 PDF_PATH = "/home/fawad/project/ILM-AI/data/pdfs/computer_science/ch01_ introduction_to_software_development.pdf"   # <-- point this to your actual file
@@ -25,6 +27,19 @@ def load_pdf_text(pdf_path: str) -> str:
         page_text = page.extract_text() or ""
         text += page_text + "\n"
     return text
+
+#n---- Step 2: Clean text ----
+def clean_text(text: str) -> str:
+    # Collapse ANY run of whitespace (spaces, tabs, newlines) into a single space
+    text = re.sub(r'\s+', ' ', text)
+
+    # Re-insert paragraph breaks before numbered section headings (e.g. "1.1 ", "1.2.2.6 ")
+    text = re.sub(r'(\d+\.\d+(?:\.\d+)*)\s', r'\n\n\1 ', text)
+
+    # Re-insert a break before "Chapter #" headers
+    text = re.sub(r'(Chapter\s*#\s*\d+)', r'\n\n\1', text)
+
+    return text.strip()
 
 # ---- STEP 2: Chunk text ----
 def chunk_text(text: str):
@@ -72,6 +87,7 @@ def store_in_chromadb(chunks, embeddings, page_numbers=None):
 if __name__ == "__main__":
     print("Loading PDF...")
     raw_text = load_pdf_text(PDF_PATH)
+    raw_text = clean_text(raw_text)
     print(f"Extracted {len(raw_text)} characters.")
 
     if len(raw_text.strip()) == 0:
