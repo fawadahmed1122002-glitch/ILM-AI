@@ -1,12 +1,15 @@
 """
 ILMAI RAG Retrieval Function
-Embeds a student query and retrieves top-5 relevant chunks from ChromaDB.
+Normalizes query (Roman Urdu -> English), embeds it, and retrieves
+top-5 relevant chunks from ChromaDB.
 """
 
 from sentence_transformers import SentenceTransformer
 import chromadb
 
-CHROMA_DB_PATH = "/home/fawad/project/ILM-AI/data/chroma_db"   # adjust relative to where you run this from
+from app.rag.llm_client import normalize_query
+
+CHROMA_DB_PATH = "/home/fawad/project/ILM-AI/data/chroma_db"
 COLLECTION_NAME = "ilmai_knowledge_base"
 
 # Load once, reuse across calls (don't reload model every query in production)
@@ -15,14 +18,14 @@ _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 _collection = _client.get_collection(COLLECTION_NAME)
 
 
-
-
 def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5):
     """
-    Embeds the query and retrieves top_k most relevant chunks.
-    Optionally filters by subject metadata.
+    Normalizes (Roman Urdu -> English), embeds the query, and retrieves
+    top_k most relevant chunks. Optionally filters by subject metadata.
     """
-    query_embedding = _model.encode([query]).tolist()
+    normalized_query = normalize_query(query)
+
+    query_embedding = _model.encode([normalized_query]).tolist()
 
     where_filter = {"subject": subject} if subject else None
 
@@ -36,7 +39,7 @@ def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5):
     metadatas = results["metadatas"][0]
     distances = results["distances"][0]
 
-    return chunks, metadatas, distances
+    return chunks, metadatas, distances, normalized_query
 
 
 def format_context_string(chunks: list[str]) -> str:
@@ -47,19 +50,22 @@ def format_context_string(chunks: list[str]) -> str:
 
 
 if __name__ == "__main__":
-    # ---- Test with 5 sample queries ----
+    # ---- Test with English + Roman Urdu queries ----
     test_queries = [
         "What is software engineering?",
-        "What are the phases of the software development lifecycle?",
-        "What is the difference between verification and validation?",
+        "software engineering kya hai",
+        "SDLC ke phases kya hain",
+        "mujhe waterfall model samjhao",
         "What is a software process model?",
-        "Why is software engineering important?",
     ]
 
     for q in test_queries:
         print("=" * 60)
-        print("QUERY:", q)
-        chunks, metadatas, distances = retrieve_top_chunks(q, subject="Computer Science", top_k=5)
+        print("ORIGINAL QUERY:", q)
+        chunks, metadatas, distances, normalized_query = retrieve_top_chunks(
+            q, subject="Computer Science", top_k=5
+        )
+        print("NORMALIZED QUERY:", normalized_query)
 
         if not chunks:
             print("⚠️  No chunks returned — check your 'subject' metadata value matches what's stored.")
