@@ -42,17 +42,38 @@ def clean_text(text: str) -> str:
     return text.strip()
 
 # ---- STEP 2: Chunk text ----
-def chunk_text(text: str):
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,       # tokens (approximated by length_function)
+def fix_missing_spaces(text: str) -> str:
+    """Insert space at lowercase->uppercase boundary (e.g. 'thatdefines' -> 'that defines')."""
+    return re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+
+
+def chunk_by_sections(text: str, max_chunk_size: int = 800):
+    """
+    Primary split: by numbered section headers (1.1, 1.2.2.6, etc.) and Chapter headers.
+    Fallback: if a section is still too long, sub-split with RecursiveCharacterTextSplitter.
+    """
+    # Split on section markers, keeping the marker attached to its section
+    pattern = r'(?=\n\n\d+\.\d+(?:\.\d+)*\s|\n\nChapter\s*#\s*\d+)'
+    sections = re.split(pattern, text)
+    sections = [s.strip() for s in sections if len(s.strip()) >= 100]
+
+    fallback_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=max_chunk_size,
         chunk_overlap=50,
         separators=["\n\n", "\n", ". ", " "],
-        length_function=len,  # swap for tiktoken later for true token count
+        length_function=len,
     )
-    chunks = splitter.split_text(text)
-    # Filter out junk chunks (e.g. chapter titles, headers < 100 chars)
-    chunks = [c for c in chunks if len(c) >= 100]
-    return chunks
+
+    final_chunks = []
+    for section in sections:
+        if len(section) <= max_chunk_size:
+            final_chunks.append(section)
+        else:
+            # Section too long — sub-split it
+            sub_chunks = fallback_splitter.split_text(section)
+            final_chunks.extend([c for c in sub_chunks if len(c) >= 100])
+
+    return final_chunks
 
 # ---- STEP 3: Embed chunks ----
 def embed_chunks(chunks: list[str], model: SentenceTransformer):
@@ -88,6 +109,7 @@ if __name__ == "__main__":
     print("Loading PDF...")
     raw_text = load_pdf_text(PDF_PATH)
     raw_text = clean_text(raw_text)
+    raw_text = fix_missing_spaces(raw_text)
     print(f"Extracted {len(raw_text)} characters.")
 
     if len(raw_text.strip()) == 0:
@@ -97,7 +119,7 @@ if __name__ == "__main__":
         )
 
     print("Chunking...")
-    chunks = chunk_text(raw_text)
+    chunks = chunk_by_sections(raw_text)
     print(f"Created {len(chunks)} chunks.")
 
     print("Loading embedding model (all-MiniLM-L6-v2)...")

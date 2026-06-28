@@ -6,13 +6,15 @@ Embeds a student query and retrieves top-5 relevant chunks from ChromaDB.
 from sentence_transformers import SentenceTransformer
 import chromadb
 
-CHROMA_DB_PATH = "../data/chroma_db"   # adjust relative to where you run this from
+CHROMA_DB_PATH = "/home/fawad/project/ILM-AI/data/chroma_db"   # adjust relative to where you run this from
 COLLECTION_NAME = "ilmai_knowledge_base"
 
 # Load once, reuse across calls (don't reload model every query in production)
 _model = SentenceTransformer("all-MiniLM-L6-v2")
 _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 _collection = _client.get_collection(COLLECTION_NAME)
+
+
 
 
 def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5):
