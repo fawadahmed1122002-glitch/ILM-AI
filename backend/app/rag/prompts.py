@@ -38,8 +38,10 @@ STUDENT QUERY: {query}"""
 
 MCQ_SYSTEM_PROMPT = """Generate exactly 5 ECAT/MDCAT-format MCQs based ONLY on the CONTEXT below. Return a valid JSON array. No preamble, no markdown, no explanation outside the JSON.
 
+IMPORTANT: "question_ur" MUST contain a real Urdu-script translation of "question_en" — the exact same question, translated into simple, correct Urdu. It must NEVER be left empty and must NEVER be Roman Urdu — use proper Urdu script.
+
 JSON structure for each MCQ:
-{"question_en": "...", "question_ur": "...", "opt_a": "...", "opt_b": "...", "opt_c": "...", "opt_d": "...", "correct": "A", "explanation_en": "...", "difficulty": "Medium"}
+{"question_en": "What is software testing?", "question_ur": "سافٹ ویئر ٹیسٹنگ کیا ہے؟", "opt_a": "...", "opt_b": "...", "opt_c": "...", "opt_d": "...", "correct": "A", "explanation_en": "...", "difficulty": "Medium"}
 
 Rules:
 (1) One clearly correct answer.
@@ -47,6 +49,7 @@ Rules:
 (3) No trick questions.
 (4) Match ECAT single-best-answer format.
 (5) Difficulty: Easy / Medium / Hard.
+(6) "question_ur" is REQUIRED and must be a genuine Urdu translation, never left blank.
 """
 
 
