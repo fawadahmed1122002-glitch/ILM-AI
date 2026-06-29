@@ -10,6 +10,7 @@ from app.rag.prompts import EXPLANATION_SYSTEM_PROMPT, build_explanation_prompt
 import json
 import re
 from app.rag.prompts import MCQ_SYSTEM_PROMPT, build_mcq_prompt
+from app.services.cache_service import get_cached_response, store_response
 load_dotenv()  # loads GROQ_API_KEY from .env
 
 _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
@@ -102,7 +103,15 @@ def sanitize_foreign_script(text: str) -> str:
         text = text.replace(bad, good)
     return text
 
+
 def generate_explanation(context: str, subject: str, query: str, _retry_count: int = 0) -> str:
+    # Check cache first (only on the initial call, not retries)
+    if _retry_count == 0:
+        cached = get_cached_response(query, subject)
+        if cached:
+            print("💰 Cache HIT — skipping LLM call")
+            return cached["explanation"]
+
     system_prompt = EXPLANATION_SYSTEM_PROMPT.format(subject=subject)
     user_message = build_explanation_prompt(context, subject, query)
     result = call_groq(system_prompt, user_message, temperature=0.3, max_tokens=900)
@@ -115,9 +124,12 @@ def generate_explanation(context: str, subject: str, query: str, _retry_count: i
     if contains_foreign_script(urdu_section):
         print("⚠️  Foreign script still present after retry — applying known-pattern cleanup...")
         result = sanitize_foreign_script(result)
-        # Re-check after cleanup
         if contains_foreign_script(extract_urdu_section(result)):
             print("❌ WARNING: Unrecognized foreign script pattern remains. Flagging for manual review.")
+
+    # Cache the final clean result (only cache successful, non-flagged results)
+    if _retry_count == 0 or not contains_foreign_script(extract_urdu_section(result)):
+        store_response(query, subject, {"explanation": result})
 
     return result
 
