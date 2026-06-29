@@ -17,6 +17,20 @@ _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 # Groq's fast Llama 3.3 model — good balance of speed + quality for MVP
 MODEL_NAME = "llama-3.3-70b-versatile"
 
+FOREIGN_SCRIPT_FIXES = {
+    "三角 میٹری": "ٹریگنومیٹری",  # must come BEFORE the standalone "三角" entry
+    "三角": "ٹریگنومیٹری",
+    "根": "جڑ",
+    "分子": "مالیکیول",
+    "微观": "خوردبینی",
+    "微": "خوردبینی",
+    "反応性": "قابل واپسی",
+    "反": "واپسی",
+    "定": "متعین",
+    "ition": "",
+    "định": "متعین",
+    "特": "خاص",
+}
 
 def call_groq(system_prompt: str, user_message: str, temperature: float = 0.3, max_tokens: int = 1024) -> str:
     """
@@ -61,13 +75,52 @@ def normalize_query(query: str) -> str:
     result = call_groq(system_prompt, query, temperature=0, max_tokens=200)
     return result.strip()
 
-def generate_explanation(context: str, subject: str, query: str) -> str:
+def contains_foreign_script(text: str) -> bool:
     """
-    Generates a bilingual (EN+UR) explanation grounded in retrieved context.
+    Detects CJK, Devanagari, Cyrillic characters that shouldn't appear in Urdu text.
     """
+    foreign_pattern = re.compile(
+        r'[\u4e00-\u9fff'      # Chinese
+        r'\u3040-\u30ff'       # Japanese
+        r'\u0900-\u097f'       # Devanagari
+        r'\u0400-\u04ff'       # Cyrillic
+        r'\uac00-\ud7af]'      # Korean
+    )
+    return bool(foreign_pattern.search(text))
+
+def extract_urdu_section(explanation: str) -> str:
+    """Pulls just the URDU: section text for validation."""
+    match = re.search(r'URDU:\s*(.*?)(?=\n\nKEY EXAM POINT:|\Z)', explanation, re.DOTALL)
+    return match.group(1) if match else ""
+
+def sanitize_foreign_script(text: str) -> str:
+    """
+    Last-resort cleanup: replaces known CJK substitution patterns with correct
+    Urdu equivalents. Applied after retry still contains foreign script.
+    """
+    for bad, good in FOREIGN_SCRIPT_FIXES.items():
+        text = text.replace(bad, good)
+    return text
+
+def generate_explanation(context: str, subject: str, query: str, _retry_count: int = 0) -> str:
     system_prompt = EXPLANATION_SYSTEM_PROMPT.format(subject=subject)
     user_message = build_explanation_prompt(context, subject, query)
-    return call_groq(system_prompt, user_message, temperature=0.3, max_tokens=600)
+    result = call_groq(system_prompt, user_message, temperature=0.3, max_tokens=900)
+
+    urdu_section = extract_urdu_section(result)
+    if contains_foreign_script(urdu_section) and _retry_count < 1:
+        print("⚠️  Foreign script detected in Urdu output — retrying generation...")
+        return generate_explanation(context, subject, query, _retry_count=_retry_count + 1)
+
+    if contains_foreign_script(urdu_section):
+        print("⚠️  Foreign script still present after retry — applying known-pattern cleanup...")
+        result = sanitize_foreign_script(result)
+        # Re-check after cleanup
+        if contains_foreign_script(extract_urdu_section(result)):
+            print("❌ WARNING: Unrecognized foreign script pattern remains. Flagging for manual review.")
+
+    return result
+
 def _extract_json(raw_text: str) -> str:
     """
     Strips markdown code fences if the model wrapped the JSON in ```json ... ```

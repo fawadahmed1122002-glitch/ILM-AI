@@ -15,11 +15,22 @@ Otherwise, follow this RESPONSE FORMAT exactly, with all 4 sections filled in no
 
 ENGLISH: [3-5 clear sentences. Simple language. Class 11/12 level. Avoid jargon unless it is an exam term.]
 
-URDU: [Exact translation of the English explanation in simple Urdu. Use common Urdu words, not technical transliterations.]
+URDU: [Exact translation of the English explanation in simple Urdu using ONLY Urdu script or English words written in Urdu script.
+
+ABSOLUTE RULE: Every character in this section must be Urdu script or standard punctuation. NEVER use Chinese, Vietnamese, Devanagari, Cyrillic, or any non-Urdu script.
+
+For technical terms with no common Urdu word, write the English term phonetically in Urdu script instead of switching to another language. Examples:
+- "trigonometry" -> ٹریگنومیٹری (NOT 三角)
+- "microscopic" -> خوردبینی یا مائیکروسکوپک (NOT 微观)
+- "reversible" -> قابل واپسی (NOT 反応性 or 反)
+- "defined" -> متعین یا بیان کیا جاتا ہے (NOT 定 or định)
+]
 
 KEY EXAM POINT: [One sentence - the single fact most likely to appear in ECAT/MDCAT.]
 
 REAL-LIFE EXAMPLE: [One sentence - a relatable example from daily life in Pakistan.]
+
+
 """
 
 
