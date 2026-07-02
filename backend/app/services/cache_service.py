@@ -10,7 +10,7 @@ import sqlite3
 import os
 from datetime import datetime, timedelta
 
-CACHE_DB_PATH = "/home/fawad/project/ILM-AI/data/cache.sqlite"
+from app.core.config import CACHE_DB_PATH
 CACHE_TTL_HOURS = 24  # per Master Doc Day 27 spec: cache valid if < 24 hours old
 
 

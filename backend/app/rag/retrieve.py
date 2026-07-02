@@ -9,8 +9,7 @@ import chromadb
 
 from app.rag.llm_client import normalize_query
 
-CHROMA_DB_PATH = "/home/fawad/project/ILM-AI/data/chroma_db"
-COLLECTION_NAME = "ilmai_knowledge_base"
+from app.core.config import CHROMA_DB_PATH, COLLECTION_NAME
 
 # Load once, reuse across calls (don't reload model every query in production)
 _model = SentenceTransformer("all-MiniLM-L6-v2")
