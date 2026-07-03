@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -16,16 +17,25 @@ export default function DashboardPage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Welcome, {user.full_name} 👋
-      </h1>
-      <p className="text-gray-500 mt-1">
-        Plan: <span className="font-medium text-emerald-600 uppercase">{user.plan}</span>
-      </p>
-      <div className="mt-8 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-        <p className="text-gray-400 text-sm">Study interface coming next...</p>
-      </div>
-    </div>
+    <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <Link
+    href="/study"
+    className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-emerald-200 transition-colors group"
+  >
+    <div className="text-2xl mb-2">📚</div>
+    <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600">
+      Start Studying
+    </h3>
+    <p className="text-sm text-gray-500 mt-1">
+      Ask any topic in English or Roman Urdu
+    </p>
+  </Link>
+
+  <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+    <div className="text-2xl mb-2">📊</div>
+    <h3 className="font-semibold text-gray-400">Progress</h3>
+    <p className="text-sm text-gray-400 mt-1">Coming soon</p>
+  </div>
+</div>
   );
 }

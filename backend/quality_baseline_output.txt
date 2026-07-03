@@ -1,0 +1,386 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2187.99it/s]
+
+======================================================================
+[1/20] SUBJECT: Computer Science | QUERY: What is the Software Development Life Cycle?
+======================================================================
+Normalized query: What is the Software Development Life Cycle?
+Top match distance: 0.5741
+
+--- EXPLANATION ---
+ENGLISH: The Software Development Life Cycle (SDLC) is a framework that defines the processes used by organizations to build an application from its initial conception to its deployment and maintenance. It is a systematic process that transforms user needs into software products, involving stages such as analysis, design, coding, testing, and deployment. The primary purpose of SDLC is to deliver high-quality software that meets or exceeds customer expectations. SDLC helps organizations to plan, structure, and control the development of software systems. By following SDLC, teams can predict outcomes, manage risks, and ensure quality assurance practices are integrated throughout the development lifecycle.
+
+URDU: سافٹ ویئر ڈویلپمنٹ لائف سائیکل (SDLC) ایک فریم ورک ہے جو اداروں کے ذریعے ایک ایپلی کیشن کو اس کی ابتدائی تصور سے لے کر اس کی تعیناتی اور دیکھ بھال تک بنانے کے لیے استعمال ہونے والی عملوں کو định義 کرتا ہے۔ یہ ایک منظم عمل ہے جو صارفین کی ضروریات کو سافٹ ویئر پروڈکٹس میں تبدیل کرتا ہے، جس میں تجزیہ، ڈیزائن، کوڈنگ، ٹیسٹنگ، اور تعیناتی جیسے مراحل شامل ہیں۔ SDLC کا بنیادی مقصد گاہک کی توقع کے مطابق یا اس سے بہتر معیار کا سافٹ ویئر فراہم کرنا ہے۔ SDLC اداروں کو سافٹ ویئر سسٹم کی ترقی کے منصوبہ بندی، ڈھانچہ، اور کنٹرول میں مدد کرتا ہے۔ SDLC کی پیروی کرکے، ٹیمیں نتائج کی پیش گوئی کر سکتی ہیں، خطرات کو منظم کر سکتی ہیں، اور یقینی بناتی ہیں کہ معیار کی یقین دہانی کے عمل ترقی لائف سائیکل کے دوران یکجہتی سے شامل ہوں۔
+
+KEY EXAM POINT: The Software Development Life Cycle (SDLC) is a framework that defines the processes used to build an application from its initial conception to its deployment
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary purpose of the Software Development Life Cycle? (Correct: A)
+
+======================================================================
+[2/20] SUBJECT: Computer Science | QUERY: What is the difference between a compiler and an interpreter?
+======================================================================
+Normalized query: What is the difference between a compiler and an interpreter?
+Top match distance: 0.7431
+
+--- EXPLANATION ---
+ENGLISH: A compiler and an interpreter are both translators that convert code into a form that the computer can understand. However, the key difference lies in how they process the code. A compiler translates the entire code at once, whereas an interpreter translates the code line by line. This means that a compiler takes the entire program, converts it into machine language, and then executes it, whereas an interpreter translates and executes the code one line at a time. Compilers are typically used for languages like C and C++, while interpreters are used for languages like Python. 
+
+URDU: ایک کمپائلر اور انٹرپریٹر دونوں ہی ٹرانسلیٹرز ہیں جو کوڈ کو کمپیوٹر کے समझنے کے لیے قابل समझ بناتے ہیں۔ تاہم، ان کے درمیان اہم فرق یہ ہے کہ وہ کوڈ کو کس طرح پروسس کرتے ہیں۔ ایک کمپائلر پورے کوڈ کو ایک بار میں ترجمہ کرتا ہے، جبکہ انٹرپریٹر کوڈ کو لائن بائ لائن ترجمہ کرتا ہے۔ اس کا مطلب ہے کہ ایک کمپائلر پورے پروگرام کو لیتا ہے، اسے مشین زبان میں تبدیل کرتا ہے، اور پھر اسے چلاتا ہے، جبکہ انٹرپریٹر کوڈ کو ایک لائن ایک لائن ترجمہ کرتا ہے اور اسے چلاتا ہے۔ کمپائلرز عام طور پر سی اور سی ++ جیسے زبانوں کے لیے استعمال ہوتے ہیں، جبکہ انٹرپریٹرز پیٹھون جیسے زبانوں کے لیے استعمال ہوتے ہیں۔
+
+KEY EXAM POINT: Compilers translate the entire code at once, whereas interpreters translate the code line by line.
+
+REAL-LIFE EXAMPLE: When you write a Python program, the interpreter translates and executes the code line by line, allowing you to see the results immediately, similar to how a chef follows a recipe and tastes the dish as they cook.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary function of a compiler in programming? (Correct: B)
+
+======================================================================
+[3/20] SUBJECT: Computer Science | QUERY: What is an algorithm?
+======================================================================
+Normalized query: What is an algorithm?
+Top match distance: 0.6372
+
+--- EXPLANATION ---
+ENGLISH: An algorithm is a step-by-step procedure for solving problems, similar to a recipe that provides steps for cooking a dish. It is a set of instructions that a computer can execute to solve a problem. Algorithms form the backbone of computer science, enabling machines to perform tasks efficiently. They provide the logic behind software operations, allowing complex problems to be solved. Understanding algorithms is essential for solving computational problems.
+
+URDU: ایک الگورتھم ایک قدم بہ قدم طریقہ ہے جو مسائل کو حل کرنے کے لیے استعمال ہوتا ہے، جس کی مشابہت ایک recipe سے ہوتی ہے جو کھانا پکانے کے لیے قدم بہ قدم ہدایات فراہم کرتی ہے۔ یہ ایک سیٹ ہدایات ہے جو ایک کمپیوٹر کو ایک مسئلہ کو حل کرنے کے لیے استعمال کر سکتا ہے۔ الگورتھم کمپیوٹر سائنس کی بنیاد ہیں، جو مشینوں کو موثر طریقے سے کام کرنے کی اجازت دیتے ہیں۔ وہ سافٹ ویئر آپریشنز کے پیچھے منطق فراہم کرتے ہیں، جو پیچیدہ مسائل کو حل کرنے کی اجازت دیتے ہیں۔ الگورتھم کو سمجھنا کمپیوٹرل پروبلمز کو حل کرنے کے لیے ضروری ہے۔
+
+KEY EXAM POINT: An algorithm is a set of step-by-step instructions that a computer can execute to solve a problem.
+
+REAL-LIFE EXAMPLE: A simple example of an algorithm in daily life is a recipe for making a cup of tea, where you follow a series of steps to achieve the desired result.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary purpose of an algorithm in computer science? (Correct: A)
+
+======================================================================
+[4/20] SUBJECT: Computer Science | QUERY: kya hai data analytics
+======================================================================
+Normalized query: What is data analytics?
+Top match distance: 0.9004
+
+--- EXPLANATION ---
+ENGLISH: Data analytics is the process of analyzing and interpreting data to gain insights and make informed decisions. It involves using various techniques, such as statistical models and data visualization, to understand patterns and trends in data. Data analytics helps in making data-driven decisions, which can improve business success and reduce risks. It is a crucial aspect of computer science, as it enables us to extract valuable information from large amounts of data. By using data analytics, we can identify opportunities, optimize resources, and predict future trends.
+
+URDU: ڈیٹا انالیٹکس ڈیٹا کو تجزیہ اور تشریح کرنے کا عمل ہے تاکہ بصیرت حاصل کی جا سکے اور آگاہ فیصلے کیے جا سکیں۔ اس میں مختلف تکنیکوں کا استعمال کیا جاتا ہے، جیسے کہ اعداد و شمار کے ماڈلز اور ڈیٹا ویژولائزیشن، تاکہ ڈیٹا میں نمونے اور رجحانات کو سمجھا جا سکے۔ ڈیٹا انالیٹکس ڈیٹا پر مبنی فیصلوں کی مدد کرتا ہے، جو کاروبار کے کامیابی کو بہتر بنانے اور خطرات کو کم کرنے میں مدد کرتا ہے۔ یہ کمپیوٹر سائنس کا ایک اہم پہلو ہے، کیونکہ یہ ہمیں بڑی مقدار میں ڈیٹا سے قیمتی معلومات حاصل کرنے کی اجازت دیتا ہے۔ ڈیٹا انالیٹکس کا استعمال کرتے ہوئے، ہم مواقع کی شناخت کر سکتے ہیں، وسائل کو بہتر بنا سکتے ہیں، اور مستقبل کے رجحانات کی پیش گوئی کر سکتے ہیں۔
+
+KEY EXAM POINT: Data analytics involves using statistical models and data visualization to understand patterns and trends in data.
+
+REAL-LIFE EXAMPLE: A company in Pakistan can use data analytics to analyze sales data and identify which products are most popular in different regions, allowing them to optimize their marketing strategies and improve sales.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary aim of analyzing market data? (Correct: A)
+
+======================================================================
+[5/20] SUBJECT: Biology | QUERY: What is biodiversity?
+======================================================================
+Normalized query: What is biodiversity?
+Top match distance: 0.7589
+
+--- EXPLANATION ---
+ENGLISH: Biodiversity refers to the variety of life on Earth, including all biotic and abiotic factors. It encompasses the range of ecosystems, species, and genetic information within organisms. Biodiversity is assessed at multiple levels, including genetic, species, and ecosystem levels. This concept is crucial for understanding the complexity of life and the importance of conservation efforts. Biodiversity helps maintain balance in an ecosystem and is essential for the adaptability and survival of species.
+
+URDU: بائیو ڈائورسٹی سے مراد زمین پر زندگی کی تنوع ہے، جس میں تمام جاندار اور غیر جاندار عوامل شامل ہیں۔ یہ ماحولیاتی نظام، انواع، اور جانداروں کے اندر موجود جینیاتی معلومات کے دائرہ کار کو شامل کرتی ہے۔ بائیو ڈائورسٹی کو متعدد سطحوں پر جانچا جاتا ہے، جن میں جینیاتی، انواع، اور ماحولیاتی نظام کی سطحیں شامل ہیں۔ یہ تصور زندگی کی پیچیدگی کو سمجھنے اور تحفظ کی کوششوں کی اہمیت کو جاننے کے لیے نہایت اہم ہے۔ بائیو ڈائورسٹی ماحولیاتی نظام میں توازن کو برقرار رکھنے میں مدد کرتی ہے اور انواع کی موافقت اور بقا کے لیے ضروری ہے۔
+
+KEY EXAM POINT: Biodiversity is assessed at multiple levels, including genetic, species, and ecosystem levels.
+
+REAL-LIFE EXAMPLE: The variety of plants and animals found in the forests of Pakistan's northern regions is an example of biodiversity, which is essential for maintaining the balance of the ecosystem and supporting the local wildlife.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the term that refers to the role or function of an organism or species within an ecosystem? (Correct: B)
+
+======================================================================
+[6/20] SUBJECT: Biology | QUERY: How are organisms classified?
+======================================================================
+Normalized query: How are organisms classified?
+Top match distance: 0.7311
+
+--- EXPLANATION ---
+ENGLISH: Organisms are classified using a hierarchical system that includes several levels, known as taxa. The primary levels of this hierarchy are: domain, kingdom, phylum, class, order, family, genus, and species. This system allows scientists to categorize and understand the relationships between different forms of life. The classification of organisms is based on their evolutionary relationships and shared characteristics. For example, organisms within a phylum share a basic body plan and significant structural features. The classification of organisms helps us to understand the diversity of life on Earth and their evolutionary relationships.
+
+URDU: جانداروں کی درجہ بندی ایک ہیئر آرکیکل سسٹم کا استعمال کرکے کی جاتی ہے جو کہ کئی درجوں پر مشتمل ہوتا ہے، جنہیں ٹیکسا کہا جاتا ہے۔ اس ہیئر آرکیکل سسٹم کے بنیادی درجے ہیں: ڈومین، کنگڈم، فائیلم، کلاس، آرڈر، فیملی، جینس، اور سپیشیز۔ یہ سسٹم سائنسدانوں کو جانداروں کی مختلف اقسام کے درمیان تعلقات کو سمجھنے اور درجہ بندی کرنے کی اجازت دیتا ہے۔ جانداروں کی درجہ بندی ان کے ارتقائی تعلقات اور مشترک خصوصیات کی بنیاد پر کی جاتی ہے۔ مثال کے طور پر، ایک ہی فائیلم کے جاندار ایک بنیادی جسمانی ساخت اور اہم ساختمانی خصوصیات کا اشتراک کرتے ہیں۔
+
+KEY EXAM POINT: The classification of organisms is based on their evolutionary relationships and shared characteristics, and it includes several levels such as domain, kingdom, phylum, class, order, family, genus, and species.
+
+REAL-LIFE EXAMPLE: In Pakistan, the classification of plants and animals helps in understanding the diversity of life in different ecosystems, such as forests, deserts, and wetlands, and in conserving the unique species found in these ecosystems.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the highest level of classification in the taxonomic hierarchy? (Correct: B)
+
+======================================================================
+[7/20] SUBJECT: Biology | QUERY: What is a taxonomic hierarchy?
+======================================================================
+Normalized query: What is a taxonomic hierarchy?
+Top match distance: 0.6925
+
+--- EXPLANATION ---
+ENGLISH: A taxonomic hierarchy is a system used to classify organisms into different levels, ranging from the most general to the most specific. It consists of several ranks, including domain, kingdom, phylum, class, order, family, genus, and species. Each level represents a more specific grouping of organisms based on their shared characteristics and evolutionary relationships. This hierarchy helps scientists to organize and categorize the vast array of life forms on Earth. The taxonomic hierarchy is a fundamental concept in biology, allowing us to understand the relationships between different organisms and their place in the natural world.
+
+URDU: ٹیکسونومک ہائیرارکی ایک نظام ہے جو جانداروں کو مختلف سطحوں میں درجہ بندی کرنے کے لیے استعمال ہوتا ہے، جو سب سے عام سے لے کر سب سے خاص تک ہوتا ہے۔ اس میں کئی درجے ہوتے ہیں، جن میں ڈومین، کنگڈم، فائلم، کلاس، آرڈر، فیملی، جینس، اور سپیشیز شامل ہیں۔ ہر سطح جانداروں کا ایک زیادہ خاص گروہ ہے جو ان کی مشترکہ خصوصیات اور ارتقائی رشتوں کی بنیاد پر ہوتا ہے۔ یہ ہائیرارکی سائنسدانوں کو زمین پر زندگی کی کثرت کو منظم اور درجہ بندی کرنے میں مدد فراہم کرتی ہے۔ ٹیکسونومک ہائیرارکی حیاتیات کا ایک بنیادی تصور ہے، جو ہمیں مختلف جانداروں کے درمیان رشتوں اور ان کی قدرتی دنیا میں ان کی جگہ کو سمجھنے کی اجازت دیتا ہے۔
+
+KEY EXAM POINT: The taxonomic hierarchy consists of eight main levels: domain, kingdom, phylum, class, order, family, genus, and species.
+
+REAL-LIFE EXAMPLE: For example, a human being can be classified as follows: domain Eukarya, kingdom Animalia, phylum Chordata, class Mammalia, order Primates, family Hominidae, genus Homo, and species Homo sapiens.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the highest level of classification in the biological classification system? (Correct: B)
+
+======================================================================
+[8/20] SUBJECT: Biology | QUERY: binomial nomenclature kya hai
+======================================================================
+Normalized query: What is binomial nomenclature?
+Top match distance: 1.3683
+
+--- EXPLANATION ---
+ENGLISH: Binomial nomenclature is a system of naming organisms using a two-part name, consisting of a genus name and a species name. This system is used universally in biology to identify and classify species. The genus name is always capitalized, while the species name is not, and both are italicized. For example, the human species is named as Homo sapiens, where Homo is the genus and sapiens is the species. This system helps in uniquely identifying a species and avoiding confusion.
+
+URDU: دو ناموں کا نظام نامकरण جس میں جنس کا نام اور انواع کا نام شامل ہوتا ہے، حیاتیات میں اجزاء کی شناخت اور درجہ بندی کے لیے استعمال ہوتا ہے۔ جنس کا نام ہمیشہ بڑے حروف میں لکھا جاتا ہے، جبکہ انواع کا نام چھوٹے حروف میں ہوتا ہے، اور دونوں موٹے حروف میں ہوتے ہیں۔ مثال کے طور پر، انسانی نسل کو Homo sapiens کہا جاتا ہے، جہاں Homo جنس ہے اور sapiens نسل ہے۔ یہ نظام کسی نسل کی منفرد شناخت میں مدد کرتا ہے اور الجھن سے بچاتا ہے۔
+
+KEY EXAM POINT: Binomial nomenclature is a universal system of naming organisms using a two-part name, consisting of a genus name and a species name.
+
+REAL-LIFE EXAMPLE: In Pakistan, the national tree, Deodar, is scientifically known as Cedrus deodara, which is an example of binomial nomenclature used in everyday life to identify and classify species.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the most specific level of classification in the taxonomic hierarchy? (Correct: B)
+
+======================================================================
+[9/20] SUBJECT: Chemistry | QUERY: What is chemical equilibrium?
+======================================================================
+Normalized query: What is chemical equilibrium?
+Top match distance: 0.6089
+
+--- EXPLANATION ---
+ENGLISH: Chemical equilibrium is a state in a reversible reaction where the concentrations of reactants and products remain constant, and the rates of the forward and reverse reactions are equal. This state is reached when the reaction is carried out in a closed container, and the amounts of reactants and products no longer change. Although the concentrations remain constant, the reaction does not stop, and molecules continue reacting at the microscopic level. The equilibrium constant is a value that describes the ratio of the concentrations of products to reactants at equilibrium. Chemical equilibrium is an important concept in chemistry, as it helps us understand how reactions behave under different conditions.
+
+URDU: کیمیائی توازن ایک قابلِ واپسی رد عمل کی ایک حالت ہے جہاں متعاملات اور مصنوعات کی غلظتیں مستحکم رہتی ہیں، اور آگے اور پیچھے کی رد عمل کی شرحیں برابر ہوتی ہیں۔ یہ حالت اس وقت حاصل ہوتی ہے جب رد عمل کو بند برتن میں کیا جائے، اور متعاملات اور مصنوعات کی مقدار میں کوئی تبدیلی نہیں ہوتی۔ حالانکہ غلظتیں مستحکم رہتی ہیں، رد عمل رکتا نہیں، اور 微scopic سطح پر молیکیول مسلسل رد عمل کرتے رہتے ہیں۔ توازنی مستقل ایک ایسی قدر ہے جو توازن پر مصنوعات اور متعاملات کی غلظتوں کے تناسب کو بیان کرتی ہے۔ کیمیائی توازن کیمیا میں ایک اہم تصور ہے، کیونکہ یہ ہمیں مختلف حالات کے تحت رد عمل کے سلوک کو سمجھنے میں مدد کرتا ہے۔
+
+KEY EXAM POINT: Chemical equilibrium is a state where the rates of forward and reverse reactions are equal, and the concentrations of reactants and products remain constant.
+
+REAL-LIFE EXAMPLE: A common example of chemical equilibrium in daily life is the equilibrium between carbon dioxide and water in a bottle of soda, where the concentration of carbon dioxide remains constant after the bottle is sealed.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the main characteristic of chemical equilibrium? (Correct: B)
+
+======================================================================
+[10/20] SUBJECT: Chemistry | QUERY: What is the atomic structure of an atom?
+======================================================================
+Normalized query: What is the atomic structure of an atom?
+Top match distance: 0.8796
+
+--- EXPLANATION ---
+ENGLISH: The atomic structure of an atom is made up of several key components, including the atomic radius, which is a measure of the size of an atom. It is half of the distance between two identical atoms bonded together and can vary depending on the type of bond and the state of the atom. The atomic radius is typically measured in picometer or Angstrom. The atomic structure is also influenced by the number of shells, effective nuclear charge, and shielding effect of inner electrons. Generally, atomic radius decreases across a period in the periodic table due to increasing nuclear charge.
+
+URDU: ایٹم کی ایٹمی ساخت کئی اہم اجزاء پر مشتمل ہے، جن میں ایٹمی ریڈیئس بھی شامل ہے، جو ایک ایٹم کے سائز کا ایک پیمانہ ہے۔ یہ دو متوازی ایٹموں کے درمیان فاصلے کا نصف ہے جو آپس میں بندھے ہوئے ہیں اور یہ بندھن کی قسم اور ایٹم کی حالت کے لحاظ سے مختلف ہو سکتا ہے۔ ایٹمی ریڈیئس کو عام طور پر پکو میٹر یا اینگسٹرم میں ناپا جاتا ہے۔ ایٹمی ساخت پر شیلز کی تعداد، موثر جوہری چارج، اور اندرونی الیکٹرانوں کے شیلڈنگ اثر کا بھی اثر ہوتا ہے۔ عام طور پر، ایٹمی ریڈیئس مائیکرو میں بڑھتے ہوئے جوہری چارج کی وجہ سے مائیکرو میں کمی آتی ہے۔
+
+KEY EXAM POINT: The atomic radius is a measure of the size of an atom, which is half of the distance between two identical atoms bonded together.
+
+REAL-LIFE EXAMPLE: The atomic structure of atoms is crucial in understanding the properties of materials used in everyday life in Pakistan, such as the strength of steel used in construction or the conductivity of copper used in electrical wiring.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the atomic radius a measure of? (Correct: B)
+
+======================================================================
+[11/20] SUBJECT: Chemistry | QUERY: What is electrochemistry?
+======================================================================
+Normalized query: What is electrochemistry?
+Top match distance: 0.7280
+
+--- EXPLANATION ---
+ENGLISH: Electrochemistry is a branch of chemistry that deals with the interconversion of electrical and chemical energy. It involves the study of chemical reactions that occur when an electric current is passed through a solution, resulting in the transfer of electrons between atoms or molecules. This field of chemistry explores the relationship between electricity and chemical reactions, including oxidation, reduction, and redox reactions. Electrochemistry has many practical applications, including the production of chemicals, the refining of metals, and the development of new energy storage technologies. It is an important area of study in chemistry, as it helps us understand the fundamental principles of chemical reactions and how they can be controlled and manipulated.
+
+URDU: الیکٹروکیمسٹری کیمسٹری کی ایک شاخ ہے جو برقی اور کیمیائی توانائی کے درمیان تبادلے سے متعلق ہے۔ یہ ایسے کیمیائی تعاملات کا مطالعہ کرتی ہے جو ایک حل میں برقی کرنٹ گزارنے پر ہوتے ہیں، جس کے نتیجے میں ایٹموں یا مالیکولز کے درمیان الیکٹرانوں کا تبادلہ ہوتا ہے۔ الیکٹروکیمسٹری کا یہ شعبہ بجلی اور کیمیائی تعاملات کے درمیان تعلقات کا جائزہ لیتا ہے، بشمول آکسیڈیشن، ریڈکشن، اور ریڈاکس تعاملات۔ الیکٹروکیمسٹری کے عملی اطلاق بھی ہیں، جن میں کیمیکلز کی پیداوار، دھاتوں کی صفائی، اور نئی توانائی کے ذخیرے کی ٹیکنالوجی کی ترقی شامل ہیں۔
+
+KEY EXAM POINT: Electrochemistry is the branch of chemistry that deals with the interconversion of electrical and chemical energy.
+
+REAL-LIFE EXAMPLE: Electrochemistry is used in the production of batteries, such as those used in mobile phones and cars, which convert chemical energy into electrical energy.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary function of an electrolytic cell? (Correct: B)
+
+======================================================================
+[12/20] SUBJECT: Chemistry | QUERY: stoichiometry kya hai
+======================================================================
+Normalized query: What is stoichiometry?
+Top match distance: 0.4749
+
+--- EXPLANATION ---
+ENGLISH: Stoichiometry is a branch of chemistry that deals with the relationship between the amounts of reactants and products in a balanced chemical equation. It involves the study of the ratios of reactants and products, which is essential for calculating the mass or mole of other substances. The word stoichiometry is derived from the Greek words "stoicheion" meaning element and "metron" meaning measure. Stoichiometry helps us understand how much of each substance is required to produce a desired amount of product. It is a fundamental concept in chemistry that has numerous applications in various fields.
+
+URDU: سٹوچیومیٹری کیمسٹری کی ایک شاخ ہے جو متوازن کیمیائی مساوات میں ری ایکٹنٹس اور پروڈکٹس کی مقدار کے درمیان تعلق کا مطالعہ کرتی ہے۔ یہ ری ایکٹنٹس اور پروڈکٹس کے تناسب کا مطالعہ شامل ہے، جو دوسرے مادوں کی مقدار یا مول کا حساب لگانے کے لئے ضروری ہے۔ سٹوچیومیٹری کا لفظ یونانی الفاظ "سٹوچیون" سے ماخوذ ہے جس کا مطلب ہے عنصر اور "میٹرن" جس کا مطلب ہے پیمانہ۔ سٹوچیومیٹری ہمیں یہ سمجھنے میں مدد کرتی ہے کہ کسی مطلوبہ مقدار کو حاصل کرنے کے لئے ہر مادے کی کتنی مقدار درکار ہے۔
+
+KEY EXAM POINT: Stoichiometry is the study of the quantitative relationships between reactants and products in a balanced chemical equation.
+
+REAL-LIFE EXAMPLE: In a pharmacy in Pakistan, stoichiometry is used to ensure the accurate preparation of medicines by calculating the exact amount of active ingredients required to produce the desired effect.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the meaning of the word stoichiometry? (Correct: A)
+
+======================================================================
+[13/20] SUBJECT: Physics | QUERY: What is measurement in physics?
+======================================================================
+Normalized query: What is measurement in physics?
+Top match distance: 0.6559
+
+--- EXPLANATION ---
+ENGLISH: Measurement in physics is the process of assigning a numerical value to a physical quantity, such as length, mass, or time, using a standard unit. This process involves comparing the quantity to be measured with a standard, allowing us to express the measurement as a number and a unit. Accurate measurement is crucial in physics, as it enables us to describe and analyze the world around us. The foundation of physics depends on physical quantities, and measuring them accurately is essential for understanding the laws of physics. By using reliable and accurate measurements, we can make informed decisions and draw meaningful conclusions.
+
+URDU: طبیعیات میں پیمائش کا مطلب کسی طبیعی مقدار کو، جیسے کہ لمبائی، масс، یا وقت کو، ایک معیاری اکائی کا استعمال کرتے ہوئے ایک عددی قدر دینا ہے۔ یہ عمل معیار کے ساتھ پیمائش کی جانے والی مقدار کا موازنہ کرنا شامل ہے، جس سے ہم پیمائش کو ایک عدد اور اکائی کے طور پر ظاہر کر سکتے ہیں۔ طبیعیات میں درست پیمائش بہت ضروری ہے، کیونکہ یہ ہمیں دنیا کے بارے میں بیان کرنے اور تجزیہ کرنے کی اجازت دیتی ہے۔ طبیعیات کی بنیاد طبیعی مقادیر پر انحصار کرتی ہے، اور ان کی درست پیمائش طبیعیات کے قوانین کو سمجھنے کے لیے ضروری ہے۔ قابل اعتماد اور درست پیمائشوں کا استعمال کرتے ہوئے، ہم آگاہ فیصلے کر سکتے ہیں اور معنی خیز نتیجے اخذ کر سکتے ہیں۔
+
+KEY EXAM POINT: Measurement in physics involves assigning a numerical value to a physical quantity using a standard unit.
+
+REAL-LIFE EXAMPLE: In daily life, we use measurement to determine the distance between two cities, the weight of a person, or the time it takes to complete a task, all of which rely on accurate physical measurements.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the primary purpose of measuring physical quantities in physics? (Correct: A)
+
+======================================================================
+[14/20] SUBJECT: Physics | QUERY: What are the base units in physics?
+======================================================================
+Normalized query: What are the base units in physics?
+Top match distance: 0.6217
+
+--- EXPLANATION ---
+ENGLISH: The base units in physics are the fundamental units used to measure physical quantities. There are seven base units, which are length, mass, time, temperature, electric current, light or luminous intensity, and amount of substance. These units are used to define other physical quantities and are the foundation of the SI system. The base units are independent and cannot be defined in terms of other physical quantities. They are used to measure physical quantities such as length, mass, and time, and are the building blocks of the SI system.
+
+URDU: فزکس میں بنیادی اکائیاں وہ بنیادی اکائیاں ہیں جو طبیعی مقداروں کے اندازہ لگانے کے لیے استعمال ہوتی ہیں۔ سات بنیادی اکائیاں ہیں، جو کہ لمبائی، کمیت، وقت، درجہ حرارت، برقی رو، روشنی یا چمکتی شدت، اور مادے کی مقدار ہیں۔ یہ اکائیاں دیگر طبیعی مقداروں کے لیے استعمال ہوتی ہیں اور ایس آئی سسٹم کی بنیاد ہیں۔ بنیادی اکائیاں آزاد ہیں اور دوسری طبیعی مقداروں کے ذریعے بیان نہیں کی جا سکتیں۔ انہیں لمبائی، کمیت، اور وقت جیسے طبیعی مقداروں کے اندازہ لگانے کے لیے استعمال کیا جاتا ہے اور ایس آئی سسٹم کی بنیاد ہیں۔
+
+KEY EXAM POINT: The seven base units in physics are length, mass, time, temperature, electric current, light or luminous intensity, and amount of substance.
+
+REAL-LIFE EXAMPLE: In daily life, we use base units such as length to measure the distance between two cities, mass to measure the weight of a person, and time to measure the duration of a task.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What are the two kinds of units in the System International (SI)? (Correct: A)
+
+======================================================================
+[15/20] SUBJECT: Physics | QUERY: What is significant figures?
+======================================================================
+Normalized query: What is significant figures?
+Top match distance: 0.4758
+
+--- EXPLANATION ---
+ENGLISH: Significant figures are the digits in a measurement that we are reasonably sure about, and they reflect the accuracy of the observation. The number of significant figures in a measurement depends on the instrument used to make the measurement. When using a calculator, the result may have many digits after the decimal point, but these extra digits may not be reliable. To avoid misleading others, the result should be rounded off to the correct number of significant figures. This ensures that the uncertainty of the measurement is correctly represented.
+
+URDU: اہم اعداد significant figures وہ اعداد ہیں جن کے بارے میں ہم معقول طور پر یقین رکھتے ہیں، اور وہ پیمائش کی درستگی کی عکاسی کرتے ہیں۔ پیمائش میں اہم اعداد کی تعداد اس آلے پر منحصر ہوتی ہے جو پیمائش کرنے کے لیے استعمال ہوتا ہے۔ جب کلکولیٹر کا استعمال کیا جاتا ہے، تو نتیجہ اعشاریہ کے بعد کئی اعداد پر مشتمل ہو سکتا ہے، لیکن یہ اضافی اعداد قابل اعتماد نہیں ہو سکتے ہیں۔ دوسروں کو گمراہ کرنے سے بچنے کے لیے، نتیجہ کو صحیح تعداد میں اہم اعداد تک گول کیا جانا چاہیے۔
+
+KEY EXAM POINT: Significant figures are the digits in a measurement that reflect the accuracy of the observation and the reliability of the instrument used.
+
+REAL-LIFE EXAMPLE: When a student measures the mass of an object using a balance, the number of significant figures in the measurement depends on the accuracy of the balance, such as a digital balance showing 3.145 grams.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What are significant figures in a measurement? (Correct: A)
+
+======================================================================
+[16/20] SUBJECT: Physics | QUERY: error aur uncertainty kya hai measurement mein
+======================================================================
+Normalized query: What is error and uncertainty in measurement?
+Top match distance: 0.3154
+
+--- EXPLANATION ---
+ENGLISH: Error and uncertainty in measurement refer to the limitations of an instrument's ability to provide an exact value. Every measuring instrument has a smallest division or graduation on its scale, which puts a limit on its accuracy. The absolute uncertainty is the maximum possible error in a measurement, estimated as one smallest division of the instrument. For example, a metre rule graduated in millimetres has an absolute uncertainty of one millimetre. The indication of uncertainty in a recorded value can be simplified using significant figures, where the last digit is an estimation of the accuracy of the recorded value.
+
+URDU: غلطی اور غیر یقینی پن کا مطلب ہے کہ کسی آلے کی صحت کے بارے میں محدودیت ۔ ہر آلے میں اس کی سکیل پر چھوٹی سے چھوٹی تقسیم ہوتی ہے جو اس کی درستگی کو محدود کرتی ہے۔ مطلق غیر یقینی پن ہے ایک پیمائش میں ممکنہ غلطی کا اندازہ لگایا جاتا ہے، جو آلے کی چھوٹی سے چھوٹی تقسیم کے طور پر لگایا جاتا ہے۔ مثال کے طور پر، ایک میٹر سٹک جس میں ملی میٹر کی تقسیم ہوتی ہے اس کی مطلق غیر یقینی پن ایک ملی میٹر ہوتی ہے۔ ریکارڈ کیے گئے值 میں غیر یقینی پن کی نشاندہی کو اہم اعداد کا استعمال کرکے سادہ بنایا جا سکتا ہے، جہاں آخری عدد ریکارڈ کیے گئے值 کی درستگی کا اندازہ ہوتا ہے۔
+
+KEY EXAM POINT: The absolute uncertainty in a measurement is estimated as one smallest division of the instrument.
+
+REAL-LIFE EXAMPLE: When measuring the length of a room using a tape measure, the absolute uncertainty would be the smallest division on the tape measure, such as one millimetre, which can affect the overall calculation of the room's area.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the main reason for uncertainty in a measurement? (Correct: A)
+
+======================================================================
+[17/20] SUBJECT: Mathematics | QUERY: What is a complex number?
+======================================================================
+Normalized query: What is a complex number?
+Top match distance: 0.6405
+
+--- EXPLANATION ---
+ENGLISH: A complex number is a number of the form 𝑧 = 𝑎 + 𝑏𝑖, where 𝑎 and 𝑏 are real numbers and 𝑖 is the imaginary unit with 𝑖2 = −1. This means that a complex number has two parts: a real part (𝑎) and an imaginary part (𝑏). Complex numbers are used to extend the real number system to include numbers that can be used to solve equations that cannot be solved using only real numbers. They are important in many fields, including algebra, trigonometry, engineering, physics, and signal processing. The concept of complex numbers allows us to solve equations like 𝑥2 + 1 = 0, which has no real solution. Complex numbers can be represented in a standard form, known as the rectangular form, which is 𝑧 = 𝑎 + 𝑏𝑖.
+
+URDU: ایک کمپلیکس نمبر ایک نمبر ہے جس کی شکل 𝑧 = 𝑎 + 𝑏𝑖 ہے، جہاں 𝑎 اور 𝑏 حقیقی نمبر ہیں اور 𝑖 خیالی اکائی ہے جس کے لیے 𝑖2 = −1 ہے۔ اس کا مطلب ہے کہ ایک کمپلیکس نمبر کے دو حصے ہوتے ہیں: ایک حقیقی حصہ (𝑎) اور ایک خیالی حصہ (𝑏)۔ کمپلیکس نمبرز کو حقیقی نمبر سسٹم کو توسیع دینے کے لیے استعمال کیا جاتا ہے تاکہ وہ نمبرز شامل ہو سکیں جو صرف حقیقی نمبرز کا استعمال کرتے ہوئے حل نہیں کیے جا سکتے۔ وہ بہت سے شعبوں میں اہم ہیں، بشمول الجبرا، 三角 میٹری، انجینئرنگ، فزکس، اور سگنل پروسیسنگ۔ کمپلیکس نمبرز کا تصور ہمیں ایسے مساوات کو حل کرنے کی اجازت دیتا ہے جو صرف حقیقی نمبرز کا استعمال کرتے ہوئے حل نہی
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the definition of a complex number? (Correct: B)
+
+======================================================================
+[18/20] SUBJECT: Mathematics | QUERY: What is the power rule for derivatives?
+======================================================================
+Normalized query: What is the power rule for derivatives?
+Top match distance: 1.0548
+
+--- EXPLANATION ---
+ENGLISH: The power rule for derivatives is a fundamental rule in calculus that states if y = x^n, then the derivative of y with respect to x is y' = nx^(n-1). This rule applies to any function of the form x raised to a power, where n is a constant. The power rule is used to find the derivative of polynomial functions and is a key concept in differentiation. It allows us to easily find the derivative of functions such as x^2, x^3, and x^4. The power rule is a basic building block for more complex differentiation rules, such as the product rule and quotient rule.
+
+URDU: پاور رول کا استعمال ڈیفرینشیشن میں ایک بنیادی اصول ہے جو کہتا ہے کہ اگر y = x^n ہو، تو y کا x کے ساتھ ڈیروٹیو nx^(n-1) ہوتا ہے۔ یہ اصول کسی بھی فنکشن کے لیے لاگو ہوتا ہے جو x کی forme x کی قوت ہو، جہاں n ایک مستقل ہے۔ پاور رول کو پولی نومیل فنکشنز کا ڈیروٹیو نکالنے کے لیے استعمال کیا جاتا ہے اور یہ ڈیفرینشیشن کا ایک اہم تصور ہے۔ یہ ہمیں x^2، x^3، اور x^4 جیسے فنکشنز کا ڈیروٹیو آسانی سے نکالنے کی اجازت دیتا ہے۔ پاور رول پروڈکٹ رول اور کوٹینٹ رول جیسے پیچیدہ ڈیفرینشیشن کے اصول کے لیے ایک بنیادی بلڈنگ بلاک ہے۔
+
+KEY EXAM POINT: The power rule for derivatives states that if y = x^n, then y' = nx^(n-1).
+
+REAL-LIFE EXAMPLE: The power rule is used in real-life applications such as physics and engineering to model the motion of objects, where the velocity and acceleration of an object can be represented as derivatives of its position with respect to time.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the power rule for derivatives? (Correct: A)
+
+======================================================================
+[19/20] SUBJECT: Mathematics | QUERY: What is the difference between permutation and combination?
+======================================================================
+Normalized query: What is the difference between permutation and combination?
+Top match distance: 0.6490
+
+--- EXPLANATION ---
+ENGLISH: Permutation and combination are two different methods of counting and arranging objects. The main difference between them is that permutation considers the order of objects, whereas combination does not. For example, if we are arranging three students, the order in which they stand matters in permutation, but not in combination. This means that permutation counts the number of ways objects can be arranged, while combination counts the number of ways objects can be selected without considering the order.
+
+URDU: پرموٹیشن اور کمبینیشن دو مختلف طریقے ہیں جو اشیاء کو گنتی اور ترتیب دینے کے لیے استعمال ہوتے ہیں۔ ان کے درمیان بنیادی فرق یہ ہے کہ پرموٹیشن اشیاء کی ترتیب کو مد نظر رکھتی ہے، جبکہ کمبینیشن نہیں۔ مثال کے طور پر، اگر ہم تین طلباء کو ترتیب دے رہے ہیں، تو پرموٹیشن میں ان کی ترتیب سے فرق پڑتا ہے، لیکن کمبینیشن میں نہیں۔ اس کا مطلب ہے کہ پرموٹیشن اشیاء کو ترتیب دینے کے طریقوں کی گنتی کرتی ہے، جبکہ کمبینیشن ترتیب کے بغیر اشیاء کا انتخاب کرنے کے طریقوں کی گنتی کرتی ہے۔
+
+KEY EXAM POINT: The order of objects matters in permutation, but not in combination.
+
+REAL-LIFE EXAMPLE: When selecting a team of cricket players, the order in which they are chosen does not matter, which is an example of combination, but when arranging the batting order, the order matters, which is an example of permutation.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the main difference between permutation and combination? (Correct: B)
+
+======================================================================
+[20/20] SUBJECT: Mathematics | QUERY: matrix kya hota hai
+======================================================================
+Normalized query: What is a matrix?
+Top match distance: 0.5994
+
+--- EXPLANATION ---
+ENGLISH: A matrix is a rectangular arrangement of numbers, symbols, or expressions written in rows and columns. It has a specific order, which is determined by the number of rows and columns it contains. For example, a matrix with 2 rows and 3 columns has an order of 2 × 3. Matrices can be used to represent systems of equations and can be manipulated using various operations. The entries of a matrix are called elements or components, and they can be identified by their position in the matrix.
+
+URDU: ایک میٹرکس سطر اور کالم میں لکھے گئے نمبرز، علامات، یا表現 کا ایک مستطیل ترتیب ہے۔ اس کا ایک特عی حکم ہوتا ہے، جو اس میں موجود سطروں اور کالم کی تعداد سے طے ہوتا ہے۔ مثال کے طور پر، 2 سطروں اور 3 کالم والا ایک میٹرکس 2 × 3 کا حکم رکھتا ہے۔ میٹرکس کا استعمال مساوات کے نظام کی نمائندگی کے لیے کیا جا سکتا ہے اور مختلف کارروائیوں کا استعمال کرتے ہوئے اسے تبدیل کیا جا سکتا ہے۔ میٹرکس کے اندراج کو عناصر یا اجزاء کہا جاتا ہے، اور ان کی شناخت میٹرکس میں ان کی پوزیشن سے کی جا سکتی ہے۔
+
+KEY EXAM POINT: A matrix is a rectangular arrangement of numbers, symbols, or expressions with a specific order determined by its number of rows and columns.
+
+REAL-LIFE EXAMPLE: In Pakistan, matrices can be used to represent the seating arrangement of students in a classroom, where each row represents a row of seats and each column represents a column of seats.
+
+--- MCQs: 5 valid, 0 invalid ---
+Sample MCQ: What is the order of the matrix [1 2 3 4 5 6]? (Correct: B)
+
+
+######################################################################
+SUMMARY
+######################################################################
+✅ [Computer Science] What is the Software Development Life Cycle? -> ok
+✅ [Computer Science] What is the difference between a compiler and an i -> ok
+✅ [Computer Science] What is an algorithm? -> ok
+✅ [Computer Science] kya hai data analytics -> ok
+✅ [Biology] What is biodiversity? -> ok
+✅ [Biology] How are organisms classified? -> ok
+✅ [Biology] What is a taxonomic hierarchy? -> ok
+✅ [Biology] binomial nomenclature kya hai -> ok
+✅ [Chemistry] What is chemical equilibrium? -> ok
+✅ [Chemistry] What is the atomic structure of an atom? -> ok
+✅ [Chemistry] What is electrochemistry? -> ok
+✅ [Chemistry] stoichiometry kya hai -> ok
+✅ [Physics] What is measurement in physics? -> ok
+✅ [Physics] What are the base units in physics? -> ok
+✅ [Physics] What is significant figures? -> ok
+✅ [Physics] error aur uncertainty kya hai measurement mein -> ok
+✅ [Mathematics] What is a complex number? -> ok
+✅ [Mathematics] What is the power rule for derivatives? -> ok
+✅ [Mathematics] What is the difference between permutation and com -> ok
+✅ [Mathematics] matrix kya hota hai -> ok
+
+20/20 queries completed successfully.
+
+⚠️  NEXT STEP: Manually review each EXPLANATION and MCQ above.
+Score 1-5 for explanation quality and 1-5 for MCQ quality, per Master Doc Section 4.1 Day 7.

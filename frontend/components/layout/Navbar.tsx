@@ -37,6 +37,9 @@ export default function Navbar() {
           </>
         ) : (
           <>
+          <Link href="/study" className="text-sm text-gray-600 hover:text-emerald-600">
+  Study
+</Link>
             <Link href="/login" className="text-sm text-gray-600 hover:text-emerald-600">
               Login
             </Link>
