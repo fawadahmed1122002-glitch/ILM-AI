@@ -1,20 +1,13 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.rag.retrieve import retrieve_top_chunks, format_context_string
-from app.rag.llm_client import generate_explanation
+from app.rag.llm_client import generate_explanation, generate_mcqs
 
 
 class QueryService:
 
     @staticmethod
     def explain(query: str, subject: str, user: User, db: Session) -> dict:
-        """
-        Full explain pipeline:
-        1. Normalize query (Roman Urdu → English)
-        2. Retrieve top-5 chunks from ChromaDB
-        3. Generate bilingual explanation
-        4. Return structured response
-        """
         chunks, metadatas, distances, normalized_query = retrieve_top_chunks(
             query=query,
             subject=subject,
@@ -41,4 +34,34 @@ class QueryService:
             "normalized_query": normalized_query,
             "subject": subject,
             "cached": False,
+        }
+
+    @staticmethod
+    def get_mcqs(topic: str, subject: str, user: User, db: Session) -> dict:
+        chunks, metadatas, distances, normalized_topic = retrieve_top_chunks(
+            query=topic,
+            subject=subject,
+            top_k=5
+        )
+
+        if not chunks:
+            return {
+                "mcqs": [],
+                "subject": subject,
+                "topic": topic,
+                "count": 0,
+            }
+
+        context = format_context_string(chunks)
+        result = generate_mcqs(
+            context=context,
+            subject=subject,
+            topic=normalized_topic
+        )
+
+        return {
+            "mcqs": result["valid_mcqs"],
+            "subject": subject,
+            "topic": normalized_topic,
+            "count": len(result["valid_mcqs"]),
         }
