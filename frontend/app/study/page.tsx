@@ -125,11 +125,30 @@ export default function StudyPage() {
     }
   };
 
-  const handleSubmitMcqs = () => {
-    const correct = mcqs.filter((mcq, i) => answers[i] === mcq.correct).length;
-    setScore(correct);
-    setSubmitted(true);
-  };
+  const handleSubmitMcqs = async () => {
+  const answersPayload = mcqs.map((mcq, i) => ({
+    mcq_index: i,
+    selected_option: answers[i] || "A",
+    is_correct: answers[i] === mcq.correct,
+    time_spent_ms: null,
+  }));
+
+  const correct = answersPayload.filter(a => a.is_correct).length;
+  setScore(correct);
+  setSubmitted(true);
+
+  // Save to backend
+  try {
+    const token = authStorage.getToken();
+    await api.post("/query/mcq/submit", {
+      subject,
+      topic: result?.normalized_query || query,
+      answers: answersPayload,
+    }, token || undefined);
+  } catch (err) {
+    console.error("Failed to save MCQ attempt:", err);
+  }
+};
 
   const sections = result ? parseExplanation(result.explanation) : null;
 
@@ -275,7 +294,7 @@ export default function StudyPage() {
 
           {/* Submit / Score */}
           {!submitted ? (
-            <button onClick={handleSubmitMcqs}
+            <button onClick={() => { handleSubmitMcqs(); }}
               disabled={Object.keys(answers).length < mcqs.length}
               className="w-full py-3 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               Submit Answers ({Object.keys(answers).length}/{mcqs.length} answered)
