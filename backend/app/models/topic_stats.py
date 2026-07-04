@@ -17,7 +17,5 @@ class TopicStats(Base):
     topic: Mapped[str] = mapped_column(String(255), nullable=False)
     total_attempts: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
     correct_count: Mapped[int] = mapped_column(Integer, nullable=False, server_default="0")
-    # accuracy is a DB-generated column (STORED) - read-only from the ORM side
-    accuracy: Mapped[Decimal] = mapped_column(Numeric(5, 2), insert_default=None)
     last_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))

@@ -10,7 +10,43 @@ from app.schemas.query import ExplainRequest, ExplainResponse, McqRequest, McqRe
 
 router = APIRouter(prefix="/query", tags=["query"])
 
+from app.schemas.query import (
+    ExplainRequest, ExplainResponse,
+    McqRequest, McqResponse,
+    McqSubmitRequest, McqSubmitResponse
+)
 
+@router.post("/mcq/submit", response_model=McqSubmitResponse)
+def submit_mcqs(
+    payload: McqSubmitRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    result = QueryService.submit_mcqs(
+        subject=payload.subject,
+        topic=payload.topic,
+        answers=payload.answers,
+        user=current_user,
+        db=db
+    )
+    return McqSubmitResponse(**result)
+
+
+@router.get("/progress/me")
+def get_progress(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return QueryService.get_progress(user=current_user, db=db)
+
+
+@router.get("/progress/weak-topics")
+def get_weak_topics(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    progress = QueryService.get_progress(user=current_user, db=db)
+    return {"weak_topics": progress["weak_topics"]}
 @router.post("/explain", response_model=ExplainResponse)
 def explain(
     payload: ExplainRequest,

@@ -75,3 +75,20 @@ class McqResponse(BaseModel):
     subject: str
     topic: str
     count: int
+
+class McqSubmitItem(BaseModel):
+    mcq_index: int
+    selected_option: str
+    is_correct: bool
+    time_spent_ms: int | None = None
+
+class McqSubmitRequest(BaseModel):
+    subject: str
+    topic: str
+    answers: list[McqSubmitItem]
+
+class McqSubmitResponse(BaseModel):
+    total: int
+    correct: int
+    score_percent: float
+    weak_topic: bool
