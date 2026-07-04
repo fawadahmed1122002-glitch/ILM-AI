@@ -153,11 +153,11 @@ export default function StudyPage() {
   const sections = result ? parseExplanation(result.explanation) : null;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8 animate-fade-up">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Study</h1>
-        <p className="text-gray-500 text-sm mt-1">Ask any topic in English or Roman Urdu</p>
+        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Study</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Ask any topic in English or Roman Urdu</p>
       </div>
 
       {/* Query Form */}
@@ -166,7 +166,7 @@ export default function StudyPage() {
           {SUBJECTS.map((s) => (
             <button key={s} type="button" onClick={() => setSubject(s)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                subject === s ? "bg-emerald-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                subject === s ? "bg-teal-700 dark:bg-teal-600 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
               }`}>
               {s}
             </button>
@@ -176,9 +176,9 @@ export default function StudyPage() {
           <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
             placeholder={`Ask about ${subject}... (English ya Roman Urdu mein)`}
             maxLength={500}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+            className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-colors" />
           <button type="submit" disabled={explainLoading || !query.trim()}
-            className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            className="px-6 py-2.5 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
             {explainLoading ? "..." : "Ask"}
           </button>
         </div>
@@ -186,14 +186,14 @@ export default function StudyPage() {
 
       {/* Explain Error */}
       {explainError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl">{explainError}</div>
+        <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm rounded-xl">{explainError}</div>
       )}
 
       {/* Loading */}
       {explainLoading && (
         <div className="text-center py-12">
-          <div className="inline-block w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm mt-3">Generating explanation...</p>
+          <div className="inline-block w-8 h-8 border-4 border-teal-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-3">Generating explanation...</p>
         </div>
       )}
 
@@ -201,15 +201,15 @@ export default function StudyPage() {
       {sections && !explainLoading && (
         <div className="space-y-4 mb-8">
           {sections.english && (
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">English</h3>
-              <p className="text-gray-800 text-sm leading-relaxed">{sections.english}</p>
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">English</h3>
+              <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{sections.english}</p>
             </div>
           )}
           {sections.urdu && (
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">اردو</h3>
-              <p className="text-gray-800 text-sm leading-relaxed text-right" dir="rtl">{sections.urdu}</p>
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">اردو</h3>
+              <p className="font-urdu text-slate-700 dark:text-slate-300 text-sm text-right" dir="rtl">{sections.urdu}</p>
             </div>
           )}
           {sections.keyPoint && (
@@ -227,7 +227,7 @@ export default function StudyPage() {
 
           {/* Practice MCQs Button */}
           <button onClick={handleGetMcqs} disabled={mcqLoading}
-            className="w-full py-3 border-2 border-emerald-600 text-emerald-600 rounded-xl text-sm font-medium hover:bg-emerald-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            className="w-full py-3 border-2 border-teal-600 dark:border-teal-500 text-teal-700 dark:text-teal-400 rounded-xl text-sm font-semibold hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
             {mcqLoading ? "Generating MCQs..." : "🧠 Practice MCQs on this topic"}
           </button>
 
@@ -240,12 +240,12 @@ export default function StudyPage() {
       {/* MCQ Quiz */}
       {mcqs.length > 0 && !mcqLoading && (
         <div className="space-y-6">
-          <h2 className="text-lg font-bold text-gray-900">
+          <h2 className="font-display text-xl font-bold text-slate-900 dark:text-slate-100">
             Practice MCQs — {result?.normalized_query}
           </h2>
 
           {mcqs.map((mcq, i) => (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
               {/* Difficulty badge */}
               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                 mcq.difficulty === "Easy" ? "bg-green-100 text-green-700" :
@@ -256,8 +256,8 @@ export default function StudyPage() {
               </span>
 
               {/* Question */}
-              <p className="text-gray-900 font-medium text-sm mt-3 mb-1">{mcq.question_en}</p>
-              <p className="text-gray-500 text-sm text-right mb-4" dir="rtl">{mcq.question_ur}</p>
+              <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1">{mcq.question_en}</p>
+              <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm text-right mb-4" dir="rtl">{mcq.question_ur}</p>
 
               {/* Options */}
               <div className="space-y-2">
@@ -284,9 +284,9 @@ export default function StudyPage() {
 
               {/* Explanation (after submit) */}
               {submitted && (
-                <div className="mt-4 p-3 bg-gray-50 rounded-xl">
-                  <p className="text-xs text-gray-500 font-medium mb-1">Explanation</p>
-                  <p className="text-sm text-gray-700">{mcq.explanation_en}</p>
+                <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Explanation</p>
+                  <p className="text-sm text-slate-700 dark:text-slate-300">{mcq.explanation_en}</p>
                 </div>
               )}
             </div>
@@ -296,7 +296,7 @@ export default function StudyPage() {
           {!submitted ? (
             <button onClick={() => { handleSubmitMcqs(); }}
               disabled={Object.keys(answers).length < mcqs.length}
-              className="w-full py-3 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              className="w-full py-3 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
               Submit Answers ({Object.keys(answers).length}/{mcqs.length} answered)
             </button>
           ) : (
@@ -305,14 +305,14 @@ export default function StudyPage() {
               score >= mcqs.length / 2 ? "bg-yellow-50 border border-yellow-200" :
               "bg-red-50 border border-red-200"
             }`}>
-              <p className="text-2xl font-bold text-gray-900">{score}/{mcqs.length}</p>
+              <p className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{score}/{mcqs.length}</p>
               <p className="text-gray-600 text-sm mt-1">
                 {score === mcqs.length ? "Perfect score! 🎉" :
                  score >= mcqs.length / 2 ? "Good work! Keep practicing 💪" :
                  "Need more practice 📚"}
               </p>
               <button onClick={() => { setMcqs([]); setAnswers({}); setSubmitted(false); }}
-                className="mt-4 text-sm text-emerald-600 hover:underline">
+                className="mt-4 text-sm text-teal-600 dark:text-teal-400 hover:underline">
                 Try again
               </button>
             </div>

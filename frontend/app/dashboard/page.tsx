@@ -68,13 +68,13 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-up">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Welcome, {user.full_name} 👋
+        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+          Welcome, {user.full_name} 
         </h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
           Plan: <span className="font-medium text-emerald-600 uppercase">{user.plan}</span>
         </p>
       </div>
@@ -97,23 +97,23 @@ export default function DashboardPage() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
             {progressLoading ? "—" : progress?.total_sessions || 0}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Topics Studied</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Topics Studied</p>
         </div>
-        <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
             {progressLoading ? "—" : avgScore > 0 ? `${avgScore}%` : "—"}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Avg Accuracy</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Avg Accuracy</p>
         </div>
-        <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-red-500">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+          <p className="text-3xl font-bold text-red-500 dark:text-red-400">
             {progressLoading ? "—" : progress?.weak_topics.length || 0}
           </p>
-          <p className="text-xs text-gray-500 mt-1">Weak Topics</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Weak Topics</p>
         </div>
       </div>
 
@@ -131,7 +131,7 @@ export default function DashboardPage() {
             : "bg-white border-gray-100"
         }`}>
           <div className="text-2xl mb-2">{user.plan === "free" ? "⭐" : "✅"}</div>
-          <h3 className="font-semibold text-gray-900">
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">
             {user.plan === "free" ? "Upgrade to Pro" : "Pro Member"}
           </h3>
           <p className="text-sm text-gray-500 mt-1">
@@ -149,16 +149,16 @@ export default function DashboardPage() {
       </div>
 
       {/* Topic History Table */}
-      <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">Study History</h2>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h2 className="font-semibold text-slate-900 dark:text-slate-100">Study History</h2>
         </div>
 
         {progressLoading ? (
-          <div className="p-8 text-center text-gray-400 text-sm">Loading progress...</div>
+          <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm">Loading progress...</div>
         ) : !progress || progress.topics.length === 0 ? (
           <div className="p-8 text-center">
-            <p className="text-gray-400 text-sm">No topics studied yet.</p>
+            <p className="text-slate-400 dark:text-slate-500 text-sm">No topics studied yet.</p>
             <Link href="/study"
               className="inline-block mt-3 text-sm text-emerald-600 hover:underline">
               Start your first study session →
@@ -167,25 +167,25 @@ export default function DashboardPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Subject</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Topic</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">Attempts</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">Correct</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">Accuracy</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Subject</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Topic</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Attempts</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Correct</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Accuracy</th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {progress.topics.map((topic, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-600">{topic.subject}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900 max-w-xs truncate">
+                  <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{topic.subject}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-slate-100 max-w-xs truncate">
                       {topic.topic}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 text-center">{topic.total_attempts}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 text-center">{topic.correct_count}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 text-center">{topic.total_attempts}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 text-center">{topic.correct_count}</td>
                     <td className="px-6 py-4 text-center">
                       <AccuracyBadge score={topic.score_percent} />
                     </td>
