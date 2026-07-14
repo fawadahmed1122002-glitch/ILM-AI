@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
 
 const SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"];
@@ -101,7 +101,11 @@ export default function StudyPage() {
       const data = await api.post<ExplainResponse>("/query/explain", { subject, query: query.trim() }, token || undefined);
       setResult(data);
     } catch (err: unknown) {
-      setExplainError(err instanceof Error ? err.message : "Something went wrong");
+      if (err instanceof ApiError && err.code === "EXPLAIN_LIMIT_REACHED") {
+        setExplainError("LIMIT_REACHED");
+      } else {
+        setExplainError(err instanceof Error ? err.message : "Something went wrong");
+      }
     } finally {
       setExplainLoading(false);
     }
@@ -119,44 +123,47 @@ export default function StudyPage() {
       const data = await api.post<McqResponse>("/query/mcqs", { subject, topic: result.normalized_query }, token || undefined);
       setMcqs(data.mcqs);
     } catch (err: unknown) {
-      setMcqError(err instanceof Error ? err.message : "Failed to generate MCQs");
+      if (err instanceof ApiError && err.code === "MCQ_LIMIT_REACHED") {
+        setMcqError("LIMIT_REACHED");
+      } else {
+        setMcqError(err instanceof Error ? err.message : String(err));
+      }
     } finally {
       setMcqLoading(false);
     }
   };
 
   const handleSubmitMcqs = async () => {
-  const answersPayload = mcqs.map((mcq, i) => ({
-    mcq_index: i,
-    selected_option: answers[i] || "A",
-    is_correct: answers[i] === mcq.correct,
-    time_spent_ms: null,
-  }));
+    const answersPayload = mcqs.map((mcq, i) => ({
+      mcq_index: i,
+      selected_option: answers[i] || "A",
+      is_correct: answers[i] === mcq.correct,
+      time_spent_ms: null,
+    }));
 
-  const correct = answersPayload.filter(a => a.is_correct).length;
-  setScore(correct);
-  setSubmitted(true);
+    const correct = answersPayload.filter(a => a.is_correct).length;
+    setScore(correct);
+    setSubmitted(true);
 
-  // Save to backend
-  try {
-    const token = authStorage.getToken();
-    await api.post("/query/mcq/submit", {
-      subject,
-      topic: result?.normalized_query || query,
-      answers: answersPayload,
-    }, token || undefined);
-  } catch (err) {
-    console.error("Failed to save MCQ attempt:", err);
-  }
-};
+    try {
+      const token = authStorage.getToken();
+      await api.post("/query/mcq/submit", {
+        subject,
+        topic: result?.normalized_query || query,
+        answers: answersPayload,
+      }, token || undefined);
+    } catch (err) {
+      console.error("Failed to save MCQ attempt:", err);
+    }
+  };
 
   const sections = result ? parseExplanation(result.explanation) : null;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 animate-fade-up">
+    <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8 animate-fade-up">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Study</h1>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Study</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Ask any topic in English or Roman Urdu</p>
       </div>
 
@@ -172,13 +179,13 @@ export default function StudyPage() {
             </button>
           ))}
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
             placeholder={`Ask about ${subject}... (English ya Roman Urdu mein)`}
             maxLength={500}
-            className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-colors" />
+            className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 transition-colors" />
           <button type="submit" disabled={explainLoading || !query.trim()}
-            className="px-6 py-2.5 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
+            className="w-full sm:w-auto px-6 py-3 sm:py-2.5 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
             {explainLoading ? "..." : "Ask"}
           </button>
         </div>
@@ -186,7 +193,21 @@ export default function StudyPage() {
 
       {/* Explain Error */}
       {explainError && (
-        <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm rounded-xl">{explainError}</div>
+        explainError === "LIMIT_REACHED" ? (
+          <div className="mb-6 p-5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
+              Daily limit reached
+            </p>
+            <p className="text-sm text-amber-700 dark:text-amber-400 mb-3">
+              Free plan allows 3 explanations per day. Upgrade to Pro for unlimited access.
+            </p>
+            <a href="/upgrade" className="inline-block px-4 py-2 bg-teal-700 hover:bg-teal-600 text-white text-sm font-semibold rounded-lg transition-colors no-underline">
+              Upgrade to Pro — PKR 799/mo
+            </a>
+          </div>
+        ) : (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm rounded-xl">{explainError}</div>
+        )
       )}
 
       {/* Loading */}
@@ -201,38 +222,38 @@ export default function StudyPage() {
       {sections && !explainLoading && (
         <div className="space-y-4 mb-8">
           {sections.english && (
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">English</h3>
               <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{sections.english}</p>
             </div>
           )}
           {sections.urdu && (
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">اردو</h3>
-              <p className="font-urdu text-slate-700 dark:text-slate-300 text-sm text-right" dir="rtl">{sections.urdu}</p>
+              <p className="font-urdu text-slate-700 dark:text-slate-300 text-sm leading-loose text-right" dir="rtl">{sections.urdu}</p>
             </div>
           )}
           {sections.keyPoint && (
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-              <h3 className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-2">🎯 Key Exam Point</h3>
-              <p className="text-amber-900 text-sm font-medium">{sections.keyPoint}</p>
+            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
+              <h3 className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wide mb-2">Key Exam Point</h3>
+              <p className="text-amber-900 dark:text-amber-200 text-sm font-medium">{sections.keyPoint}</p>
             </div>
           )}
           {sections.example && (
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
-              <h3 className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-2">💡 Real-Life Example</h3>
-              <p className="text-blue-900 text-sm">{sections.example}</p>
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-2xl p-5">
+              <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">Real-Life Example</h3>
+              <p className="text-blue-900 dark:text-blue-200 text-sm">{sections.example}</p>
             </div>
           )}
 
           {/* Practice MCQs Button */}
           <button onClick={handleGetMcqs} disabled={mcqLoading}
             className="w-full py-3 border-2 border-teal-600 dark:border-teal-500 text-teal-700 dark:text-teal-400 rounded-xl text-sm font-semibold hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            {mcqLoading ? "Generating MCQs..." : "🧠 Practice MCQs on this topic"}
+            {mcqLoading ? "Generating MCQs..." : "Practice MCQs on this topic"}
           </button>
 
           {mcqError && (
-            <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl">{mcqError}</div>
+            <div className="p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 text-sm rounded-xl">{mcqError}</div>
           )}
         </div>
       )}
@@ -240,24 +261,24 @@ export default function StudyPage() {
       {/* MCQ Quiz */}
       {mcqs.length > 0 && !mcqLoading && (
         <div className="space-y-6">
-          <h2 className="font-display text-xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="font-display text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 break-words">
             Practice MCQs — {result?.normalized_query}
           </h2>
 
           {mcqs.map((mcq, i) => (
-            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
               {/* Difficulty badge */}
               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                mcq.difficulty === "Easy" ? "bg-green-100 text-green-700" :
-                mcq.difficulty === "Medium" ? "bg-yellow-100 text-yellow-700" :
-                "bg-red-100 text-red-700"
+                mcq.difficulty === "Easy" ? "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400" :
+                mcq.difficulty === "Medium" ? "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400" :
+                "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400"
               }`}>
                 {mcq.difficulty}
               </span>
 
               {/* Question */}
               <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1">{mcq.question_en}</p>
-              <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm text-right mb-4" dir="rtl">{mcq.question_ur}</p>
+              <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl">{mcq.question_ur}</p>
 
               {/* Options */}
               <div className="space-y-2">
@@ -266,10 +287,10 @@ export default function StudyPage() {
                   const isCorrect = mcq.correct === opt;
                   const showResult = submitted;
 
-                  let optClass = "border border-gray-200 text-gray-700 hover:border-emerald-400 hover:bg-emerald-50";
-                  if (showResult && isCorrect) optClass = "border-2 border-emerald-500 bg-emerald-50 text-emerald-800";
-                  else if (showResult && isSelected && !isCorrect) optClass = "border-2 border-red-400 bg-red-50 text-red-800";
-                  else if (isSelected) optClass = "border-2 border-emerald-500 bg-emerald-50 text-emerald-800";
+                  let optClass = "border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-teal-400 dark:hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/20";
+                  if (showResult && isCorrect) optClass = "border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300";
+                  else if (showResult && isSelected && !isCorrect) optClass = "border-2 border-red-400 bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300";
+                  else if (isSelected) optClass = "border-2 border-teal-500 bg-teal-50 dark:bg-teal-950/30 text-teal-800 dark:text-teal-300";
 
                   return (
                     <button key={opt} disabled={submitted}
@@ -301,15 +322,15 @@ export default function StudyPage() {
             </button>
           ) : (
             <div className={`p-6 rounded-2xl text-center ${
-              score === mcqs.length ? "bg-emerald-50 border border-emerald-200" :
-              score >= mcqs.length / 2 ? "bg-yellow-50 border border-yellow-200" :
-              "bg-red-50 border border-red-200"
+              score === mcqs.length ? "bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800" :
+              score >= mcqs.length / 2 ? "bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800" :
+              "bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800"
             }`}>
               <p className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{score}/{mcqs.length}</p>
-              <p className="text-gray-600 text-sm mt-1">
-                {score === mcqs.length ? "Perfect score! 🎉" :
-                 score >= mcqs.length / 2 ? "Good work! Keep practicing 💪" :
-                 "Need more practice 📚"}
+              <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+                {score === mcqs.length ? "Perfect score!" :
+                 score >= mcqs.length / 2 ? "Good work! Keep practicing" :
+                 "Need more practice"}
               </p>
               <button onClick={() => { setMcqs([]); setAnswers({}); setSubmitted(false); }}
                 className="mt-4 text-sm text-teal-600 dark:text-teal-400 hover:underline">

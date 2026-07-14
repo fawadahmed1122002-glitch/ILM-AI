@@ -68,26 +68,26 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-up">
+    <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 animate-fade-up">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-          Welcome, {user.full_name} 
+      <div className="mb-6 sm:mb-8">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight break-words">
+          Welcome, {user.full_name}
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
-          Plan: <span className="font-medium text-emerald-600 uppercase">{user.plan}</span>
+          Plan: <span className="font-medium text-teal-600 dark:text-teal-400 uppercase">{user.plan}</span>
         </p>
       </div>
 
       {/* Weak Topic Alert */}
       {progress && progress.weak_topics.length > 0 && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
-          <h3 className="text-sm font-semibold text-red-700 mb-2">
-            ⚠️ Weak Topics — Need More Practice
+        <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 rounded-2xl">
+          <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-2">
+            Weak Topics — Need More Practice
           </h3>
           <div className="flex flex-wrap gap-2">
             {progress.weak_topics.map((t, i) => (
-              <span key={i} className="text-xs bg-red-100 text-red-800 px-3 py-1 rounded-full">
+              <span key={i} className="text-xs bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 px-3 py-1 rounded-full">
                 {t.subject}: {t.topic} ({t.score_percent}%)
               </span>
             ))}
@@ -96,45 +96,43 @@ export default function DashboardPage() {
       )}
 
       {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6 sm:mb-8">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-5 shadow-sm text-center">
+          <p className="text-xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
             {progressLoading ? "—" : progress?.total_sessions || 0}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Topics Studied</p>
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1">Topics Studied</p>
         </div>
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-5 shadow-sm text-center">
+          <p className="text-xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
             {progressLoading ? "—" : avgScore > 0 ? `${avgScore}%` : "—"}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Avg Accuracy</p>
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1">Avg Accuracy</p>
         </div>
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
-          <p className="text-3xl font-bold text-red-500 dark:text-red-400">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-5 shadow-sm text-center">
+          <p className="text-xl sm:text-3xl font-bold text-red-500 dark:text-red-400">
             {progressLoading ? "—" : progress?.weak_topics.length || 0}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Weak Topics</p>
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1">Weak Topics</p>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <Link href="/study"
-          className="p-5 bg-emerald-600 rounded-2xl text-white hover:bg-emerald-700 transition-colors">
-          <div className="text-2xl mb-2">📚</div>
+          className="p-5 bg-teal-700 rounded-2xl text-white hover:bg-teal-600 transition-colors">
           <h3 className="font-semibold">Start Studying</h3>
-          <p className="text-sm text-emerald-100 mt-1">Ask any topic in English or Roman Urdu</p>
+          <p className="text-sm text-teal-100 mt-1">Ask any topic in English or Roman Urdu</p>
         </Link>
         <div className={`p-5 rounded-2xl border ${
           user.plan === "free"
-            ? "bg-amber-50 border-amber-200"
-            : "bg-white border-gray-100"
+            ? "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900"
+            : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
         }`}>
-          <div className="text-2xl mb-2">{user.plan === "free" ? "⭐" : "✅"}</div>
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">
             {user.plan === "free" ? "Upgrade to Pro" : "Pro Member"}
           </h3>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {user.plan === "free"
               ? "Unlimited topics + MCQs for PKR 799/mo"
               : "Enjoy unlimited access"}
@@ -160,13 +158,13 @@ export default function DashboardPage() {
           <div className="p-8 text-center">
             <p className="text-slate-400 dark:text-slate-500 text-sm">No topics studied yet.</p>
             <Link href="/study"
-              className="inline-block mt-3 text-sm text-emerald-600 hover:underline">
+              className="inline-block mt-3 text-sm text-teal-600 dark:text-teal-400 hover:underline">
               Start your first study session →
             </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[560px]">
               <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Subject</th>
@@ -177,7 +175,7 @@ export default function DashboardPage() {
                   <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {progress.topics.map((topic, i) => (
                   <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{topic.subject}</td>
@@ -191,9 +189,9 @@ export default function DashboardPage() {
                     </td>
                     <td className="px-6 py-4 text-center">
                       {topic.weak_topic ? (
-                        <span className="text-xs text-red-600">⚠️ Weak</span>
+                        <span className="text-xs text-red-600 dark:text-red-400">Weak</span>
                       ) : (
-                        <span className="text-xs text-green-600">✓ Good</span>
+                        <span className="text-xs text-green-600 dark:text-green-400">Good</span>
                       )}
                     </td>
                   </tr>

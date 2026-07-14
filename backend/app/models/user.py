@@ -20,3 +20,6 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("true"))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))
+    daily_explain_count: Mapped[int] = mapped_column(server_default="0")
+    daily_mcq_count: Mapped[int] = mapped_column(server_default="0")
+    last_reset_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

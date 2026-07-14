@@ -2,6 +2,19 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
+export class ApiError extends Error {
+  status: number;
+  code: string;
+  detail: unknown;
+
+  constructor(message: string, status: number, code: string, detail: unknown) {
+    super(message);
+    this.status = status;
+    this.code = code;
+    this.detail = detail;
+  }
+}
+
 async function request<T>(
   method: HttpMethod,
   path: string,
@@ -20,7 +33,27 @@ async function request<T>(
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.detail || "Request failed");
+
+  if (!res.ok) {
+    // Handle structured error detail (e.g. tier gate returns {code, message, ...})
+    const detail = data.detail;
+    if (detail && typeof detail === "object" && "code" in detail) {
+      throw new ApiError(
+        (detail as {message: string}).message || "Request failed",
+        res.status,
+        (detail as {code: string}).code,
+        detail
+      );
+    }
+    // Handle simple string detail
+    throw new ApiError(
+      typeof detail === "string" ? detail : "Request failed",
+      res.status,
+      "API_ERROR",
+      detail
+    );
+  }
+
   return data as T;
 }
 
