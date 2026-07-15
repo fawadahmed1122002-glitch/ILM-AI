@@ -14,7 +14,7 @@ from app.core.config import CHROMA_DB_PATH, COLLECTION_NAME
 # Load once, reuse across calls (don't reload model every query in production)
 _model = SentenceTransformer("all-MiniLM-L6-v2")
 _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-_collection = _client.get_collection(COLLECTION_NAME)
+_collection = _client.get_or_create_collection(COLLECTION_NAME)
 
 
 def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5):
