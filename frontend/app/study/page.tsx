@@ -158,6 +158,7 @@ export default function StudyPage() {
   };
 
   const sections = result ? parseExplanation(result.explanation) : null;
+  const topicNotFound = result?.explanation?.includes("not in our current knowledge base") ?? false;
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8 animate-fade-up">
@@ -218,8 +219,20 @@ export default function StudyPage() {
         </div>
       )}
 
+      {/* Topic Not Found */}
+      {result && topicNotFound && !explainLoading && (
+        <div className="mb-8 p-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl text-center">
+          <p className="text-slate-600 dark:text-slate-300 text-sm font-medium">
+            This topic isn't in our knowledge base yet for {subject}.
+          </p>
+          <p className="text-slate-400 dark:text-slate-500 text-xs mt-1">
+            Try rephrasing, or ask about a different topic — we're adding new content regularly.
+          </p>
+        </div>
+      )}
+
       {/* Explanation Result */}
-      {sections && !explainLoading && (
+      {sections && !topicNotFound && !explainLoading && (
         <div className="space-y-4 mb-8">
           {sections.english && (
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
