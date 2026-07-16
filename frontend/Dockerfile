@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.4
-
 # ---- Build stage ----
 FROM node:20-slim AS builder
 
@@ -11,13 +9,10 @@ RUN npm install -g npm@11
 
 RUN npm config set fetch-retries 5 && \
     npm config set fetch-retry-mintimeout 20000 && \
-    npm config set fetch-retry-maxtimeout 120000 && \
-    npm config set maxsockets 1 && \
-    npm config set fetch-timeout 300000
+    npm config set fetch-retry-maxtimeout 120000
 
 COPY package.json package-lock.json ./
-
-RUN --mount=type=cache,target=/root/.npm npm ci
+RUN npm ci
 
 COPY . .
 
