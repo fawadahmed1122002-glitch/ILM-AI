@@ -6,6 +6,7 @@ export interface AuthUser {
   full_name: string;
   plan: string;
   access_token: string;
+  email: string;
 }
 
 export const authStorage = {

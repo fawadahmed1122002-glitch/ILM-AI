@@ -25,4 +25,6 @@ class McqBank(Base):
     difficulty: Mapped[str] = mapped_column(String(10), nullable=False, server_default="medium")
     source_chunk_id: Mapped[str | None] = mapped_column(nullable=True)
     is_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("false"))
+    rejected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    reject_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))

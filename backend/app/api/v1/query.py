@@ -1,24 +1,25 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.api.deps import get_current_user
+from app.core.rate_limit import limiter
 from app.models.user import User
-from app.schemas.query import ExplainRequest, ExplainResponse
 from app.services.query_service import QueryService
 from app.services.tier_gate import check_explain_limit, check_mcq_limit
-from app.schemas.query import ExplainRequest, ExplainResponse, McqRequest, McqResponse
-
-router = APIRouter(prefix="/query", tags=["query"])
-
 from app.schemas.query import (
     ExplainRequest, ExplainResponse,
     McqRequest, McqResponse,
     McqSubmitRequest, McqSubmitResponse
 )
 
+router = APIRouter(prefix="/query", tags=["query"])
+
+
 @router.post("/mcq/submit", response_model=McqSubmitResponse)
+@limiter.limit("20/minute")
 def submit_mcqs(
+    request: Request,
     payload: McqSubmitRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -48,8 +49,12 @@ def get_weak_topics(
 ):
     progress = QueryService.get_progress(user=current_user, db=db)
     return {"weak_topics": progress["weak_topics"]}
+
+
 @router.post("/explain", response_model=ExplainResponse)
+@limiter.limit("20/minute")
 def explain(
+    request: Request,
     payload: ExplainRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -62,8 +67,12 @@ def explain(
         db=db
     )
     return ExplainResponse(**result)
+
+
 @router.post("/mcqs", response_model=McqResponse)
+@limiter.limit("20/minute")
 def get_mcqs(
+    request: Request,
     payload: McqRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -76,6 +85,7 @@ def get_mcqs(
         db=db
     )
     return McqResponse(**result)
+
 
 @router.get("/usage/me")
 def get_usage(

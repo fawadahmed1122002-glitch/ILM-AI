@@ -1,4 +1,5 @@
 from pydantic import BaseModel, field_validator
+from app.core.sanitize import sanitize_text, contains_injection_attempt
 
 
 VALID_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
@@ -18,11 +19,13 @@ class ExplainRequest(BaseModel):
     @field_validator("query")
     @classmethod
     def query_must_not_be_empty(cls, v):
-        v = v.strip()
+        v = sanitize_text(v)
         if not v:
             raise ValueError("Query cannot be empty")
         if len(v) > 500:
             raise ValueError("Query must be under 500 characters")
+        if contains_injection_attempt(v):
+            raise ValueError("Query contains disallowed content. Please rephrase your question.")
         return v
 
 
@@ -63,11 +66,13 @@ class McqRequest(BaseModel):
     @field_validator("topic")
     @classmethod
     def topic_must_not_be_empty(cls, v):
-        v = v.strip()
+        v = sanitize_text(v)
         if not v:
             raise ValueError("Topic cannot be empty")
         if len(v) > 500:
             raise ValueError("Topic must be under 500 characters")
+        if contains_injection_attempt(v):
+            raise ValueError("Topic contains disallowed content. Please rephrase your question.")
         return v
 
 class McqResponse(BaseModel):
