@@ -1,5 +1,5 @@
 """
-ILMAI Tier Gate Service
+PrepXMentor Tier Gate Service
 Enforces free tier limits: 3 explanations/day, 5 MCQ sessions/day.
 Pro users have unlimited access.
 """

@@ -1,5 +1,5 @@
 """
-Input sanitization for ILMAI.
+Input sanitization for PrepXMentor.
 - sanitize_text: strips HTML tags, control characters, collapses whitespace.
 - contains_injection_attempt: heuristic detection of common prompt-injection
   phrasing. This is a first defensive layer, not a substitute for treating

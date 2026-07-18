@@ -1,5 +1,5 @@
 """
-ILMAI Response Cache Service (Task 8)
+PrepXMentor Response Cache Service (Task 8)
 Hashes query+subject, checks cache before calling LLM, caches on miss.
 Target: ~40% reduction in repeat-query API costs (per Master Doc 1.6).
 """

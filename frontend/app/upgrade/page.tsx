@@ -21,7 +21,7 @@ export default function UpgradePage() {
   if (loading || !user) return null;
 
   const whatsappMessage = encodeURIComponent(
-    `Assalamu Alaikum, I want to upgrade my ILMAI account to Pro. My email is: ${user.email}`
+    `Assalamu Alaikum, I want to upgrade my PrepXMentor account to Pro. My email is: ${user.email}`
   );
 
   return (
@@ -121,7 +121,7 @@ export default function UpgradePage() {
               0300-1234567
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-              JazzCash or EasyPaisa — account name: ILMAI
+              JazzCash or EasyPaisa — account name: PrepXMentor
             </p>
           </div>
         </div>

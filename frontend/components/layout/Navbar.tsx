@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -26,9 +27,10 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
 
         {/* Logo */}
-        <Link href={user ? "/dashboard" : "/"} className="no-underline" onClick={() => setMenuOpen(false)}>
-          <span className="font-display text-[22px] font-bold text-teal-700 dark:text-teal-400 tracking-tight">
-            ILMAI
+        <Link href={user ? "/dashboard" : "/"} className="no-underline flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+          <Image src="/pxm-logo.png" alt="PrepXMentor" width={32} height={32} className="w-8 h-8" priority />
+          <span className="font-display text-[20px] sm:text-[22px] font-bold text-teal-700 dark:text-teal-400 tracking-tight">
+            PrepXMentor
           </span>
         </Link>
 

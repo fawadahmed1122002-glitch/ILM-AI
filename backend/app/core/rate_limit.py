@@ -1,5 +1,5 @@
 """
-Rate limiting configuration for ILMAI.
+Rate limiting configuration for PrepXMentor.
 Keys by authenticated user ID (not IP) since students in Pakistan
 frequently share IPs behind campus/mobile-carrier NAT — IP-based
 limiting would incorrectly throttle unrelated users on the same network.

@@ -1,5 +1,5 @@
 """
-ILMAI LLM Client — Groq wrapper
+PrepXMentor LLM Client — Groq wrapper
 Shared by: explanation generation, MCQ generation, Roman Urdu query normalization.
 """
 

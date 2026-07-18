@@ -1,5 +1,5 @@
 """
-ILMAI RAG Retrieval Function
+PrepXMentor RAG Retrieval Function
 Normalizes query (Roman Urdu -> English), embeds it, and retrieves
 top-5 relevant chunks from ChromaDB.
 """

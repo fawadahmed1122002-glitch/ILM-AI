@@ -1,5 +1,5 @@
 """
-ILMAI Quality Baseline Test (Task 7)
+PrepXMentor Quality Baseline Test (Task 7)
 Runs 20 queries across all 5 subjects, generates explanation + MCQs for each.
 Output is meant for MANUAL scoring (1-5) by founder — this script doesn't
 auto-score, since explanation/MCQ quality is a human judgment call.
