@@ -12,11 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "king-edward",
     "allama-iqbal",
     "fatima-jinnah",
-    "pu",
-    "gcu",
-    "umt",
-    "ucp",
-    "giki",
     "uvas",
   ];
 
