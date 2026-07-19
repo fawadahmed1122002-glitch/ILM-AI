@@ -129,6 +129,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
