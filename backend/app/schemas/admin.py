@@ -38,3 +38,27 @@ class PendingMcqResponse(BaseModel):
 
 class McqRejectRequest(BaseModel):
     reason: str
+
+
+class AdminPlanChangeRequest(BaseModel):
+    plan: str  # "free" or "pro"
+    method: str  # "jazzcash", "easypaisa", "manual"
+    amount: float
+    transaction_ref: Optional[str] = None
+
+
+class PaymentRecordResponse(BaseModel):
+    id: uuid.UUID
+    user_id: uuid.UUID
+    amount: float
+    currency: str
+    method: str
+    status: str
+    transaction_ref: Optional[str] = None
+    plan: Optional[str] = None
+    valid_from: Optional[datetime] = None
+    valid_until: Optional[datetime] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
