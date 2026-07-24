@@ -1,15 +1,17 @@
 // frontend/app/api/payment/webhook/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { Safepay } from "@sfpy/node-sdk";
+  import { Safepay } from "@sfpy/node-sdk";
++ import { PRO_PRICE_PKR, getSafepayEnvironment } from "@/lib/payment";
 
-export async function POST(req: NextRequest) {
-  const safepay = new Safepay({
-    environment: process.env.SAFEPAY_ENVIRONMENT || "sandbox",
-    apiKey: process.env.SAFEPAY_PUBLIC_KEY!,
-    v1Secret: process.env.SAFEPAY_SECRET_KEY!,
-    webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET!,
-  });
+  export async function POST(req: NextRequest) {
+    const safepay = new Safepay({
+      environment: process.env.SAFEPAY_ENVIRONMENT || "sandbox",
+      environment: getSafepayEnvironment(),
+      apiKey: process.env.SAFEPAY_PUBLIC_KEY!,
+      v1Secret: process.env.SAFEPAY_SECRET_KEY!,
+      webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET!,
+    });
 
   let event;
   try {
