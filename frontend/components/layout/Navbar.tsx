@@ -48,6 +48,10 @@ export default function Navbar() {
             className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-700 dark:hover:text-teal-400 transition-colors no-underline whitespace-nowrap">
             Blog
           </Link>
+          <Link href="/contact"
+            className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-700 dark:hover:text-teal-400 transition-colors no-underline whitespace-nowrap">
+            Contact us
+          </Link>
         </div>
 
         {/* Desktop right side */}
@@ -143,6 +147,10 @@ export default function Navbar() {
           <Link href="/blog" onClick={() => setMenuOpen(false)}
             className="block text-sm font-medium text-slate-600 dark:text-slate-300 py-2 no-underline">
             Blog
+          </Link>
+          <Link href="/contact" onClick={() => setMenuOpen(false)}
+            className="block text-sm font-medium text-slate-600 dark:text-slate-300 py-2 no-underline">
+            Contact us
           </Link>
 
           <div className="border-t border-slate-100 dark:border-slate-800 pt-3">

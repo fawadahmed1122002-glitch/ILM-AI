@@ -1,19 +1,8 @@
 import { MetadataRoute } from "next";
+import { UNIVERSITIES } from "./universities/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://prepxmentor.up.railway.app";
-
-  // University slugs — must match your data
-  const universitySlugs = [
-    "uet",
-    "nust",
-    "fast",
-    "mdcat",
-    "king-edward",
-    "allama-iqbal",
-    "fatima-jinnah",
-    "uvas",
-  ];
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -43,15 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // University pages
-  const universityPages: MetadataRoute.Sitemap = universitySlugs.map(
-    (slug) => ({
-      url: `${baseUrl}/universities/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })
-  );
+  // University pages — sourced directly from data.ts, so this list can
+  // never drift out of sync with what actually exists as a page again.
+  const universityPages: MetadataRoute.Sitemap = UNIVERSITIES.map((u) => ({
+    url: `${baseUrl}/universities/${u.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
 
   return [...staticPages, ...universityPages];
 }

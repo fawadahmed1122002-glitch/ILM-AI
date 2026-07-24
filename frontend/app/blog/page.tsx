@@ -1,31 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BLOG_POSTS } from "./data";
+import { getAllPosts, paginate } from "@/lib/blog/repository";
+import { SITE_URL, SITE_NAME } from "@/lib/blog/seo";
+import { CategoryNav } from "./components/CategoryNav";
+import { PostCard } from "./components/PostCard";
+import { Pagination } from "./components/Pagination";
+
+const TITLE = "Blog — Exam Strategy & University Guides | PrepXMentor";
+const DESCRIPTION =
+  "Exam strategy, syllabus breakdowns, and university admission guides for ECAT, MDCAT, NET, and the FAST Entry Test.";
 
 export const metadata: Metadata = {
-  title: "Blog — Exam Strategy & University Guides | PrepXMentor",
-  description:
-    "Exam strategy, syllabus breakdowns, and university admission guides for ECAT, MDCAT, NET, and the FAST Entry Test.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE_URL}/blog` },
+  openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE_URL}/blog`, siteName: SITE_NAME, type: "website" },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
-  "Exam Strategy": { bg: "bg-blue-50 dark:bg-blue-900/20", text: "text-blue-700 dark:text-blue-400" },
-  "University Guides": { bg: "bg-teal-50 dark:bg-teal-900/20", text: "text-teal-700 dark:text-teal-400" },
-};
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-}
-
-export default function BlogPage() {
-  const posts = [...BLOG_POSTS].sort(
-    (a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
-  );
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
+  const { items, currentPage, totalPages } = paginate(getAllPosts(), Number(page) || 1);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 sm:py-16 animate-fade-up">
 
-      <div className="mb-10 text-center">
+      <div className="mb-8 text-center">
         <span className="inline-block text-xs font-semibold uppercase tracking-widest text-teal-600 dark:text-teal-400 mb-3">
           PrepXMentor Blog
         </span>
@@ -37,36 +41,15 @@ export default function BlogPage() {
         </p>
       </div>
 
+      <CategoryNav />
+
       <div className="space-y-5">
-        {posts.map((post) => {
-          const c = CATEGORY_COLORS[post.category] ?? { bg: "bg-slate-100 dark:bg-slate-800", text: "text-slate-600 dark:text-slate-400" };
-          return (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 no-underline hover:border-teal-300 dark:hover:border-teal-700 hover:shadow-md hover:shadow-teal-100 dark:hover:shadow-teal-900/20 transition-all duration-200"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${c.bg} ${c.text}`}>
-                  {post.category}
-                </span>
-                <span className="text-slate-400 dark:text-slate-500 text-xs">
-                  {formatDate(post.publishedDate)} &middot; {post.readingMinutes} min read
-                </span>
-              </div>
-              <h2 className="font-display text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 leading-snug">
-                {post.title}
-              </h2>
-              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-3">
-                {post.excerpt}
-              </p>
-              <span className="text-xs text-teal-600 dark:text-teal-400 font-medium group-hover:underline">
-                Read more &rarr;
-              </span>
-            </Link>
-          );
-        })}
+        {items.map((post) => (
+          <PostCard key={post.slug} post={post} />
+        ))}
       </div>
+
+      <Pagination basePath="/blog" currentPage={currentPage} totalPages={totalPages} />
 
       <div className="mt-14 rounded-2xl bg-gradient-to-br from-teal-600 to-teal-700 dark:from-teal-700 dark:to-teal-800 p-8 text-center">
         <h2 className="font-display text-xl sm:text-2xl font-bold text-white mb-2">

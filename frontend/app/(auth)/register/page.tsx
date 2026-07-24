@@ -7,19 +7,45 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { AuthUser } from "@/lib/auth";
 
+const TEST_OPTIONS = ["ECAT", "MDCAT", "NET", "FAST", "Other"];
+
 export default function RegisterPage() {
   const { login } = useAuth();
   const router = useRouter();
-  const [form, setForm] = useState({ full_name: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    full_name: "",
+    email: "",
+    password: "",
+    phone: "",
+    age: "",
+    interested_tests: [] as string[],
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const toggleTest = (test: string) => {
+    setForm((prev) => ({
+      ...prev,
+      interested_tests: prev.interested_tests.includes(test)
+        ? prev.interested_tests.filter((t) => t !== test)
+        : [...prev.interested_tests, test],
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      const user = await api.post<AuthUser>("/auth/register", form);
+      const payload = {
+        full_name: form.full_name,
+        email: form.email,
+        password: form.password,
+        phone: form.phone || null,
+        age: form.age ? parseInt(form.age, 10) : null,
+        interested_tests: form.interested_tests.length > 0 ? form.interested_tests : null,
+      };
+      const user = await api.post<AuthUser>("/auth/register", payload);
       login(user);
       router.push("/dashboard");
     } catch (err: unknown) {
@@ -29,8 +55,11 @@ export default function RegisterPage() {
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 dark:focus:border-teal-400 transition-colors";
+
   return (
-    <div className="min-h-[calc(100dvh-60px)] flex items-center justify-center px-4 bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-[calc(100dvh-60px)] flex items-center justify-center px-4 bg-slate-50 dark:bg-slate-950 py-8">
       <div className="w-full max-w-[420px] animate-fade-up">
         <div className="text-center mb-8">
           <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight mb-2">
@@ -59,7 +88,7 @@ export default function RegisterPage() {
                 value={form.full_name}
                 onChange={(e) => setForm({ ...form, full_name: e.target.value })}
                 placeholder="Your full name"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 dark:focus:border-teal-400 transition-colors"
+                className={inputClass}
               />
             </div>
 
@@ -73,7 +102,7 @@ export default function RegisterPage() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="you@example.com"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 dark:focus:border-teal-400 transition-colors"
+                className={inputClass}
               />
             </div>
 
@@ -88,8 +117,64 @@ export default function RegisterPage() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Min 6 characters"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 dark:focus:border-teal-400 transition-colors"
+                className={inputClass}
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="03001234567"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  min={13}
+                  max={60}
+                  value={form.age}
+                  onChange={(e) => setForm({ ...form, age: e.target.value })}
+                  placeholder="17"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                Which test(s) are you preparing for?
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {TEST_OPTIONS.map((test) => {
+                  const selected = form.interested_tests.includes(test);
+                  return (
+                    <button
+                      key={test}
+                      type="button"
+                      onClick={() => toggleTest(test)}
+                      className={`text-sm px-4 py-2 rounded-full font-medium transition-all border
+                        ${selected
+                          ? "bg-teal-600 dark:bg-teal-500 text-white border-teal-600 dark:border-teal-500"
+                          : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700"
+                        }`}
+                      aria-pressed={selected}
+                    >
+                      {test}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <button

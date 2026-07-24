@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.auth import router as auth_router
 from app.api.v1.query import router as query_router
 from app.api.v1.admin import router as admin_router
+from app.api.v1.internal import router as internal_router
 
 app = FastAPI(title="PrepXMentor API", version="0.1.0")
 app.state.limiter = limiter
@@ -16,7 +17,7 @@ app.add_middleware(SlowAPIMiddleware)
 # CORS — allow frontend dev server
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000","https://prepxmentor.up.railway.app", "https://prepxmentor-frontend-production.up.railway.app"],
+    allow_origins=["http://localhost:3001","https://prepxmentor.up.railway.app", "https://prepxmentor-frontend-production.up.railway.app","https://flatbed-flatworm-starved.ngrok-free.dev"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -27,6 +28,7 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api/v1")
 app.include_router(query_router, prefix="/api/v1")
 app.include_router(admin_router, prefix="/api/v1")
+app.include_router(internal_router, prefix="/api/v1")
 
 
 @app.get("/health")

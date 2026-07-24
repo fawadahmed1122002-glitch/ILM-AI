@@ -19,12 +19,15 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         email=payload.email,
         password_hash=hash_password(payload.password),
         phone=payload.phone,
+        age=payload.age,
+        interested_tests=payload.interested_tests,
     )
     token = create_access_token(str(user.id))
     return TokenResponse(
         access_token=token,
         user_id=str(user.id),
         full_name=user.full_name,
+        email=user.email,
         plan=user.plan,
     )
 
@@ -42,6 +45,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         access_token=token,
         user_id=str(user.id),
         full_name=user.full_name,
+        email=user.email,
         plan=user.plan,
     )
 

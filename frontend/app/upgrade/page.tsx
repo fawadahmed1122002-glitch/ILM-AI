@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const JAZZCASH_LINK = "https://payment.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform";
@@ -12,11 +12,37 @@ const WHATSAPP_NUMBER = "923001234567";
 export default function UpgradePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+
+  const paymentStatus = searchParams.get("status");
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
     if (!loading && user?.plan === "pro") router.push("/dashboard");
   }, [user, loading, router]);
+
+  const handleOnlinePayment = async () => {
+    if (!user) return;
+    setCheckoutError("");
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch("/api/payment/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.user_id, email: user.email }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.checkoutUrl) {
+        throw new Error(data.error || "Failed to start checkout");
+      }
+      window.location.href = data.checkoutUrl;
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : "Failed to start checkout");
+      setCheckoutLoading(false);
+    }
+  };
 
   if (loading || !user) return null;
 
@@ -40,6 +66,17 @@ export default function UpgradePage() {
             PKR 799/month — less than a single academy session
           </p>
         </div>
+
+        {paymentStatus === "cancelled" && (
+          <div className="mb-6 px-4 py-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-amber-700 dark:text-amber-400 text-sm text-center">
+            Payment was cancelled. No charge was made — try again below, or use manual payment.
+          </div>
+        )}
+        {paymentStatus === "success" && (
+          <div className="mb-6 px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-400 text-sm text-center">
+            Payment received! Your account will upgrade automatically within a minute — refresh if it hasn't updated yet.
+          </div>
+        )}
 
         {/* Plan comparison */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -95,10 +132,34 @@ export default function UpgradePage() {
           </div>
         </div>
 
-        {/* Payment instructions */}
+        {/* Online payment — primary path */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 mb-6">
+          <h2 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
+            Pay online — instant activation
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            Pay securely with JazzCash, EasyPaisa, or card via Safepay. Your account upgrades automatically, no waiting.
+          </p>
+
+          {checkoutError && (
+            <div className="mb-4 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm">
+              {checkoutError}
+            </div>
+          )}
+
+          <button
+            onClick={handleOnlinePayment}
+            disabled={checkoutLoading}
+            className="w-full py-3 px-4 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/20"
+          >
+            {checkoutLoading ? "Redirecting to secure checkout..." : "Pay PKR 799 Online"}
+          </button>
+        </div>
+
+        {/* Manual payment — fallback */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 mb-6">
           <h2 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
-            How to upgrade
+            Or pay manually
           </h2>
           <ol className="space-y-3">
             {[

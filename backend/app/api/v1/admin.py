@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.orm import Session
-
+from sqlalchemy import func
 from app.db.session import get_db
 from app.api.deps import get_current_admin
 from app.core.config import DATA_DIR
@@ -17,6 +17,7 @@ from app.schemas.admin import (
     AdminPlanChangeRequest, PaymentRecordResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf
+from app.services.payment_service import grant_pro_plan, ALLOWED_METHODS
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -156,55 +157,41 @@ def change_user_plan(
     admin: User = Depends(get_current_admin),
 ):
     """
-    Manually flip a user's plan between free/pro after confirming payment
-    (e.g. via WhatsApp screenshot + JazzCash/EasyPaisa). Writes an audit
-    entry to the payments table recording who was granted what, by whom,
-    and on what basis -- every change is traceable even though the payment
-    itself was confirmed manually outside the system.
+    Manually flip a user's plan after confirming payment outside the system
+    (e.g. WhatsApp screenshot). Delegates to the shared grant_pro_plan()
+    service, the same function the Safepay webhook uses.
     """
     if payload.plan not in ALLOWED_PLANS:
         raise HTTPException(
             status_code=400,
             detail={"code": "INVALID_PLAN", "message": f"Plan must be one of: {', '.join(ALLOWED_PLANS)}"},
         )
-    if payload.method not in ALLOWED_METHODS:
-        raise HTTPException(
-            status_code=400,
-            detail={"code": "INVALID_METHOD", "message": f"Method must be one of: {', '.join(ALLOWED_METHODS)}"},
+    if payload.plan != "pro":
+        # Downgrade path -- keep the old direct logic for this, since
+        # grant_pro_plan only handles the upgrade case
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail={"code": "USER_NOT_FOUND", "message": "User not found."})
+        user.plan = payload.plan
+        db.commit()
+        return PaymentRecordResponse(
+            id=uuid.uuid4(), user_id=user_id, amount=0, currency="PKR",
+            method=payload.method, status="completed", transaction_ref=payload.transaction_ref,
+            plan=payload.plan, valid_from=datetime.now(timezone.utc), valid_until=None,
         )
-    if payload.amount < 0:
-        raise HTTPException(
-            status_code=400,
-            detail={"code": "INVALID_AMOUNT", "message": "Amount cannot be negative."},
+
+    try:
+        payment = grant_pro_plan(
+            db=db,
+            user_id=user_id,
+            amount=payload.amount,
+            method=payload.method,
+            transaction_ref=payload.transaction_ref,
         )
-
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail={"code": "USER_NOT_FOUND", "message": "User not found."})
-
-    previous_plan = user.plan
-    user.plan = payload.plan
-
-    now = datetime.now(timezone.utc)
-    valid_until = now + timedelta(days=PRO_PLAN_DURATION_DAYS) if payload.plan == "pro" else None
-
-    payment = Payment(
-        user_id=user.id,
-        amount=payload.amount,
-        currency="PKR",
-        method=payload.method,
-        status="completed",
-        transaction_ref=payload.transaction_ref,
-        plan=payload.plan,
-        valid_from=now,
-        valid_until=valid_until,
-    )
-    db.add(payment)
-    db.commit()
-    db.refresh(payment)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail={"code": "GRANT_FAILED", "message": str(e)})
 
     return payment
-
 
 @router.get("/payments", response_model=list[PaymentRecordResponse])
 def list_payment_audit_log(
@@ -218,3 +205,43 @@ def list_payment_audit_log(
     if user_id:
         query = query.filter(Payment.user_id == user_id)
     return query.order_by(Payment.created_at.desc()).limit(min(limit, 200)).all()
+
+@router.get("/mcq-coverage")
+def get_mcq_coverage(
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Approved (is_verified=True) MCQ counts per subject/difficulty.
+    Used to check diagnostic-pool readiness before the onboarding
+    diagnostic flow ships -- each subject needs enough verified
+    questions to fill a 5-8 question diagnostic without repeats.
+    """
+    results = (
+        db.query(
+            McqBank.subject,
+            McqBank.difficulty,
+            func.count(McqBank.id).label("count"),
+        )
+        .filter(McqBank.is_verified == True, McqBank.rejected_at.is_(None))
+        .group_by(McqBank.subject, McqBank.difficulty)
+        .all()
+    )
+
+    coverage: dict[str, dict] = {}
+    for subject in ALLOWED_SUBJECTS:
+        coverage[subject] = {"easy": 0, "medium": 0, "hard": 0, "total": 0}
+
+    for subject, difficulty, count in results:
+        coverage.setdefault(subject, {"easy": 0, "medium": 0, "hard": 0, "total": 0})
+        coverage[subject][difficulty] = count
+        coverage[subject]["total"] += count
+
+    DIAGNOSTIC_MINIMUM = 8
+    below_minimum = [s for s, d in coverage.items() if d["total"] < DIAGNOSTIC_MINIMUM]
+
+    return {
+        "coverage": coverage,
+        "diagnostic_ready": len(below_minimum) == 0,
+        "subjects_below_minimum": below_minimum,
+    }

@@ -2,47 +2,23 @@
 
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { UNIVERSITIES } from "./data";
+import { UNIVERSITIES, CATEGORIES, CATEGORY_COUNTS, categoryToSlug } from "./data";
+import UniversityCard from "./UniversityCard";
 
 // NOTE ON DATA CONFIDENCE:
 // Merit formulas below were verified via web research (multiple independent
 // sources, official pages where possible) as of Jul 2026. Confidence level
-// noted per entry. Operational stats (question count, duration, seats,
-// negative marking) were NOT independently verified and should be confirmed
-// against each university's official prospectus before being relied on.
+// noted per entry. 5 entries (Punjab University, UCP, UMT, Bahria, Air
+// University) are marked "low" confidence and have no verified formula --
+// see data.ts for details on the specific conflicts found. Operational
+// stats (question count, duration, seats, negative marking) were NOT
+// independently verified except where noted.
 
-const CATEGORIES = [
-  { key: "all",         label: "All Universities" },
-  { key: "Engineering", label: "Engineering" },
-  { key: "Medical",     label: "Medical" },
-  { key: "Computing",   label: "Computing" },
-  { key: "Veterinary",  label: "Veterinary" },
-];
-
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  Engineering: { bg: "bg-blue-50 dark:bg-blue-900/20",   text: "text-blue-700 dark:text-blue-400",   dot: "bg-blue-500" },
-  Medical:     { bg: "bg-rose-50 dark:bg-rose-900/20",   text: "text-rose-700 dark:text-rose-400",   dot: "bg-rose-500" },
-  Computing:   { bg: "bg-teal-50 dark:bg-teal-900/20",   text: "text-teal-700 dark:text-teal-400",   dot: "bg-teal-500" },
-  Veterinary:  { bg: "bg-green-50 dark:bg-green-900/20", text: "text-green-700 dark:text-green-400", dot: "bg-green-500" },
-};
-
-function CategoryBadge({ category }: { category: string }) {
-  const c = CATEGORY_COLORS[category] ?? { bg: "bg-slate-100 dark:bg-slate-800", text: "text-slate-600 dark:text-slate-400", dot: "bg-slate-400" };
-  return (
-    <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${c.bg} ${c.text}`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${c.dot}`} />
-      {category}
-    </span>
-  );
-}
-
-function TestBadge({ test }: { test: string }) {
-  return (
-    <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
-      {test}
-    </span>
-  );
-}
+// Category filtering now happens via real links to /universities/category/[slug]
+// (see data.ts + category/[category]/page.tsx) instead of only a client-side
+// toggle -- each category gets its own indexable, bookmarkable URL with its
+// own metadata and JSON-LD. This page stays the "all universities" view with
+// client-side search as a progressive-enhancement layer on top.
 
 function StatChip({ label, value }: { label: string; value: string }) {
   return (
@@ -53,50 +29,23 @@ function StatChip({ label, value }: { label: string; value: string }) {
   );
 }
 
-function MeritFormulaBox({ formula, confidence }: { formula: string | null; confidence: string }) {
-  if (!formula) {
-    return (
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl px-3 py-2 mb-4">
-        <span className="text-[10px] uppercase tracking-wide text-amber-600 dark:text-amber-400 font-semibold">Merit formula</span>
-        <p className="text-amber-700 dark:text-amber-400 text-xs font-medium mt-0.5 leading-snug">
-          Not yet verified — confirm on the official university website
-        </p>
-      </div>
-    );
-  }
-  return (
-    <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xl px-3 py-2 mb-4">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wide text-slate-400 dark:text-slate-500">Merit formula</span>
-        {confidence === "low" && (
-          <span className="text-[9px] uppercase tracking-wide text-amber-600 dark:text-amber-400 font-semibold">Unconfirmed</span>
-        )}
-      </div>
-      <p className="text-slate-700 dark:text-slate-300 text-xs font-medium mt-0.5 leading-snug">
-        {formula}
-      </p>
-    </div>
-  );
-}
-
 export default function UniversitiesClient() {
-  const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return UNIVERSITIES;
     return UNIVERSITIES.filter((u) => {
-      const matchCategory = activeCategory === "all" || u.category === activeCategory;
-      const q = search.toLowerCase();
-      const matchSearch =
-        !q ||
+      return (
         u.name.toLowerCase().includes(q) ||
         u.fullName.toLowerCase().includes(q) ||
         u.test.toLowerCase().includes(q) ||
         u.city.toLowerCase().includes(q) ||
-        u.subjects.some((s) => s.toLowerCase().includes(q));
-      return matchCategory && matchSearch;
+        u.campuses.some((c) => c.toLowerCase().includes(q)) ||
+        u.subjects.some((s) => s.toLowerCase().includes(q))
+      );
     });
-  }, [activeCategory, search]);
+  }, [search]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 sm:py-16 animate-fade-up">
@@ -122,14 +71,10 @@ export default function UniversitiesClient() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-        {[
-          { label: "Universities", value: `${UNIVERSITIES.length}` },
-          { label: "Engineering",  value: `${UNIVERSITIES.filter(u => u.category === "Engineering").length}` },
-          { label: "Medical",      value: `${UNIVERSITIES.filter(u => u.category === "Medical").length}` },
-          { label: "Computing",    value: `${UNIVERSITIES.filter(u => u.category === "Computing").length}` },
-        ].map((s) => (
-          <StatChip key={s.label} {...s} />
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-10">
+        <StatChip label="Universities" value={`${UNIVERSITIES.length}`} />
+        {CATEGORIES.map((c) => (
+          <StatChip key={c} label={c} value={`${CATEGORY_COUNTS[c]}`} />
         ))}
       </div>
 
@@ -161,25 +106,22 @@ export default function UniversitiesClient() {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-8" role="group" aria-label="Filter by category">
+      {/* Category pills now navigate to real, indexable category pages
+          instead of only toggling client state. */}
+      <div className="flex flex-wrap gap-2 mb-8" role="group" aria-label="Browse by category">
+        <span className="text-sm px-4 py-2 rounded-full font-medium bg-teal-600 dark:bg-teal-500 text-white border border-teal-600 dark:border-teal-500">
+          All Universities
+          <span className="ml-1.5 text-xs opacity-60">{UNIVERSITIES.length}</span>
+        </span>
         {CATEGORIES.map((c) => (
-          <button
-            key={c.key}
-            onClick={() => setActiveCategory(c.key)}
-            className={`text-sm px-4 py-2 rounded-full font-medium transition-all border
-              ${activeCategory === c.key
-                ? "bg-teal-600 dark:bg-teal-500 text-white border-teal-600 dark:border-teal-500"
-                : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700"
-              }`}
-            aria-pressed={activeCategory === c.key}
+          <Link
+            key={c}
+            href={`/universities/category/${categoryToSlug(c)}`}
+            className="text-sm px-4 py-2 rounded-full font-medium transition-all border bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700 no-underline"
           >
-            {c.label}
-            {c.key !== "all" && (
-              <span className="ml-1.5 text-xs opacity-60">
-                {UNIVERSITIES.filter(u => u.category === c.key).length}
-              </span>
-            )}
-          </button>
+            {c}
+            <span className="ml-1.5 text-xs opacity-60">{CATEGORY_COUNTS[c]}</span>
+          </Link>
         ))}
       </div>
 
@@ -194,86 +136,19 @@ export default function UniversitiesClient() {
       {filtered.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-slate-400 dark:text-slate-500 text-base">
-            No universities found. Try a different search or category.
+            No universities found. Try a different search.
           </p>
           <button
-            onClick={() => { setSearch(""); setActiveCategory("all"); }}
+            onClick={() => setSearch("")}
             className="mt-4 text-teal-600 dark:text-teal-400 text-sm font-medium hover:underline"
           >
-            Clear filters
+            Clear search
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((u) => (
-            <Link
-              key={u.slug}
-              href={`/universities/${u.slug}`}
-              className="group block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 no-underline hover:border-teal-300 dark:hover:border-teal-700 hover:shadow-md hover:shadow-teal-100 dark:hover:shadow-teal-900/20 transition-all duration-200"
-            >
-              <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="min-w-0">
-                  <h2 className="font-display text-base font-bold text-slate-900 dark:text-slate-100 truncate group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
-                    {u.name}
-                  </h2>
-                  <p className="text-slate-400 dark:text-slate-500 text-xs mt-0.5 truncate">
-                    {u.city}
-                  </p>
-                </div>
-                <TestBadge test={u.test} />
-              </div>
-
-              <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 line-clamp-2">
-                {u.fullName}
-              </p>
-
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                <StatChip label="Questions" value={String(u.totalQuestions)} />
-                <StatChip label="Duration"  value={u.duration} />
-                <StatChip label="Min Agg."  value={u.minAggregate} />
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {u.subjects.slice(0, 4).map((s) => (
-                  <span
-                    key={s}
-                    className="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
-                  >
-                    {s}
-                  </span>
-                ))}
-                {u.subjects.length > 4 && (
-                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500">
-                    +{u.subjects.length - 4}
-                  </span>
-                )}
-              </div>
-
-              <MeritFormulaBox formula={u.meritFormula} confidence={u.formulaConfidence} />
-
-              <div className="flex items-center justify-between">
-                <CategoryBadge category={u.category} />
-                <div className="flex items-center gap-1.5">
-                  {u.negativeMarking && (
-                    <span className="text-[10px] text-rose-500 dark:text-rose-400 font-medium bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-full">
-                      −ve marking
-                    </span>
-                  )}
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                    {u.testType}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-slate-400 dark:text-slate-500">
-                  {u.seats} seats
-                </span>
-                <span className="text-xs text-teal-600 dark:text-teal-400 font-medium group-hover:underline">
-                  View full guide →
-                </span>
-              </div>
-            </Link>
+            <UniversityCard key={u.slug} uni={u} />
           ))}
         </div>
       )}

@@ -15,6 +15,17 @@ export class ApiError extends Error {
   }
 }
 
+// FastAPI/Pydantic validation error item shape: { loc: (string|number)[], msg: string, type: string }
+interface PydanticErrorItem {
+  loc?: (string | number)[];
+  msg?: string;
+  type?: string;
+}
+
+function isPydanticErrorArray(detail: unknown): detail is PydanticErrorItem[] {
+  return Array.isArray(detail) && detail.length > 0 && typeof detail[0] === "object" && detail[0] !== null && "msg" in detail[0];
+}
+
 async function request<T>(
   method: HttpMethod,
   path: string,
@@ -35,8 +46,21 @@ async function request<T>(
   const data = await res.json();
 
   if (!res.ok) {
-    // Handle structured error detail (e.g. tier gate returns {code, message, ...})
     const detail = data.detail;
+
+    // FastAPI/Pydantic 422 validation errors: detail is an array of {loc, msg, type}
+    if (isPydanticErrorArray(detail)) {
+      // Strip Pydantic's "Value error, " prefix that field_validator ValueErrors get wrapped with
+      const messages = detail.map((d) => (d.msg ?? "Invalid input").replace(/^Value error,\s*/, ""));
+      throw new ApiError(
+        messages.join(" "),
+        res.status,
+        "VALIDATION_ERROR",
+        detail
+      );
+    }
+
+    // Handle structured error detail (e.g. tier gate returns {code, message, ...})
     if (detail && typeof detail === "object" && "code" in detail) {
       throw new ApiError(
         (detail as {message: string}).message || "Request failed",
@@ -45,6 +69,7 @@ async function request<T>(
         detail
       );
     }
+
     // Handle simple string detail
     throw new ApiError(
       typeof detail === "string" ? detail : "Request failed",
