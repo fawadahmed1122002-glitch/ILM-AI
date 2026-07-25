@@ -1,19 +1,16 @@
-// frontend/lib/payment.ts
+import type { SafepayEnvironment } from "@sfpy/node-sdk/dist/types/safepay";
 
 export const PRO_PRICE_PKR = 799;
 
-// Matches the exact set of values Safepay's SDK validates against
-// internally (see dist/utils/validation.js: validateEnvironment).
-export type SafepayEnvironment = "sandbox" | "production" | "development";
+export type { SafepayEnvironment };
 
 const VALID_ENVIRONMENTS: SafepayEnvironment[] = ["sandbox", "production", "development"];
 
 /**
  * Reads SAFEPAY_ENVIRONMENT from process.env and validates it against the
- * exact literal union the Safepay SDK expects, rather than trusting a plain
- * string. Throws loudly at startup if misconfigured, instead of letting an
- * invalid environment silently reach the SDK constructor (which would throw
- * its own less-clear "Environment is invalid" error deep inside a request).
+ * SDK's own SafepayEnvironment type (imported directly, not redeclared),
+ * so this can never silently drift out of sync with what the SDK actually
+ * accepts.
  */
 export function getSafepayEnvironment(): SafepayEnvironment {
   const raw = process.env.SAFEPAY_ENVIRONMENT || "sandbox";
