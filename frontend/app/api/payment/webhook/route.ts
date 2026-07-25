@@ -10,31 +10,51 @@ export async function POST(req: NextRequest) {
     webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET!,
   });
 
-  let event;
-  try {
-    // Signature verification -- this is what stops anyone from POSTing a
-    // fake "payment succeeded" event directly to this endpoint. Do not
-    // remove or bypass this, even temporarily for testing.
-    event = await safepay.verify.webhook(req);
-  } catch (err) {
-    console.error("Webhook signature verification failed:", err);
+  const body = await req.json();
+
+  // TEMPORARY DEBUG LOG -- the real shape of body.data is unconfirmed.
+  // verify.js only ever hashes body.data as a black box, it never reads
+  // fields inside it. This log tells us, once, what a real webhook payload
+  // actually contains, so we can extract orderId/status/amount correctly.
+  console.log("Safepay webhook raw body:", JSON.stringify(body, null, 2));
+
+  // Convert NextRequest's Fetch-API Headers into the plain lowercase-keyed
+  // object shape the SDK's HttpRequest type expects (Node's IncomingHttpHeaders).
+  const headers: Record<string, string> = {};
+  req.headers.forEach((value, key) => {
+    headers[key] = value;
+  });
+
+  // NOTE: verify.webhook() is SYNCHRONOUS and returns a boolean -- confirmed
+  // from source (dist/resources/verify.js). No await, no event object.
+  const isValid = safepay.verify.webhook({ body, headers });
+
+  if (!isValid) {
+    console.error("Webhook signature verification failed for body:", JSON.stringify(body));
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  // NOTE: exact event shape/status field names NOT confirmed against real
-  // Safepay webhook payloads -- verify against sandbox test events before
-  // trusting this condition in production.
-  if (event.type !== "payment.success" && event.status !== "PAID") {
-    return NextResponse.json({ received: true, ignored: true });
-  }
+  // Signature confirmed valid. Real event data lives in body.data, per
+  // verify.js's own signing logic -- exact field names inside .data are
+  // still unconfirmed until we see the debug log above from a real webhook.
+  const eventData = body.data;
 
-  const orderId: string = event.orderId || event.data?.orderId;
+  // PLACEHOLDER field access -- update once the debug log reveals real names.
+  const orderId: string | undefined = eventData?.orderId || eventData?.order_id;
+  const status: string | undefined = eventData?.status || eventData?.state;
+
   if (!orderId || !orderId.startsWith("pxm_")) {
-    console.error("Webhook missing or malformed orderId:", orderId);
+    console.error("Webhook missing or malformed orderId. Full eventData:", JSON.stringify(eventData));
     return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
   }
 
-  // orderId format: pxm_{userId}_{timestamp}
+  // Only proceed for a genuinely successful/completed payment status.
+  // Exact success-status string is unconfirmed -- update after debug log.
+  const successStatuses = ["PAID", "CAPTURED", "TRACKER_ENDED", "COMPLETED"];
+  if (status && !successStatuses.includes(status)) {
+    return NextResponse.json({ received: true, ignored: true, status });
+  }
+
   const parts = orderId.split("_");
   const userId = parts[1];
 
@@ -47,8 +67,8 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         user_id: userId,
-        amount: event.amount ?? PRO_PRICE_PKR,
-        transaction_ref: event.paymentId || orderId,
+        amount: eventData?.amount ?? PRO_PRICE_PKR,
+        transaction_ref: eventData?.paymentId || eventData?.id || orderId,
       }),
     });
 
