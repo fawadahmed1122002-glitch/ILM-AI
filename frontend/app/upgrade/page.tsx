@@ -2,21 +2,39 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 
 const JAZZCASH_LINK = "https://payment.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform";
 const EASYPAISA_LINK = "https://easypaisa.com.pk";
 const WHATSAPP_NUMBER = "923001234567";
 
+function PaymentStatusBanner() {
+  const searchParams = useSearchParams();
+  const paymentStatus = searchParams.get("status");
+
+  if (paymentStatus === "cancelled") {
+    return (
+      <div className="mb-6 px-4 py-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-amber-700 dark:text-amber-400 text-sm text-center">
+        Payment was cancelled. No charge was made — try again below, or use manual payment.
+      </div>
+    );
+  }
+  if (paymentStatus === "success") {
+    return (
+      <div className="mb-6 px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-400 text-sm text-center">
+        Payment received! Your account will upgrade automatically within a minute — refresh if it hasn't updated yet.
+      </div>
+    );
+  }
+  return null;
+}
+
 export default function UpgradePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
-
-  const paymentStatus = searchParams.get("status");
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -54,7 +72,6 @@ export default function UpgradePage() {
     <div className="min-h-[calc(100dvh-60px)] bg-slate-50 dark:bg-slate-950 px-4 py-8 sm:py-12">
       <div className="max-w-2xl mx-auto animate-fade-up">
 
-        {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
           <div className="inline-block px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4">
             Upgrade to Pro
@@ -67,20 +84,11 @@ export default function UpgradePage() {
           </p>
         </div>
 
-        {paymentStatus === "cancelled" && (
-          <div className="mb-6 px-4 py-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 text-amber-700 dark:text-amber-400 text-sm text-center">
-            Payment was cancelled. No charge was made — try again below, or use manual payment.
-          </div>
-        )}
-        {paymentStatus === "success" && (
-          <div className="mb-6 px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-400 text-sm text-center">
-            Payment received! Your account will upgrade automatically within a minute — refresh if it hasn't updated yet.
-          </div>
-        )}
+        <Suspense fallback={null}>
+          <PaymentStatusBanner />
+        </Suspense>
 
-        {/* Plan comparison */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          {/* Free */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
             <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
               Free
@@ -103,7 +111,6 @@ export default function UpgradePage() {
             </ul>
           </div>
 
-          {/* Pro */}
           <div className="bg-teal-700 dark:bg-teal-800 border border-teal-600 rounded-2xl p-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-bl-xl">
               BEST VALUE
@@ -132,7 +139,6 @@ export default function UpgradePage() {
           </div>
         </div>
 
-        {/* Online payment — primary path */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 mb-6">
           <h2 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
             Pay online — instant activation
@@ -156,7 +162,6 @@ export default function UpgradePage() {
           </button>
         </div>
 
-        {/* Manual payment — fallback */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 mb-6">
           <h2 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
             Or pay manually
@@ -187,7 +192,6 @@ export default function UpgradePage() {
           </div>
         </div>
 
-        {/* CTA buttons */}
         <div className="space-y-3">
           <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 hover:bg-green-500 text-white text-sm font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-500/20">
             Send Payment Confirmation on WhatsApp
