@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Safepay } from "@sfpy/node-sdk";
 import { PRO_PRICE_PKR, getSafepayEnvironment } from "@/lib/payment";
 
+interface PaymentMetadataItem {
+  meta_key: string;
+  meta_value: string;
+}
+
 export async function POST(req: NextRequest) {
   const safepay = new Safepay({
     environment: getSafepayEnvironment(),
@@ -12,21 +17,11 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
-  // TEMPORARY DEBUG LOG -- the real shape of body.data is unconfirmed.
-  // verify.js only ever hashes body.data as a black box, it never reads
-  // fields inside it. This log tells us, once, what a real webhook payload
-  // actually contains, so we can extract orderId/status/amount correctly.
-  console.log("Safepay webhook raw body:", JSON.stringify(body, null, 2));
-
-  // Convert NextRequest's Fetch-API Headers into the plain lowercase-keyed
-  // object shape the SDK's HttpRequest type expects (Node's IncomingHttpHeaders).
   const headers: Record<string, string> = {};
   req.headers.forEach((value, key) => {
     headers[key] = value;
   });
 
-  // NOTE: verify.webhook() is SYNCHRONOUS and returns a boolean -- confirmed
-  // from source (dist/resources/verify.js). No await, no event object.
   const isValid = safepay.verify.webhook({ body, headers });
 
   if (!isValid) {
@@ -34,29 +29,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  // Signature confirmed valid. Real event data lives in body.data, per
-  // verify.js's own signing logic -- exact field names inside .data are
-  // still unconfirmed until we see the debug log above from a real webhook.
-  const eventData = body.data;
-
-  // PLACEHOLDER field access -- update once the debug log reveals real names.
-  const orderId: string | undefined = eventData?.orderId || eventData?.order_id;
-  const status: string | undefined = eventData?.status || eventData?.state;
+  // CONFIRMED real shape from live sandbox delivery (Jul 26, 2026):
+  // flat root object, state: "PAID" on success, order_id buried inside
+  // payment_metadata array (not a top-level field).
+  const state: string | undefined = body.state;
+  const metadata: PaymentMetadataItem[] = body.payment_metadata || [];
+  const orderId = metadata.find((m) => m.meta_key === "order_id")?.meta_value;
 
   if (!orderId || !orderId.startsWith("pxm_")) {
-    console.error("Webhook missing or malformed orderId. Full eventData:", JSON.stringify(eventData));
+    console.error("Webhook missing or malformed order_id in payment_metadata:", JSON.stringify(metadata));
     return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
   }
 
-  // Only proceed for a genuinely successful/completed payment status.
-  // Exact success-status string is unconfirmed -- update after debug log.
-  const successStatuses = ["PAID", "CAPTURED", "TRACKER_ENDED", "COMPLETED"];
-  if (status && !successStatuses.includes(status)) {
-    return NextResponse.json({ received: true, ignored: true, status });
+  // Only PAID is confirmed as a real success state so far. Other states
+  // (failed/cancelled/pending) are unconfirmed -- treat anything else as
+  // "not yet successful" rather than guessing more state names.
+  if (state !== "PAID") {
+    return NextResponse.json({ received: true, ignored: true, state });
   }
 
+  // orderId format: pxm_{userId}_{timestamp}
   const parts = orderId.split("_");
   const userId = parts[1];
+
+  // amount comes through as a string like "799.00" -- parse to a number
+  const amount = body.amount ? parseFloat(body.amount) : PRO_PRICE_PKR;
 
   try {
     const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/v1/internal/grant-pro-plan`, {
@@ -67,8 +64,8 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         user_id: userId,
-        amount: eventData?.amount ?? PRO_PRICE_PKR,
-        transaction_ref: eventData?.paymentId || eventData?.id || orderId,
+        amount,
+        transaction_ref: body.token || body.tracker || orderId,
       }),
     });
 
