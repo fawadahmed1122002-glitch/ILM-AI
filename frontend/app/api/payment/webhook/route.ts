@@ -17,6 +17,9 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
+  console.log("Safepay webhook RAW body (full):", JSON.stringify(body));
+  console.log("Safepay webhook payment_metadata specifically:", JSON.stringify(body.payment_metadata));
+
   const headers: Record<string, string> = {};
   req.headers.forEach((value, key) => {
     headers[key] = value;
@@ -29,9 +32,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  // CONFIRMED real shape from live sandbox delivery (Jul 26, 2026):
-  // flat root object, state: "PAID" on success, order_id buried inside
-  // payment_metadata array (not a top-level field).
   const state: string | undefined = body.state;
   const metadata: PaymentMetadataItem[] = body.payment_metadata || [];
   const orderId = metadata.find((m) => m.meta_key === "order_id")?.meta_value;
@@ -41,18 +41,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
   }
 
-  // Only PAID is confirmed as a real success state so far. Other states
-  // (failed/cancelled/pending) are unconfirmed -- treat anything else as
-  // "not yet successful" rather than guessing more state names.
   if (state !== "PAID") {
     return NextResponse.json({ received: true, ignored: true, state });
   }
 
-  // orderId format: pxm_{userId}_{timestamp}
   const parts = orderId.split("_");
   const userId = parts[1];
 
-  // amount comes through as a string like "799.00" -- parse to a number
   const amount = body.amount ? parseFloat(body.amount) : PRO_PRICE_PKR;
 
   try {
