@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { Safepay } from "@sfpy/node-sdk";
 import { PRO_PRICE_PKR, getSafepayEnvironment } from "@/lib/payment";
 
-interface PaymentMetadataItem {
-  meta_key: string;
-  meta_value: string;
-}
-
 export async function POST(req: NextRequest) {
   const safepay = new Safepay({
     environment: getSafepayEnvironment(),
@@ -16,9 +11,6 @@ export async function POST(req: NextRequest) {
   });
 
   const body = await req.json();
-
-  console.log("Safepay webhook RAW body (full):", JSON.stringify(body));
-  console.log("Safepay webhook payment_metadata specifically:", JSON.stringify(body.payment_metadata));
 
   const headers: Record<string, string> = {};
   req.headers.forEach((value, key) => {
@@ -32,23 +24,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const state: string | undefined = body.state;
-  const metadata: PaymentMetadataItem[] = body.payment_metadata || [];
-  const orderId = metadata.find((m) => m.meta_key === "order_id")?.meta_value;
+  // CONFIRMED real shape from live sandbox delivery (Jul 26, 2026):
+  // body.data.type ("payment:created"), body.data.notification.{state,amount,tracker},
+  // body.data.notification.metadata.order_id (flat field, NOT an array).
+  const notification = body.data?.notification;
+
+  if (!notification) {
+    console.error("Webhook missing body.data.notification. Full body:", JSON.stringify(body));
+    return NextResponse.json({ error: "Malformed webhook payload" }, { status: 400 });
+  }
+
+  const state: string | undefined = notification.state;
+  const orderId: string | undefined = notification.metadata?.order_id;
 
   if (!orderId || !orderId.startsWith("pxm_")) {
-    console.error("Webhook missing or malformed order_id in payment_metadata:", JSON.stringify(metadata));
+    console.error("Webhook missing or malformed order_id:", JSON.stringify(notification.metadata));
     return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
   }
 
+  // Only PAID is confirmed as a real success state so far.
   if (state !== "PAID") {
     return NextResponse.json({ received: true, ignored: true, state });
   }
 
+  // orderId format: pxm_{userId}_{timestamp}
   const parts = orderId.split("_");
   const userId = parts[1];
 
-  const amount = body.amount ? parseFloat(body.amount) : PRO_PRICE_PKR;
+  // amount comes through as a string like "799.00"
+  const amount = notification.amount ? parseFloat(notification.amount) : PRO_PRICE_PKR;
 
   try {
     const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/v1/internal/grant-pro-plan`, {
@@ -60,7 +64,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         user_id: userId,
         amount,
-        transaction_ref: body.token || body.tracker || orderId,
+        transaction_ref: notification.tracker || orderId,
       }),
     });
 
