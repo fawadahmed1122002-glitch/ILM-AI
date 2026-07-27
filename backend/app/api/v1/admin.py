@@ -18,6 +18,7 @@ from app.schemas.admin import (
 )
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, ALLOWED_METHODS
+from sqlalchemy import func
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -27,7 +28,64 @@ ALLOWED_PLANS = ["free", "pro"]
 ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual"]
 PRO_PLAN_DURATION_DAYS = 30
 
+from sqlalchemy import func
 
+@router.get("/revenue")
+def get_revenue_summary(
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Revenue summary from completed payments: totals by method, active Pro
+    subscriber count, estimated MRR, and daily revenue breakdown.
+    """
+    by_method = (
+        db.query(
+            Payment.method,
+            func.count(Payment.id).label("transactions"),
+            func.sum(Payment.amount).label("revenue_pkr"),
+        )
+        .filter(Payment.status == "completed")
+        .group_by(Payment.method)
+        .all()
+    )
+
+    active_pro_users = (
+        db.query(func.count(func.distinct(Payment.user_id)))
+        .filter(Payment.status == "completed", Payment.valid_until > datetime.now(timezone.utc))
+        .scalar()
+    )
+
+    daily = (
+        db.query(
+            func.date(Payment.created_at).label("day"),
+            func.count(Payment.id).label("transactions"),
+            func.sum(Payment.amount).label("revenue_pkr"),
+        )
+        .filter(Payment.status == "completed")
+        .group_by(func.date(Payment.created_at))
+        .order_by(func.date(Payment.created_at).desc())
+        .limit(30)
+        .all()
+    )
+
+    total_revenue = sum(float(m.revenue_pkr) for m in by_method)
+    total_transactions = sum(m.transactions for m in by_method)
+
+    return {
+        "total_revenue_pkr": total_revenue,
+        "total_transactions": total_transactions,
+        "active_pro_users": active_pro_users,
+        "estimated_mrr_pkr": active_pro_users * 799,
+        "by_method": [
+            {"method": m.method, "transactions": m.transactions, "revenue_pkr": float(m.revenue_pkr)}
+            for m in by_method
+        ],
+        "daily_last_30_days": [
+            {"day": str(d.day), "transactions": d.transactions, "revenue_pkr": float(d.revenue_pkr)}
+            for d in daily
+        ],
+    }
 @router.post("/upload-pdf", response_model=DocumentUploadResponse)
 def upload_pdf(
     file: UploadFile = File(...),
