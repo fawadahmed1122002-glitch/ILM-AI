@@ -58,3 +58,8 @@ class TokenResponse(BaseModel):
     email: str
     plan: str
     
+class MeResponse(BaseModel):
+    user_id: str
+    full_name: str
+    email: str
+    plan: str

@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
+from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse, MeResponse
 from app.db.session import get_db
 from app.repositories.user_repo import UserRepository
-from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
+from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
+from app.api.deps import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -50,7 +51,14 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     )
 
 
-@router.get("/me", response_model=TokenResponse)
-def me(db: Session = Depends(get_db)):
-    """Placeholder — protected by get_current_user in next step."""
-    pass
+@router.get("/me", response_model=MeResponse)
+def me(current_user: User = Depends(get_current_user)):
+    """Returns the authenticated user's current state -- used by the
+    frontend to refresh plan/profile info without requiring a full
+    re-login (e.g. after a payment completes and plan flips to pro)."""
+    return MeResponse(
+        user_id=str(current_user.id),
+        full_name=current_user.full_name,
+        email=current_user.email,
+        plan=current_user.plan,
+    )

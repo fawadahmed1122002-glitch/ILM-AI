@@ -1,9 +1,9 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
-import Link from "next/link";
+  import { useRouter, useSearchParams } from "next/navigation";
+  import { useEffect, useState, Suspense } from "react";
+  import Link from "next/link";
 
 const JAZZCASH_LINK = "https://payment.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform";
 const EASYPAISA_LINK = "https://easypaisa.com.pk";
@@ -11,7 +11,38 @@ const WHATSAPP_NUMBER = "923001234567";
 
 function PaymentStatusBanner() {
   const searchParams = useSearchParams();
-  const paymentStatus = searchParams.get("status");
+  const rawStatus = searchParams.get("status");
+  const paymentStatus = rawStatus?.startsWith("success")
+    ? "success"
+    : rawStatus?.startsWith("cancelled")
+    ? "cancelled"
+    : rawStatus;
+  
+  const { refreshUser } = useAuth();
+  const router = useRouter();
+  const [polling, setPolling] = useState(paymentStatus === "success");
+
+  useEffect(() => {
+    if (paymentStatus !== "success") return;
+
+    let attempts = 0;
+    const maxAttempts = 6; // ~30 seconds total, matches typical webhook delivery time
+    const interval = setInterval(async () => {
+      attempts += 1;
+      const updated = await refreshUser();
+      if (updated?.plan === "pro") {
+        clearInterval(interval);
+        setPolling(false);
+        router.push("/dashboard");
+      } else if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        setPolling(false);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentStatus]);
 
   if (paymentStatus === "cancelled") {
     return (
@@ -23,7 +54,9 @@ function PaymentStatusBanner() {
   if (paymentStatus === "success") {
     return (
       <div className="mb-6 px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-400 text-sm text-center">
-        Payment received! Your account will upgrade automatically within a minute — refresh if it hasn't updated yet.
+        {polling
+          ? "Payment received! Activating your Pro account..."
+          : "Payment received! If your account hasn't upgraded yet, please refresh or log out and back in."}
       </div>
     );
   }
