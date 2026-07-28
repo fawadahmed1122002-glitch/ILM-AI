@@ -1,0 +1,115 @@
+{
+  "slug": "mdcat-negative-marking-explained",
+  "title": "MDCAT Negative Marking Explained",
+  "excerpt": "There's no negative marking on MDCAT — but that doesn't mean guessing strategy doesn't matter. Here's what the absence of a penalty actually changes about how you should approach the paper.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-08-05",
+  "readingMinutes": 5,
+  "content": [
+    {
+      "type": "heading",
+      "text": "The short answer: there is no negative marking"
+    },
+    {
+      "type": "paragraph",
+      "text": "MDCAT does not deduct marks for wrong answers. Every question is worth one mark if you get it right, and zero if you get it wrong or leave it blank — there's no penalty that makes a wrong answer worse than an unanswered one. This has been the case for several recent MDCAT cycles, after PMDC removed negative marking from the test."
+    },
+    {
+      "type": "callout",
+      "text": "Policies like this can be revisited, so confirm there's no negative marking for your specific test year on the official PMDC notification before you build your exam-day strategy around it."
+    },
+    {
+      "type": "paragraph",
+      "text": "If you've prepared using resources built around other entry tests — some of which do still penalize wrong answers — it's worth deliberately unlearning that instinct for MDCAT specifically. The two exams reward different behavior at the margins."
+    },
+    {
+      "type": "heading",
+      "text": "Why this changes your exam-day approach"
+    },
+    {
+      "type": "paragraph",
+      "text": "When there's no penalty for a wrong answer, the math on guessing is simple: an educated guess can only help you or leave you where you started — it can never hurt you the way it would on a negatively marked test. That means the single costliest mistake you can make on MDCAT isn't picking a wrong answer. It's leaving a question blank."
+    },
+    {
+      "type": "paragraph",
+      "text": "A blank answer and a wrong answer score exactly the same — zero. But a guess, even an uninformed one, has a real chance of landing on the correct option. Across an entire paper, that adds up. Leaving questions blank because you're unsure, rather than committing to your best guess, is leaving free expected marks on the table for no reason."
+    },
+    {
+      "type": "heading",
+      "text": "What \"no negative marking\" doesn't mean"
+    },
+    {
+      "type": "paragraph",
+      "text": "It's worth being precise about what this policy does and doesn't change, because it's easy to overcorrect in the wrong direction:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "It doesn't mean guessing randomly across the whole paper is a good primary strategy — you still want to actually know the material, since a real answer beats a guess far more often than chance alone would suggest",
+        "It doesn't mean you should rush through questions carelessly just because a wrong answer \"doesn't cost\" anything — time is still your limiting resource, and a careless wrong answer on a question you actually knew is still a mark you should have secured",
+        "It doesn't mean every guess is equally worth making — an educated guess where you've eliminated one or two clearly wrong options is a much better bet than a pure blind guess with no elimination at all"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "A simple time-management approach given no penalty"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because there's no downside to attempting every question, a reasonable approach for pacing through the paper is:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Answer everything you're confident about first, moving through efficiently rather than lingering",
+        "Flag questions you're unsure about and come back to them if time allows, rather than getting stuck mid-paper",
+        "In your final few minutes, make sure every remaining blank gets filled with your best guess — even if you've run out of time to reason through it properly"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Never submit a paper with unanswered questions on MDCAT. Given there's no negative marking, an unanswered question is guaranteed to score zero, while a guess always has some chance of scoring a mark."
+    },
+    {
+      "type": "heading",
+      "text": "Practicing with this in mind"
+    },
+    {
+      "type": "paragraph",
+      "text": "When you're taking timed mock tests, it's worth practicing under the same no-penalty conditions as the real exam — some study materials or practice platforms are built around negatively marked formats by default, so double-check that your mocks reflect MDCAT's actual scoring rules. Practicing a guessing strategy that doesn't match the real exam's incentives can leave you either too conservative (skipping questions you should attempt) or too careless (not eliminating options before guessing) on test day."
+    },
+    {
+      "type": "heading",
+      "text": "The bottom line"
+    },
+    {
+      "type": "paragraph",
+      "text": "MDCAT's lack of negative marking is a small structural detail with a real practical consequence: there is never a mathematical reason to leave a question blank. Answer what you know first, use elimination to sharpen your guesses on what you don't, and make sure every single question has an answer filled in before time runs out — because on a test with no penalty for being wrong, an empty answer is the only guaranteed way to lose a mark you could have had a chance at."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "Does MDCAT have negative marking?",
+          "answer": "No — MDCAT does not deduct marks for wrong answers. Every question scores one mark if correct and zero if wrong or left blank, with no penalty that makes a wrong answer worse than leaving it unanswered."
+        },
+        {
+          "question": "Should I ever leave a question blank on MDCAT?",
+          "answer": "No. Since a blank answer and a wrong answer both score zero, but a guess has a real chance of being correct, leaving a question blank gives up free expected marks for no reason."
+        },
+        {
+          "question": "Does no negative marking mean I should guess randomly on the whole paper?",
+          "answer": "No — knowing the material still beats guessing far more often than chance alone would suggest. No negative marking removes the penalty for guessing, but it doesn't replace the value of actual preparation."
+        },
+        {
+          "question": "Is a blind guess as good as an educated guess?",
+          "answer": "No. An educated guess after eliminating one or two clearly wrong options is a meaningfully better bet than a pure blind guess with no elimination, even though neither carries a penalty if wrong."
+        },
+        {
+          "question": "How should I manage my time given there's no negative marking?",
+          "answer": "Answer confident questions first, flag uncertain ones to revisit if time allows, and in your final minutes make sure every remaining blank gets filled with your best guess before submitting — since an unanswered question is a guaranteed zero."
+        }
+      ]
+    }
+  ]
+}

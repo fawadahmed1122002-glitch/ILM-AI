@@ -1,0 +1,137 @@
+{
+  "slug": "how-mdcat-merit-actually-works",
+  "title": "How MDCAT Merit Actually Works (Matric + FSc + Test)",
+  "excerpt": "Your medical college admission chances don't come down to your MDCAT score alone — here's how Matric, FSc, and MDCAT combine into the aggregate that actually decides your merit position.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-08-05",
+  "readingMinutes": 7,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Merit isn't just your MDCAT score"
+    },
+    {
+      "type": "paragraph",
+      "text": "A lot of students talk about their MDCAT prep as though the test score alone determines where they'll get in. It doesn't. Admission to MBBS and BDS programs in Pakistan is based on an aggregate — a combined percentage built from three separate results, not the MDCAT score in isolation."
+    },
+    {
+      "type": "paragraph",
+      "text": "The formula used by PMDC weights these three components as: 10% from your Matriculation (SSC) marks, 40% from your FSc (Intermediate) marks, and 50% from your MDCAT score. These three percentages are combined to produce your final aggregate, which is what actually gets ranked on a merit list."
+    },
+    {
+      "type": "callout",
+      "text": "This is the standard PMDC formula used for public and most private MBBS/BDS admissions. Two notable exceptions: NUMS-affiliated colleges (AFMC, CMH) use 50% FSc + 50% NUMS Entry Test, dropping Matric entirely, and KMU uses 20% Matric + 40% FSc + 40% Entry Test, a higher Matric weight than PMDC's standard formula. Always confirm which formula applies to the specific university you're targeting before you calculate your own aggregate."
+    },
+    {
+      "type": "heading",
+      "text": "Why the weighting matters more than it looks"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because MDCAT carries 50% — as much as Matric and FSc combined — it's the single highest-leverage piece of your aggregate. Your Matric and FSc percentages are already fixed by the time you're preparing for MDCAT; they're locked in. Your MDCAT score is the one variable still fully in your control, and because it's weighted more heavily than either of the other two components individually, it moves your aggregate more per percentage point than an equivalent improvement in FSc or Matric would."
+    },
+    {
+      "type": "paragraph",
+      "text": "That doesn't mean your FSc and Matric marks don't matter — they're 50% of your aggregate combined, which is substantial. But if you're trying to decide where your remaining preparation time has the most impact on your final merit position, MDCAT is where that leverage is highest, simply because you can still change it."
+    },
+    {
+      "type": "heading",
+      "text": "How to actually calculate it"
+    },
+    {
+      "type": "paragraph",
+      "text": "The calculation itself is straightforward once you have all three percentages:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Convert your Matric result to a percentage, multiply by 0.10",
+        "Convert your FSc result to a percentage, multiply by 0.40",
+        "Convert your MDCAT score to a percentage (your score out of the total MDCAT marks), multiply by 0.50",
+        "Add the three results together"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "For example, if you scored 90% in Matric, 92% in FSc, and 80% on MDCAT, your aggregate would be (90 × 0.10) + (92 × 0.40) + (80 × 0.50) = 9 + 36.8 + 40 = 85.8%."
+    },
+    {
+      "type": "callout",
+      "text": "Use an aggregate calculator, or work through this yourself carefully — a small arithmetic slip here can leave you with a very wrong sense of where you stand relative to a college's closing merit. Double-check which \"total marks\" figure you're using for MDCAT (out of 180 for the current test), since this can change slightly between test cycles."
+    },
+    {
+      "type": "heading",
+      "text": "Passing MDCAT and qualifying on merit are two different things"
+    },
+    {
+      "type": "paragraph",
+      "text": "It's worth being clear about this distinction, because it trips up a lot of students: passing MDCAT and being competitive for a seat are not the same threshold. There's a minimum MDCAT percentage required just to be eligible for MBBS or BDS admission at all — separate and considerably lower than the aggregate you'd actually need to secure a seat at a specific college. Meeting the minimum eligibility bar doesn't tell you much about your chances at any particular institution; that depends on how your aggregate compares to everyone else competing for the same seats."
+    },
+    {
+      "type": "heading",
+      "text": "Merit is relative, not fixed"
+    },
+    {
+      "type": "paragraph",
+      "text": "The other thing worth understanding clearly: there's no fixed aggregate that guarantees admission anywhere. Merit lists are relative — a college's \"closing merit\" is simply the aggregate of the last student admitted in a given year, which depends on how many seats are available and how many students applied with what aggregates that specific year. A closing merit that worked last year isn't a guarantee for this year; competitive aggregates can shift up or down depending on the applicant pool."
+    },
+    {
+      "type": "callout",
+      "text": "Treat any closing-merit figure you see for a specific college — from us or anywhere else — as a rough historical reference point, not a target to hit exactly. Check the official merit lists published by the relevant admitting body (UHS, KMU, or the provincial authority for your domicile) for the most current figures before making decisions based on them."
+    },
+    {
+      "type": "heading",
+      "text": "What this means for your prep"
+    },
+    {
+      "type": "paragraph",
+      "text": "A few practical takeaways follow directly from how the formula works:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Your MDCAT score is the component you can still influence the most, and it's weighted the heaviest — treat it accordingly in how you allocate remaining study time",
+        "Don't assume a strong FSc result alone secures your seat; it's 40% of the picture, not the whole picture",
+        "Calculate your own aggregate early using your actual Matric and FSc marks, so you know roughly what MDCAT score you'd need to reach a realistic target, rather than guessing",
+        "Recheck the specific formula for any private, NUMS-affiliated, or KMU-affiliated institution you're considering, since each weights things differently than the standard PMDC formula"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "If you want a quick, personalized estimate rather than working through the math by hand, our merit calculator can walk you through it using your own Matric, FSc, and target MDCAT numbers."
+    },
+    {
+      "type": "heading",
+      "text": "The bottom line"
+    },
+    {
+      "type": "paragraph",
+      "text": "Your medical college admission chances rest on a formula that combines Matric, FSc, and MDCAT — not on MDCAT alone. Knowing the exact weighting, and where you personally stand once your fixed Matric and FSc marks are factored in, turns \"I need to do well on MDCAT\" into a specific, actionable target. Calculate your own aggregate early, understand that MDCAT is where you have the most remaining leverage, and always verify closing-merit figures against the current year's official lists rather than treating last year's numbers as a guarantee."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What is the PMDC MDCAT merit formula?",
+          "answer": "10% Matriculation (SSC) + 40% FSc (Intermediate) + 50% MDCAT score. This is the standard formula for public and most private MBBS/BDS admissions in Pakistan."
+        },
+        {
+          "question": "Do all medical universities in Pakistan use the same merit formula?",
+          "answer": "No. NUMS-affiliated colleges (AFMC, CMH) use 50% FSc + 50% NUMS Entry Test with no Matric component at all, and KMU uses 20% Matric + 40% FSc + 40% Entry Test. Always confirm the specific formula for your target university."
+        },
+        {
+          "question": "How do I calculate my MDCAT aggregate?",
+          "answer": "Convert Matric, FSc, and MDCAT results to percentages, multiply by 0.10, 0.40, and 0.50 respectively, then add the three results together. For example, 90% Matric + 92% FSc + 80% MDCAT = 9 + 36.8 + 40 = 85.8% aggregate."
+        },
+        {
+          "question": "Does passing MDCAT guarantee me a medical college seat?",
+          "answer": "No. There's a minimum MDCAT percentage required just for eligibility, which is considerably lower than the aggregate actually needed to secure a seat at a specific college — meeting the eligibility bar doesn't tell you much about your competitive chances."
+        },
+        {
+          "question": "Is last year's closing merit a reliable target for this year?",
+          "answer": "Not exactly. Closing merit is relative — it depends on how many seats are available and how many students applied with what aggregates in a given year. Treat previous years' figures as a rough reference point, not a guaranteed target, and check the current year's official merit lists."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "slug": "mdcat-physics-whats-actually-tested",
+  "title": "MDCAT Physics: What's Actually Tested (It's Different From FSc Physics)",
+  "excerpt": "Doing well in FSc Physics doesn't automatically mean you're ready for MDCAT Physics — here's how the two actually differ, and which chapters tend to matter most.",
+  "category": "subject-guides",
+  "publishedDate": "2026-08-05",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Same syllabus, different exam"
+    },
+    {
+      "type": "paragraph",
+      "text": "MDCAT Physics is drawn from your FSc Part 1 and Part 2 Physics curriculum — the same chapters, the same formulas, the same textbook. That's exactly why it catches students off guard: the content is familiar, but the way it's tested often isn't."
+    },
+    {
+      "type": "paragraph",
+      "text": "FSc board exams reward being able to reproduce a derivation or solve a numerical the way it was taught in class. MDCAT tends to test the same underlying physics from a different angle — asking you to apply a concept to an unfamiliar setup, interpret a graph, or connect two ideas from different chapters in a single question. If your Physics prep so far has mostly been \"I can solve the numericals in my textbook,\" it's worth testing that against real MDCAT-style MCQs before assuming it will transfer directly."
+    },
+    {
+      "type": "callout",
+      "text": "Sit a full timed Physics mock section early in your prep, not just close to the exam. It's the fastest way to find out whether your FSc-level confidence actually holds up under MDCAT-style questions."
+    },
+    {
+      "type": "heading",
+      "text": "Conceptual, not just numerical"
+    },
+    {
+      "type": "paragraph",
+      "text": "MDCAT Physics is a mix of numerical and conceptual questions, and the conceptual half is where students who relied heavily on memorized formulas tend to lose the most marks. A formula applied without understanding what it represents physically can fall apart the moment a question phrases things slightly differently than you're used to — for example, asking what happens to a quantity when a specific variable changes, rather than asking you to calculate the quantity directly."
+    },
+    {
+      "type": "paragraph",
+      "text": "The more reliable approach is understanding why a formula holds, not just memorizing it — what each term physically represents, and how the relationship changes if one part of the setup changes. That habit tends to make both the conceptual and numerical questions easier, since they're really testing the same underlying understanding from two directions."
+    },
+    {
+      "type": "heading",
+      "text": "The chapters that come up most often"
+    },
+    {
+      "type": "paragraph",
+      "text": "Past-paper analysis across multiple MDCAT prep resources points to a fairly consistent set of high-yield areas, even though the exact question counts vary by source:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Mechanics (force, motion, work and energy)",
+        "Electrostatics and Current Electricity",
+        "Waves and Oscillations",
+        "Electromagnetism",
+        "Modern Physics (including Nuclear Physics)"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Current Electricity and Electrostatics, in particular, are flagged repeatedly as reliable, recurring sections — worth prioritizing early rather than leaving for a final revision pass. Modern and Nuclear Physics tend to get treated as \"small chapters, low priority\" since they're shorter than Mechanics or Electromagnetism, but multiple sources note that a question or two from these chapters shows up consistently year to year, which makes them efficient to prepare given how little content they actually contain."
+    },
+    {
+      "type": "callout",
+      "text": "Chapter emphasis can shift slightly between test cycles. Treat the list above as a starting point for prioritization, not a guarantee of what will appear — cross-check it against recent past papers and the current PMDC syllabus."
+    },
+    {
+      "type": "heading",
+      "text": "Why numerical speed matters more than it seems"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because MDCAT has no negative marking, every question is worth attempting — but Physics numericals typically take longer to solve than a Biology recall question, and you're working within the same overall time limit as every other section. That means practicing calculations without a calculator, under timed conditions, is not optional polish — it's a core part of Physics prep, since a numerical you can solve correctly but slowly still costs you time you need elsewhere in the paper."
+    },
+    {
+      "type": "paragraph",
+      "text": "Building speed here usually comes from repetition with a purpose: solving problems under a clock, then reviewing not just whether you got the answer right, but how long it took and where the calculation could have been shortened."
+    },
+    {
+      "type": "heading",
+      "text": "Where FSc-confident students get caught off guard"
+    },
+    {
+      "type": "paragraph",
+      "text": "A specific pattern worth naming: students who scored well in FSc Physics — particularly in Mechanics or Electromagnetism, which are heavily numerical in board exams — sometimes assume those chapters are \"done.\" MDCAT often layers a conceptual twist onto the same numerical setup, which means the chapter isn't actually finished just because the board-exam version of it is."
+    },
+    {
+      "type": "paragraph",
+      "text": "The safer approach is to treat every chapter as needing both a numerical pass and a separate conceptual pass — working through the derivations well enough to explain them, not just solve them — rather than assuming strong board-exam performance in a chapter means MDCAT-level readiness in that same chapter."
+    },
+    {
+      "type": "heading",
+      "text": "Building your Physics study order"
+    },
+    {
+      "type": "paragraph",
+      "text": "A reasonable way to sequence Physics revision:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Start with Current Electricity, Electrostatics, and Mechanics, since these are repeatedly flagged as high-frequency",
+        "Don't defer Modern and Nuclear Physics to the very end — they're short chapters with a consistent, if small, return",
+        "Treat Waves and Electromagnetism as needing both formula fluency and conceptual explanation, not just problem-solving",
+        "Build in regular timed numerical practice throughout your prep, not concentrated in the final weeks"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "If you want to see how a stronger Physics score would shift your overall aggregate, our merit calculator can help you estimate the impact before you decide where to put your remaining study hours."
+    },
+    {
+      "type": "heading",
+      "text": "The bottom line"
+    },
+    {
+      "type": "paragraph",
+      "text": "MDCAT Physics uses the same syllabus as your FSc exams, but it tests that syllabus differently — leaning more on conceptual reasoning, cross-chapter application, and speed under timed conditions than your board exams typically do. Confirming your readiness with real timed MCQ practice, rather than assuming your FSc performance transfers directly, is the single most useful check you can run early in your Physics preparation."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "Is MDCAT Physics the same as FSc Physics?",
+          "answer": "It's drawn from the same FSc Part 1 and Part 2 syllabus, but it's tested differently — leaning more on conceptual reasoning, cross-chapter connections, and unfamiliar applications of formulas rather than the reproduction-style questions common in board exams."
+        },
+        {
+          "question": "Which Physics chapters are highest-yield for MDCAT?",
+          "answer": "Mechanics, Electrostatics and Current Electricity, Waves and Oscillations, Electromagnetism, and Modern/Nuclear Physics are consistently flagged across past-paper analysis. Current Electricity and Electrostatics in particular are repeatedly cited as reliable, recurring sections."
+        },
+        {
+          "question": "Should I skip Modern and Nuclear Physics since they're short chapters?",
+          "answer": "No — despite being shorter than chapters like Mechanics, multiple sources note that Modern and Nuclear Physics reliably contribute a question or two each cycle, making them efficient to prepare relative to how little content they contain."
+        },
+        {
+          "question": "Why does numerical speed matter if there's no negative marking?",
+          "answer": "Because every section shares the same overall time limit, a Physics numerical solved correctly but slowly still costs time needed elsewhere in the paper. Practicing calculations without a calculator under timed conditions is a core part of prep, not optional polish."
+        },
+        {
+          "question": "If I did well in FSc Physics, am I ready for MDCAT Physics?",
+          "answer": "Not necessarily. MDCAT often adds a conceptual twist to numerical setups you may have mastered for board exams, so strong board performance in a chapter doesn't guarantee MDCAT-level readiness in that same chapter — both a numerical and a conceptual pass are worth doing."
+        }
+      ]
+    }
+  ]
+}
