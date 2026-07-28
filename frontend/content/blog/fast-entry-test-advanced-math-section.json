@@ -1,0 +1,118 @@
+{
+  "slug": "fast-entry-test-advanced-math-section",
+  "title": "FAST Entry Test Advanced Math Section: What's Actually Tested",
+  "excerpt": "Advanced Math carries the single largest share of the FAST Entry Test. Here's exactly which FSc topics it draws from and how to prioritize your remaining prep time around them.",
+  "category": "subject-guides",
+  "publishedDate": "2026-08-01",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Why this section decides more of your score than any other"
+    },
+    {
+      "type": "paragraph",
+      "text": "Advanced Mathematics carries the heaviest weighting of any section on the FAST Entry Test — roughly half the paper, by most current breakdowns. That makes it the single highest-leverage section for your overall score: an hour spent turning a shaky Advanced Math topic into a solid one typically moves your total more than the same hour spent on any other section."
+    },
+    {
+      "type": "paragraph",
+      "text": "The section draws directly from your FSc Part I and Part II Mathematics syllabus — this isn't content that requires outside material, but it does require genuine conceptual fluency rather than the kind of recall that gets you through a board exam long-question format."
+    },
+    {
+      "type": "callout",
+      "text": "Exact question counts and weightage percentages for this section can shift slightly between admission cycles — confirm the current breakdown against the official sample paper at nu.edu.pk before finalizing how much time you allocate here."
+    },
+    {
+      "type": "heading",
+      "text": "The topics that consistently show up"
+    },
+    {
+      "type": "paragraph",
+      "text": "Based on the FSc Part I and Part II Mathematics curriculum this section draws from, the recurring topic areas include:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Matrices and determinants",
+        "Number systems, sets, and functions",
+        "Quadratic equations and partial fractions",
+        "Sequences and series",
+        "Permutations, combinations, and probability",
+        "Trigonometry",
+        "Analytic geometry",
+        "Calculus — differentiation and integration",
+        "Vectors",
+        "Mathematical induction"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "That's a genuinely broad spread across both years of FSc Math — not a narrow slice you can cram in a weekend. Treating this section as \"just calculus\" or \"just algebra\" underestimates how much of your two-year syllabus is genuinely in scope."
+    },
+    {
+      "type": "heading",
+      "text": "Why board-exam confidence doesn't automatically transfer"
+    },
+    {
+      "type": "paragraph",
+      "text": "A common trap: assuming a chapter you scored well on in your FSc board exam means you're already prepared for it here. Entry test MCQs test the same content differently — usually through comparison-style questions, applied problems, or scenarios that require recognizing which method applies rather than executing a memorized step-by-step derivation the way a board exam long question does."
+    },
+    {
+      "type": "paragraph",
+      "text": "This matters most for topics like calculus and analytic geometry, where board exams often reward showing full working, while an MCQ format rewards being able to jump straight to the right approach quickly and accurately, under time pressure, without partial credit for a mostly-right method."
+    },
+    {
+      "type": "heading",
+      "text": "How to prioritize within this section"
+    },
+    {
+      "type": "paragraph",
+      "text": "Not every topic in the list above deserves equal time, and treating them that way wastes hours you don't have. A more useful approach: sort your Advanced Math topics into three groups based on your last few practice attempts — topics you consistently get right quickly, topics you get right but slowly, and topics you consistently get wrong. The middle group (right but slow) is often your highest-leverage practice target, since speed under time pressure is exactly what separates a comfortable Advanced Math score from a rushed one on test day."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Consistently correct and fast: light maintenance only — don't over-invest here",
+        "Correct but slow: your highest-leverage practice target — speed drills and timed repetition",
+        "Consistently wrong: needs proper concept rebuilding, not just more MCQ attempts at the same level"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Negative marking changes how you approach this section specifically"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because Advanced Math questions are typically worth the same as any other MCQ but often take longer to work through, negative marking interacts with this section in a specific way: a rushed, uncertain guess on a multi-step Advanced Math question is a worse trade than the same guess on a simpler question, since you've usually invested more time getting partway through the problem before deciding whether to guess. Building the discipline to recognize, mid-question, when you're not going to reach a confident answer in time — and moving on rather than sinking further minutes into it — is a skill worth practicing deliberately during timed past papers, not deciding for the first time on test day."
+    },
+    {
+      "type": "heading",
+      "text": "Where this fits in your overall prep"
+    },
+    {
+      "type": "paragraph",
+      "text": "Given how much of your total score this section controls, it's worth treating Advanced Math as the backbone of your FAST prep schedule rather than one subject among several. Building genuine speed and accuracy here through repeated timed practice — not just re-reading FSc notes — is what separates students who feel prepared from students who actually perform at that level on test day."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "How much of the FAST Entry Test does Advanced Math count for?",
+          "answer": "Roughly half the paper by most current breakdowns, making it the single highest-weighted section on the test."
+        },
+        {
+          "question": "What topics are covered in the FAST Advanced Math section?",
+          "answer": "Matrices and determinants, number systems/sets/functions, quadratic equations, partial fractions, sequences and series, permutations/combinations/probability, trigonometry, analytic geometry, calculus (differentiation and integration), vectors, and mathematical induction — drawn from FSc Part I and Part II."
+        },
+        {
+          "question": "Does doing well in FSc board exams mean I'm ready for this section?",
+          "answer": "Not automatically. Board exams often reward showing full working, while this section's MCQ format rewards quickly recognizing the right method under time pressure — the same content is tested differently."
+        },
+        {
+          "question": "How should I prioritize which topics to practice most?",
+          "answer": "Sort topics into three groups based on recent practice: consistently fast and correct (light maintenance), correct but slow (your highest-leverage practice target), and consistently wrong (needs concept rebuilding rather than more MCQ repetition)."
+        }
+      ]
+    }
+  ]
+}

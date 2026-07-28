@@ -1,0 +1,95 @@
+{
+  "slug": "fast-merit-formula-breakdown",
+  "title": "FAST Merit Formula Breakdown",
+  "excerpt": "FAST's merit aggregate weighs your entry test more heavily than FSc — here's exactly how the formula works and what it means for where you should spend your remaining prep time.",
+  "category": "university-guides",
+  "publishedDate": "2026-07-23",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "The formula itself"
+    },
+    {
+      "type": "paragraph",
+      "text": "FAST-NUCES calculates admission merit as a weighted aggregate of three components: your Matric (SSC) percentage, your FSc percentage, and your entry test percentage. The general structure is 10% Matric, 40% FSc, and 50% entry test score — meaning the test carries the single largest share, but FSc still makes up a substantial 40% of your final number, unlike some other universities where academic record barely moves the needle."
+    },
+    {
+      "type": "paragraph",
+      "text": "That 40% FSc weight is worth sitting with for a second, because it's meaningfully higher than what you'll see at NUST, where FSc contributes only 15%. If you're weighing FAST against NUST as options, this is one of the more concrete differences between them — at FAST, a strong two-year FSc record is doing real work in your aggregate, not just acting as an eligibility bar."
+    },
+    {
+      "type": "heading",
+      "text": "What counts as \"the test\" in this formula"
+    },
+    {
+      "type": "paragraph",
+      "text": "FAST accepts more than one entry test option toward this formula. Alongside its own NU Entry Test, FAST also accepts NTS's NAT (National Aptitude Test) and SAT scores as substitutes, with the same merit weighting applied regardless of which one you sit. This matters if you're an overseas applicant unable to sit the on-campus test, or if you've already got a strong SAT score from earlier preparation and don't want to duplicate effort."
+    },
+    {
+      "type": "callout",
+      "text": "Merit formulas and accepted test types are set by FAST-NUCES and can be revised — confirm the current formula and accepted test list on nu.edu.pk before finalizing your prep strategy, especially if you're planning around SAT or NTS scores instead of FAST's own test."
+    },
+    {
+      "type": "heading",
+      "text": "Why the FSc weight changes how you should study"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because FSc contributes 40% rather than a token amount, a slipping grade in your final FSc exams isn't something you can fully compensate for with an outstanding entry test score the way you sometimes can at test-heavy universities. If your FSc Part 2 result is still a few months out and you know a particular subject grade is shaky, it's worth treating that as seriously as your entry test prep, not as an afterthought you'll \"make up for\" on test day."
+    },
+    {
+      "type": "paragraph",
+      "text": "This is different advice from what you'd give a NUST-focused student, where the test so thoroughly dominates the aggregate that FSc performance matters far less by comparison. If FAST is genuinely your top choice, treating FSc grades and entry test prep as two parallel priorities — rather than one clearly dominant one — is the more accurate strategy."
+    },
+    {
+      "type": "heading",
+      "text": "A rough way to think about the numbers"
+    },
+    {
+      "type": "paragraph",
+      "text": "Without inventing specific score examples, the general shape is this: two students with the same entry test percentage but different FSc percentages will land at meaningfully different FAST aggregates, because FSc's 40% share is large enough to separate them. Compare that to a formula where the test carries 75% of the weight — there, FSc differences of even several points barely move the final number."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Matric (SSC): 10% of the aggregate",
+        "FSc (Intermediate): 40% of the aggregate — a genuinely significant share",
+        "Entry Test (FAST's own test, NTS NAT, or SAT): 50% of the aggregate"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "What this means for your next few weeks"
+    },
+    {
+      "type": "paragraph",
+      "text": "If you're deciding where to put your remaining study hours, the honest answer for a FAST applicant is that you can't treat FSc as background noise the way some test-focused advice suggests. Split your effort with real weight on both — solid entry test preparation because it's still the largest single component, and consistent attention to your FSc exams because 40% is too large a share to write off. You can use PrepXMentor's merit calculator to plug in your own numbers once you have a realistic estimate of each component, rather than guessing at how the pieces add up."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What is FAST's merit formula?",
+          "answer": "10% Matric (SSC) + 40% FSc + 50% Entry Test. The entry test carries the largest single share, but FSc still makes up a substantial 40% of the final aggregate."
+        },
+        {
+          "question": "Does FAST accept anything other than its own entry test?",
+          "answer": "Yes — FAST also accepts NTS NAT and SAT scores as substitutes for its own NU Entry Test, with the same 10/40/50 formula applied regardless of which test you sit."
+        },
+        {
+          "question": "How does FAST's formula compare to NUST's?",
+          "answer": "NUST weighs its NET at 75% with FSc at only 15%. FAST gives FSc a much larger 40% share, meaning academic record does more real work in a FAST aggregate than in a NUST one."
+        },
+        {
+          "question": "Can a strong entry test score make up for a weak FSc percentage at FAST?",
+          "answer": "Only partially. Because FSc carries a full 40% of the aggregate, a slipping FSc grade isn't something a strong test score can fully compensate for the way it might at a more test-dominant university like NUST."
+        },
+        {
+          "question": "Where should I focus my remaining prep time for FAST?",
+          "answer": "Split your effort across both — the entry test, since it's still the single largest component, and your FSc exams, since a 40% share is too significant to treat as an afterthought. Use a merit calculator to estimate your actual aggregate once you have realistic numbers for each component."
+        }
+      ]
+    }
+  ]
+}

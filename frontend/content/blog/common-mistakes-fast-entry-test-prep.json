@@ -1,0 +1,103 @@
+{
+  "slug": "common-mistakes-fast-entry-test-prep",
+  "title": "Common Mistakes in FAST Entry Test Prep",
+  "excerpt": "Most students preparing for the FAST Entry Test aren't failing because of weak content knowledge — they're falling into a handful of avoidable prep mistakes. Here's what to watch for.",
+  "category": "study-skills",
+  "publishedDate": "2026-07-26",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Treating it like ECAT prep with a different name"
+    },
+    {
+      "type": "paragraph",
+      "text": "The most common mistake among engineering-track students is assuming FAST prep is basically ECAT prep, since both are Maths-heavy tests aimed at engineering-adjacent programs. In reality, FAST's structure — Advanced Maths, Basic Maths, English in an SAT-style format, and Analytical/IQ Reasoning — is different enough from ECAT's Physics-Chemistry-Maths-English mix that directly porting over an ECAT study plan leaves real gaps, especially around IQ reasoning, which barely resembles anything on ECAT."
+    },
+    {
+      "type": "paragraph",
+      "text": "If you're preparing for both tests simultaneously, that's genuinely efficient for the Maths overlap, but it's worth explicitly carving out separate time for FAST's IQ section and its SAT-style English rather than assuming your ECAT prep covers it by default."
+    },
+    {
+      "type": "heading",
+      "text": "Ignoring negative marking until test day"
+    },
+    {
+      "type": "paragraph",
+      "text": "A surprising number of students only think seriously about negative marking strategy for the first time on the actual test day, which is exactly the wrong moment to be developing a new decision-making habit under pressure. Whether to guess on a question you're unsure about, skip it, or eliminate options first and then decide, is a strategy that needs to be practiced and internalized during past-paper attempts, not improvised live."
+    },
+    {
+      "type": "callout",
+      "text": "Confirm the exact negative marking value for the current test cycle before finalizing your guessing strategy — small changes in the penalty can shift the math on when guessing is worth it."
+    },
+    {
+      "type": "heading",
+      "text": "Under-preparing for the IQ section specifically"
+    },
+    {
+      "type": "paragraph",
+      "text": "This deserves its own mention because it's such a consistent pattern: students spend the bulk of their prep hours on Advanced Maths, since it's the biggest section and the most familiar territory, and treat IQ reasoning as something they'll \"figure out\" on test day using general intelligence alone. Since IQ-style questions reward pattern-recognition speed built through repeated exposure to varied question types, walking in without dedicated practice usually means slower, less confident performance on this section specifically — not because the questions are inherently harder, but because you haven't built the specific skill yet."
+    },
+    {
+      "type": "heading",
+      "text": "Not practicing under real timed conditions"
+    },
+    {
+      "type": "paragraph",
+      "text": "Reading through content, watching explanation videos, and working through practice questions untimed all build understanding — but none of them build the specific skill of managing 120 questions across four sections within a fixed time limit, which is its own separate skill from knowing the content. Students who only ever practice untimed often discover, on the actual test, that they run out of time on sections they'd have comfortably finished with more practice at pacing."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Ignoring section-specific pacing (spending too long on Advanced Maths, leaving too little for English or IQ)",
+        "Practicing only in short, low-pressure sessions rather than full-length timed simulations",
+        "Never practicing the specific discipline of skipping a stuck question and moving on"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Studying alone without any way to see your actual weak points"
+    },
+    {
+      "type": "paragraph",
+      "text": "It's easy to feel like you're \"doing fine\" on Advanced Maths because the content feels familiar, while your actual practice accuracy in that section tells a different story. Without some way of tracking accuracy by section and by specific topic over time, it's easy to keep reinforcing what you're already good at and avoid the topics that are genuinely dragging your score down, simply because avoiding them feels less uncomfortable in the moment."
+    },
+    {
+      "type": "heading",
+      "text": "Leaving FSc revision behind entirely during entry test crunch"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because FAST's merit formula weighs FSc at 40% — a substantial share compared to some other universities — some students go all-in on entry test prep in the final stretch and let FSc exam revision slide, assuming the test alone will carry them. That's a riskier bet at FAST specifically than it might be at a test-dominant university, since a weak FSc percentage genuinely pulls your aggregate down here."
+    },
+    {
+      "type": "paragraph",
+      "text": "Avoiding these specific mistakes won't guarantee a particular score, but it removes the avoidable losses — the points given up not because a topic was too hard, but because of a preparation habit that was easy to fix once it was named. Tracking your practice accuracy by topic, rather than relying on how confident a section feels, is one of the more reliable ways to catch these issues early."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "Is preparing for ECAT the same as preparing for FAST?",
+          "answer": "Not quite. Both are Maths-heavy, so there's real overlap, but FAST's structure includes SAT-style English and an Analytical/IQ Reasoning section that has no real equivalent on ECAT. Directly porting over an ECAT study plan leaves gaps, especially around IQ reasoning."
+        },
+        {
+          "question": "When should I start thinking about negative marking strategy?",
+          "answer": "During your past-paper practice, not on test day. Deciding whether to guess, skip, or eliminate options first is a habit that needs to be practiced and internalized in advance — improvising it under real test pressure is one of the most common avoidable mistakes."
+        },
+        {
+          "question": "Why do students underperform on the IQ section specifically?",
+          "answer": "Usually because they treat it as something to 'figure out' with general intelligence on test day, rather than a skill built through dedicated, repeated practice with varied question types. It's not that the questions are harder — it's that the pattern-recognition skill hasn't been built yet."
+        },
+        {
+          "question": "Is untimed practice enough to prepare for the FAST Entry Test?",
+          "answer": "No. Untimed practice builds content understanding but not the separate skill of managing 120 questions across four sections within a fixed time limit. Students who only practice untimed often discover pacing problems for the first time on the actual test."
+        },
+        {
+          "question": "Should I stop revising FSc content to focus fully on FAST entry test prep?",
+          "answer": "No — FAST's merit formula weighs FSc at 40%, a substantial share, so letting FSc revision slide in favor of entry test prep alone is a riskier bet at FAST than it might be at a more test-dominant university."
+        }
+      ]
+    }
+  ]
+}

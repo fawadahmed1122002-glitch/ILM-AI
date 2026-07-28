@@ -5,6 +5,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/blog/repository";
 import { SITE_URL, SITE_NAME, formatDate, buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/blog/seo";
 import { categoryLabel, type CategorySlug } from "@/lib/blog/categories";
 import type { ContentBlock } from "@/lib/blog/schema";
+import { FaqAccordion } from "../components/FaqAccordion";
 
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
@@ -81,16 +82,7 @@ function Block({ block }: { block: ContentBlock }) {
       );
 
     case "faq":
-      return (
-        <div className="mb-6 space-y-3">
-          {block.items.map((item, i) => (
-            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
-              <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm mb-1.5">{item.question}</p>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item.answer}</p>
-            </div>
-          ))}
-        </div>
-      );
+      return <FaqAccordion items={block.items} />;
   }
 }
 

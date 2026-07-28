@@ -53,6 +53,31 @@
     {
       "type": "paragraph",
       "text": "When you're not sure what to study on a given day, three questions usually settle it: Which test is closest on the calendar? Which subject, if weak, would hurt you across more than one test? And which of your weak topics has the most room to improve quickly versus one that needs months of groundwork? Prioritizing shared, high-leverage subjects (Physics and Maths, for most students) tends to pay off across multiple tests at once — which is exactly the kind of cross-subject tracking PrepXMentor's per-topic accuracy view is built to surface."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "How do I decide which entry test to prioritize?",
+          "answer": "Start from the degree you want, not the test itself. Medicine requires MDCAT specifically. Engineering opens the door to both ECAT and NET, which share most of their prep. Computing or software engineering points toward the FAST Entry Test, which is more Maths- and reasoning-focused than the others."
+        },
+        {
+          "question": "Do ECAT and NUST's NET require separate preparation?",
+          "answer": "Not entirely — both lean heavily on Physics, Maths, and Chemistry, so building strong FSc-level fundamentals in those three subjects covers most of the overlap. The final stretch before each test should focus on past-paper familiarity and pacing specific to that test's format."
+        },
+        {
+          "question": "Can I prepare for MDCAT alongside ECAT or NET?",
+          "answer": "It's harder than pairing ECAT with NET, since MDCAT depends heavily on Biology and Chemistry depth that ECAT/NET prep doesn't build, and Maths — central to ECAT and NET — isn't tested on MDCAT at all."
+        },
+        {
+          "question": "What makes the FAST Entry Test different from the others?",
+          "answer": "It's less about subject depth and more about Maths problem-solving speed combined with English and analytical/IQ-style reasoning — a different skill emphasis than the more traditional subject-based format of ECAT, NET, or MDCAT."
+        },
+        {
+          "question": "How do I decide what to study on a given day when preparing for multiple tests?",
+          "answer": "Ask which test is closest on the calendar, which weak subject would hurt you across more than one test, and which weak topic has the most room to improve quickly. Prioritizing shared, high-leverage subjects like Physics and Maths tends to pay off across multiple tests at once."
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,109 @@
+{
+  "slug": "fast-entry-test-basic-math-section",
+  "title": "FAST Entry Test Basic Math Section: What's Actually Tested",
+  "excerpt": "Basic Math is smaller than Advanced Math, but it's built for speed, not depth — and treating it that way is exactly how students leave easy marks on the table.",
+  "category": "subject-guides",
+  "publishedDate": "2026-08-01",
+  "readingMinutes": 5,
+  "content": [
+    {
+      "type": "heading",
+      "text": "A different kind of Math section entirely"
+    },
+    {
+      "type": "paragraph",
+      "text": "Basic Math on the FAST Entry Test isn't a smaller, easier version of Advanced Math — it's built around a different skill entirely. Where Advanced Math tests conceptual depth across FSc Part I and II topics, Basic Math is quantitative reasoning and word problems built from simpler arithmetic and pre-FSc-level content, designed to test how quickly and accurately you can work through practical numerical problems rather than how much advanced content you've mastered."
+    },
+    {
+      "type": "paragraph",
+      "text": "That distinction matters for how you prepare. Students sometimes assume that because Basic Math sounds easier, it needs less dedicated practice — in reality, it needs a different kind of practice: speed and problem-recognition drills rather than concept-building."
+    },
+    {
+      "type": "callout",
+      "text": "Exact question count and weightage for this section can shift slightly between admission cycles — confirm the current breakdown against the official sample paper at nu.edu.pk before finalizing your prep time allocation."
+    },
+    {
+      "type": "heading",
+      "text": "What actually shows up in this section"
+    },
+    {
+      "type": "paragraph",
+      "text": "Based on current syllabus breakdowns, Basic Math draws from a cluster of practical, arithmetic-level topics:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Arithmetic and number operations",
+        "Algebra at a foundational level",
+        "Percentages and ratios",
+        "Profit, loss, and cost-price problems",
+        "General quantitative word problems"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "None of this requires FSc Part I/II-level depth — if anything, it's closer to the kind of quantitative reasoning tested on general aptitude exams. The challenge isn't difficulty, it's speed: these questions are designed to be solvable quickly if you recognize the pattern immediately, and slow if you have to work through the underlying arithmetic manually each time."
+    },
+    {
+      "type": "heading",
+      "text": "Why \"I already know this\" is a trap here"
+    },
+    {
+      "type": "paragraph",
+      "text": "A lot of students glance at this topic list and conclude Basic Math needs no dedicated prep, since percentages and profit-loss problems feel like material from years ago. That confidence is usually about being able to solve these problems eventually, not about solving them at the speed this section actually demands under a fixed timer alongside three other sections."
+    },
+    {
+      "type": "paragraph",
+      "text": "The gap between \"I can solve this\" and \"I can solve this in 20-30 seconds without a calculator\" is exactly what separates a comfortable Basic Math score from one where you run out of time partway through. Since calculators aren't allowed on this test, mental arithmetic speed — quick percentage conversions, fast ratio simplification, rapid profit-loss setup — is a skill that needs its own deliberate practice, not an assumption that it'll be there when you need it."
+    },
+    {
+      "type": "heading",
+      "text": "A practical way to build this speed"
+    },
+    {
+      "type": "paragraph",
+      "text": "Rather than solving Basic Math problems the way you would on an untimed worksheet, practice with a strict per-question timer from early in your prep — even if you're getting questions right slowly at first, the goal is building toward getting them right quickly. Drilling common calculation shortcuts (quick percentage-of-a-number tricks, ratio simplification patterns, fast profit-loss setups) pays off disproportionately here, since these are exactly the kind of repeated question types where a memorized shortcut beats working through the full arithmetic each time."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Practice with a timer from the start, not just in the final weeks",
+        "Focus on mental-math shortcuts for percentages, ratios, and profit-loss setups specifically",
+        "Track your per-question time, not just your accuracy — this section rewards speed as much as correctness"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Don't let Advanced Math prep crowd this section out"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because Advanced Math carries more weight and feels more academically serious, it's easy to let Basic Math practice slide to \"whenever there's time left.\" That's a mistake specifically because Basic Math's marks are, question for question, some of the fastest and most reliable to secure on the entire paper if you've built the speed for it — leaving them under-practiced trades away easy points for marginal extra polish on a section that already takes longer per question to master."
+    },
+    {
+      "type": "paragraph",
+      "text": "A reasonable habit is keeping a short, regular Basic Math practice block each week throughout your prep — even 15-20 minutes a few times a week — rather than treating it as a section you'll \"get to\" once Advanced Math and IQ feel solid. Consistency here compounds faster than it does in more conceptually demanding sections, precisely because the ceiling on difficulty is lower and the returns on speed practice show up quickly."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What's the difference between Basic Math and Advanced Math on the FAST Entry Test?",
+          "answer": "Advanced Math tests conceptual depth from FSc Part I and II. Basic Math tests quantitative reasoning and word problems from simpler, pre-FSc-level arithmetic — it's built for speed, not depth."
+        },
+        {
+          "question": "What topics are covered in the Basic Math section?",
+          "answer": "Arithmetic and number operations, foundational algebra, percentages and ratios, profit/loss and cost-price problems, and general quantitative word problems."
+        },
+        {
+          "question": "Are calculators allowed for this section?",
+          "answer": "No — calculators aren't permitted on the FAST Entry Test, which makes mental arithmetic speed a specific skill worth practicing deliberately for this section."
+        },
+        {
+          "question": "How should I practice for Basic Math specifically?",
+          "answer": "Use a strict per-question timer from early in your prep, drill common shortcuts for percentages, ratios, and profit-loss problems, and track your per-question speed alongside accuracy — not accuracy alone."
+        }
+      ]
+    }
+  ]
+}

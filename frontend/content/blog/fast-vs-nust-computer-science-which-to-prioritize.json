@@ -1,0 +1,103 @@
+{
+  "slug": "fast-vs-nust-computer-science-which-to-prioritize",
+  "title": "FAST vs NUST for Computer Science: Which to Prioritize",
+  "excerpt": "Both are strong choices for CS in Pakistan, but they reward different kinds of students — here's how the two actually differ and how to decide where your prep time is best spent.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-07-27",
+  "readingMinutes": 7,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Two different formulas, two different kinds of student"
+    },
+    {
+      "type": "paragraph",
+      "text": "The clearest, most concrete difference between FAST and NUST for Computer Science isn't reputation or curriculum — it's how heavily each one weighs your entry test versus your academic record. NUST's aggregate weighs its own NET at 75%, with FSc contributing only 15% and Matric 10%. FAST weighs its entry test at 50%, with FSc contributing a much larger 40% and Matric 10%."
+    },
+    {
+      "type": "paragraph",
+      "text": "That single difference changes what kind of student each university effectively rewards. A student who tests exceptionally well but has a middling FSc record has a real path to a strong NUST aggregate, since the test so thoroughly dominates the formula there. That same student's FAST aggregate is dragged down more by the same FSc record, because FAST's formula doesn't let a strong test score compensate for FSc the way NUST's does."
+    },
+    {
+      "type": "callout",
+      "text": "These weightages reflect each university's own published formula for NET/FAST-basis admission and can be revised between cycles — confirm current figures on nust.edu.pk and nu.edu.pk before making a final prep-time decision based on them."
+    },
+    {
+      "type": "heading",
+      "text": "What this means if you have to choose where to focus"
+    },
+    {
+      "type": "paragraph",
+      "text": "If your FSc record is genuinely strong and your test performance in practice has been a bit inconsistent, FAST's formula is more forgiving of that inconsistency than NUST's, since FSc is carrying more weight there. Conversely, if your FSc percentage isn't where you'd like it to be but you're consistently strong in timed test conditions, NUST's test-dominant formula gives you more room to make up ground through the entry test itself."
+    },
+    {
+      "type": "paragraph",
+      "text": "This isn't an argument that one university is \"better\" — it's that the two use genuinely different formulas, and knowing which one rewards your particular strengths more is useful information when you're deciding where to put your limited remaining prep hours, especially if you're short on time and can't prepare equally for both."
+    },
+    {
+      "type": "heading",
+      "text": "The tests themselves are also different"
+    },
+    {
+      "type": "paragraph",
+      "text": "Beyond the merit formula, NUST's NET and FAST's entry test aren't identical exams. NUST's NET draws more broadly across Physics, Chemistry, Maths, and English in a format closer to a traditional subject-based entry test. FAST's own test leans more heavily into Mathematics (split into Advanced and Basic sections) alongside English and a distinct Analytical/IQ Reasoning component that has no real equivalent on NUST's paper."
+    },
+    {
+      "type": "paragraph",
+      "text": "If you're strong in Physics and Chemistry specifically, that strength counts for more on NUST's paper than on FAST's, where those subjects don't feature directly at all. If you're strong in logical/pattern reasoning but your Physics and Chemistry are shakier, FAST's format arguably plays more to that strength than NUST's does."
+    },
+    {
+      "type": "heading",
+      "text": "Preparing for both without duplicating effort"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because both tests share a heavy Mathematics component, a large share of prep — particularly Advanced Maths topics from FSc Part I and II — genuinely transfers between the two. Where the prep diverges is FAST's Analytical/IQ section, which has no NUST equivalent and needs separate, dedicated practice, and NUST's Physics/Chemistry content, which FAST's test doesn't test directly at all."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Shared prep: core Mathematics from FSc Part I & II — benefits both tests",
+        "FAST-specific: Analytical/IQ Reasoning, and English in an SAT-style format",
+        "NUST-specific: Physics and Chemistry content, tested directly on NET but not on FAST's paper"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Making the actual decision"
+    },
+    {
+      "type": "paragraph",
+      "text": "If you genuinely can't prepare fully for both and have to prioritize, the more useful question isn't \"which university is more prestigious\" but \"which formula rewards what I'm already strong in, and which test format plays to my actual skills.\" A student deciding purely on name recognition without looking at their own FSc trajectory and testing strengths is making a less informed choice than one who's actually run the numbers on both formulas using their real academic record."
+    },
+    {
+      "type": "paragraph",
+      "text": "You can plug your actual Matric, FSc, and estimated test percentages into calculators for both formulas to see concretely how your numbers shift between them, rather than deciding this in the abstract."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What is the main difference between FAST and NUST's merit formulas?",
+          "answer": "NUST weighs its NET at 75% with FSc at only 15% and Matric at 10%. FAST weighs its entry test at 50%, with FSc contributing a much larger 40% and Matric 10%. NUST rewards strong test performance more heavily; FAST gives your FSc record more real weight."
+        },
+        {
+          "question": "Which university is easier to get into with a strong FSc but average test score?",
+          "answer": "FAST's formula is more forgiving here, since FSc carries a real 40% share of the aggregate compared to NUST's 15%. A student with this profile typically ends up with a stronger relative aggregate at FAST than at NUST."
+        },
+        {
+          "question": "Do FAST and NUST test the same subjects?",
+          "answer": "No. NUST's NET covers Physics, Chemistry, Maths, and English in a broader subject-based format. FAST's test is Math-heavy (Advanced and Basic Math), plus English and a distinct Analytical/IQ Reasoning section with no NUST equivalent."
+        },
+        {
+          "question": "Can I prepare for both FAST and NUST at the same time without wasting effort?",
+          "answer": "Yes, largely. Core Mathematics from FSc Part I and II transfers directly between both tests. What doesn't transfer is FAST's Analytical/IQ Reasoning section and NUST's Physics/Chemistry content — both need separate, dedicated preparation."
+        },
+        {
+          "question": "How do I decide which one to prioritize if I'm short on time?",
+          "answer": "Rather than going by reputation, plug your actual Matric, FSc, and estimated test percentages into both universities' merit formulas to see which one your real academic record and test performance favor, then prioritize prep accordingly."
+        }
+      ]
+    }
+  ]
+}

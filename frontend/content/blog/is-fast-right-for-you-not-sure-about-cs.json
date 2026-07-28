@@ -1,0 +1,104 @@
+{
+  "slug": "is-fast-right-for-you-not-sure-about-cs",
+  "title": "Is FAST Right for You If You're Not Sure About CS?",
+  "excerpt": "FAST is best known for Computer Science, but that doesn't mean it's only worth considering if CS is already your firm decision. Here's how to think about it if you're still unsure.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-07-28",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "FAST's reputation is bigger than just CS"
+    },
+    {
+      "type": "paragraph",
+      "text": "Ask most FSc students what FAST is known for, and the answer is almost always Computer Science — and for good reason, since it's one of the programs the university built its reputation on. But FAST-NUCES also offers Software Engineering, Artificial Intelligence, and various Engineering disciplines across its campuses, alongside Business programs at some locations. If your uncertainty is specifically \"CS or something CS-adjacent,\" FAST is still very much worth considering rather than something to rule out because you haven't fully committed to CS by name."
+    },
+    {
+      "type": "paragraph",
+      "text": "That said, the entry test and merit formula are the same regardless of which of these programs you're targeting at FAST — so preparing for the test doesn't require you to have already picked your exact program, only your general direction (computing/engineering versus, say, a purely medical path, which FAST doesn't offer)."
+    },
+    {
+      "type": "heading",
+      "text": "What \"not sure about CS\" usually actually means"
+    },
+    {
+      "type": "paragraph",
+      "text": "When students say they're unsure about CS, it usually breaks down into a few different underlying concerns, and it's worth being honest with yourself about which one actually applies to you:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Genuine interest uncertainty — you're not sure you'll enjoy programming and computational thinking as a day-to-day discipline",
+        "Career uncertainty — you're worried about job market saturation or whether CS degrees are \"oversaturated\" in Pakistan",
+        "Comparison uncertainty — you're deciding between CS and a specific alternative like Software Engineering, Electrical Engineering, or Data Science-adjacent fields",
+        "Confidence uncertainty — you're worried the coursework will be too difficult, regardless of interest"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Each of these points toward a different next step, and lumping them together as one vague feeling of \"not sure\" makes it harder to actually resolve."
+    },
+    {
+      "type": "heading",
+      "text": "If it's genuine interest uncertainty"
+    },
+    {
+      "type": "paragraph",
+      "text": "This is worth taking seriously rather than talking yourself out of, since four years is a long time to spend on something you're not genuinely curious about. Before your entry test even matters, it's worth spending a weekend actually trying some introductory programming — free resources exist for this — not to become good at it, but to get an honest read on whether the process of thinking through a problem step by step and debugging something that doesn't work the first time is something you find engaging or draining."
+    },
+    {
+      "type": "callout",
+      "text": "Interest built from a weekend of exposure is a rough signal, not a guarantee — but it's a far better data point than guessing based on CS's reputation or what your friends are choosing."
+    },
+    {
+      "type": "heading",
+      "text": "If it's career or saturation uncertainty"
+    },
+    {
+      "type": "paragraph",
+      "text": "This is a legitimate concern worth researching rather than dismissing, but it's also one where secondhand opinions online (both the \"CS is oversaturated\" and \"CS guarantees a job\" versions) tend to be overconfident either way. Rather than resolving this purely through internet debate, it's worth looking at where actual FAST CS and Software Engineering graduates from recent years have ended up — internships, first jobs, further study — since that's a more grounded signal than general online sentiment about the field."
+    },
+    {
+      "type": "heading",
+      "text": "If it's a specific alternative you're weighing"
+    },
+    {
+      "type": "paragraph",
+      "text": "If your uncertainty is really \"CS versus Electrical Engineering\" or \"CS versus Software Engineering\" specifically, that's a more answerable question than open-ended doubt, since it usually comes down to concrete differences in day-to-day coursework focus — CS leans more toward algorithms, systems, and software; Electrical Engineering leans toward hardware, circuits, and signals; Software Engineering sits closer to CS but with more emphasis on large-scale system design and engineering process. Reading actual course outlines for these programs, rather than just their names, usually clarifies this faster than general reflection does."
+    },
+    {
+      "type": "heading",
+      "text": "Preparing while you're still deciding"
+    },
+    {
+      "type": "paragraph",
+      "text": "The practical good news is that none of this uncertainty needs to delay your entry test prep. Advanced Maths, English, and IQ reasoning preparation serve you regardless of which of FAST's computing or engineering programs you eventually pick, since the entry test and merit formula don't change based on program choice at the application stage. Use your remaining prep weeks to build the general foundation, and treat the specific program decision as something you can keep resolving in parallel, right up until you actually have to choose on your application form."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "Does FAST only offer Computer Science?",
+          "answer": "No — alongside CS, FAST-NUCES also offers Software Engineering, Artificial Intelligence, various Engineering disciplines, and Business programs at some campuses. The entry test and merit formula are the same regardless of which of these you're targeting."
+        },
+        {
+          "question": "Do I need to pick my exact program before preparing for the FAST entry test?",
+          "answer": "No. The entry test and merit formula don't change based on program choice, so you only need to have decided your general direction (computing/engineering) before applying — the specific program can be finalized later, right up to your application form."
+        },
+        {
+          "question": "How do I know if I'm actually interested in CS or just unsure?",
+          "answer": "Try some introductory programming for a weekend using free resources before assuming either way. It's not enough exposure to become good at it, but it gives an honest signal about whether the process of problem-solving and debugging feels engaging or draining to you."
+        },
+        {
+          "question": "Is CS oversaturated in the Pakistani job market?",
+          "answer": "Both the 'oversaturated' and 'guaranteed job' narratives online tend to be overconfident. A more grounded approach is looking at where actual recent FAST CS and Software Engineering graduates have ended up — internships, first jobs, further study — rather than relying on general online sentiment."
+        },
+        {
+          "question": "What's the difference between CS, Software Engineering, and Electrical Engineering at FAST?",
+          "answer": "CS leans toward algorithms, systems, and software. Electrical Engineering leans toward hardware, circuits, and signals. Software Engineering sits closer to CS but with more emphasis on large-scale system design and engineering process. Reading actual course outlines clarifies this faster than the program names alone."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "slug": "fast-entry-test-english-question-types",
+  "title": "FAST Entry Test English Section: What's Tested",
+  "excerpt": "The English section on the FAST Entry Test follows an SAT-style format, not the grammar-drill style most FSc students are used to. Here's what that actually means for how you prepare.",
+  "category": "subject-guides",
+  "publishedDate": "2026-07-29",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Why \"I'm good at English\" isn't quite the right measure"
+    },
+    {
+      "type": "paragraph",
+      "text": "A lot of FSc students, especially those who read and communicate comfortably in English day to day, assume the English section is the one part of the FAST Entry Test they don't need to specifically prepare for. That's a reasonable assumption if the section tested general fluency — but an SAT-style English section tests a specific, learnable skill set that's different from conversational or even academic English fluency, and it rewards familiarity with that specific format more than it rewards general comfort with the language."
+    },
+    {
+      "type": "paragraph",
+      "text": "Being genuinely fluent in English helps, but it isn't a substitute for having actually practiced the particular question types and time pressure this section presents."
+    },
+    {
+      "type": "heading",
+      "text": "What an SAT-style English section typically covers"
+    },
+    {
+      "type": "paragraph",
+      "text": "SAT-style English sections generally draw from a recognizable cluster of skills: reading comprehension passages with inference-based questions, sentence correction and grammar-in-context (identifying the grammatically correct or clearest version of a sentence), vocabulary in context rather than isolated word definitions, and sometimes questions on sentence structure like combining or reordering clauses effectively."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Reading comprehension: answering inference and detail questions based on a passage, not just literal recall",
+        "Sentence correction: identifying grammatical errors or the clearest phrasing among options",
+        "Vocabulary in context: understanding what a word means within a specific sentence, not just its dictionary definition",
+        "Sentence structure: recognizing effective versus awkward sentence construction"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "The precise mix of these question types on FAST's own paper can vary by cycle — treat this as the general shape of an SAT-style section rather than a confirmed breakdown of the current test, and check official past papers where available."
+    },
+    {
+      "type": "heading",
+      "text": "Why comprehension speed matters as much as comprehension accuracy"
+    },
+    {
+      "type": "paragraph",
+      "text": "Because this section sits within a larger, time-pressured 120-question paper, the practical skill you need isn't just \"can you understand this passage\" but \"can you understand it quickly enough to leave adequate time for the rest of the test.\" Students who read comfortably but slowly in English often do fine on untimed practice and then run out of time on the actual section, which is a pacing problem rather than a comprehension problem — and it needs pacing-specific practice to fix, not more passive reading."
+    },
+    {
+      "type": "paragraph",
+      "text": "A useful habit is practicing comprehension passages with a strict timer from early in your prep, rather than only adding time pressure in the final weeks, since reading speed under pressure is itself a skill that takes repeated practice to build."
+    },
+    {
+      "type": "heading",
+      "text": "Sentence correction rewards a specific kind of attention"
+    },
+    {
+      "type": "paragraph",
+      "text": "Sentence correction and grammar-in-context questions often hinge on subtle distinctions — subject-verb agreement across a long or complex sentence, correct use of tenses, or awkward-but-not-technically-wrong phrasing versus genuinely correct phrasing. This is a different skill from knowing grammar rules in the abstract; it's about spotting the specific error or awkwardness quickly within a full sentence, which is best built through repeated exposure to this exact question style rather than through general grammar review."
+    },
+    {
+      "type": "heading",
+      "text": "Building vocabulary the useful way"
+    },
+    {
+      "type": "paragraph",
+      "text": "Rather than memorizing long, disconnected word lists, vocabulary-in-context questions reward being able to work out a word's meaning from the sentence around it — a skill closer to inference than pure memorization. Reading broadly in English, alongside targeted practice with vocabulary-in-context style questions specifically, tends to build this more effectively than flashcard memorization of word lists divorced from any sentence context."
+    },
+    {
+      "type": "heading",
+      "text": "Putting it together"
+    },
+    {
+      "type": "paragraph",
+      "text": "If you're strong in conversational or academic English but haven't sat a genuinely SAT-style, timed English section before, the gap between \"comfortable with English\" and \"prepared for this specific section\" is real and worth closing with a handful of timed practice sets before test day — not because your English needs fixing, but because the format itself needs practice, the same way a strong Maths student still needs to practice under the entry test's specific time pressure rather than assuming content knowledge alone is enough."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What question types are on the FAST English section?",
+          "answer": "Reading comprehension with inference-based questions, sentence correction and grammar-in-context, vocabulary in context, and sentence structure questions — an SAT-style format rather than a traditional grammar-drill test."
+        },
+        {
+          "question": "Is being fluent in English enough to skip preparing for this section?",
+          "answer": "Not quite. General fluency helps, but the SAT-style format rewards specific comprehension and sentence-correction skills that need their own timed practice — the gap is about format familiarity, not language ability."
+        },
+        {
+          "question": "Why do I run out of time on the English section even though I read well?",
+          "answer": "This is usually a pacing problem, not a comprehension problem. Reading comfortably but slowly on untimed practice doesn't reveal this — practicing with a strict timer from early in your prep is what actually builds the reading speed this section demands."
+        },
+        {
+          "question": "What's the best way to build vocabulary for this section?",
+          "answer": "Working out a word's meaning from its sentence context, rather than memorizing disconnected word lists, since vocabulary-in-context questions reward inference over pure memorization. Reading broadly alongside targeted practice questions builds this more effectively than flashcards."
+        },
+        {
+          "question": "Does the exact mix of question types stay the same every cycle?",
+          "answer": "The general shape (comprehension, sentence correction, vocabulary in context, sentence structure) is consistent with an SAT-style section, but the precise mix can vary by cycle — check official past papers where available rather than assuming a fixed breakdown."
+        }
+      ]
+    }
+  ]
+}
