@@ -18,17 +18,14 @@ from app.schemas.admin import (
 )
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, ALLOWED_METHODS
-from sqlalchemy import func
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 PDF_STORAGE_ROOT = os.path.join(DATA_DIR, "pdfs", "_admin_uploads")
 ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
 ALLOWED_PLANS = ["free", "pro"]
-ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual"]
 PRO_PLAN_DURATION_DAYS = 30
 
-from sqlalchemy import func
 
 @router.get("/revenue")
 def get_revenue_summary(
