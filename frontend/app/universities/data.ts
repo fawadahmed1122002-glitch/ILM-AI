@@ -160,7 +160,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["Civil Engineering", "Electrical Engineering", "Mechanical Engineering", "Computer Science"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://uet.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/uet.png", // TODO: add once a licensed photo/logo is sourced
     about: "UET Lahore is one of Pakistan's oldest and most established engineering universities, offering undergraduate programs across a wide range of engineering disciplines. Admission is based on the ECAT, combined with Matric and FSc academic scores.",
   },
   {
@@ -187,7 +187,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["Electrical Engineering", "Computer Science", "Mechanical Engineering", "BBA"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://nust.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/nust.png", // TODO: add once a licensed photo/logo is sourced
     about: "NUST runs its own NET, held in multiple series throughout the year, letting students retake and improve their best score. This makes NUST prep a recurring, year-round effort rather than a single attempt.",
   },
   {
@@ -214,7 +214,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Civil Engineering", "BS Electrical Engineering", "BS Computer Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://nu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/fast.png", // TODO: add once a licensed photo/logo is sourced
     about: "FAST-NUCES's PEC-accredited engineering programs use a different merit formula than its Computing/CS programs -- weighted more heavily toward FSc, matching the standard HEC engineering pattern shared with UET. Looking for FAST's Computing or Business programs instead? See FAST-NUCES (Computing/Business), which uses a separate 50%-test-weighted formula.",
   },
   {
@@ -241,7 +241,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Electrical Engineering", "BS Mechanical Engineering", "BS AI"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://giki.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/giki.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "GIKI is a highly selective, donor-independent engineering institute in KPK known for one of Pakistan's most test-weighted merit formulas -- 85% of your score comes from the admission test itself.",
   },
   {
@@ -268,7 +268,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Electrical Engineering", "BS Mechanical Engineering", "BS Nuclear Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://admissions.pieas.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/pieas.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "PIEAS, operated under the Pakistan Atomic Energy Commission, is one of Pakistan's most academically demanding engineering institutes. Its test-heavy merit formula (60%) makes entry test performance the single biggest lever for admission. The campus sits in Nilore, on the eastern edge of Islamabad.",
   },
   {
@@ -295,7 +295,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Software Engineering", "BS Electrical Engineering", "BS Data Science"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://comsats.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/comsats.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "COMSATS is one of Pakistan's largest public-sector universities with 7 campuses nationwide. Note: Architecture and Art & Design programs use a separate interview-based formula, not the standard aggregate.",
   },
   {
@@ -322,7 +322,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BE Computer Science & IT", "BE Electrical Engineering", "BE Civil Engineering", "BS Software Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://www.neduet.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/ned.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "NED is Karachi's flagship engineering university. Uniquely among major engineering universities, it excludes Matric marks entirely from merit. Most seats reserved for Sindh-domicile candidates.",
   },
   {
@@ -349,7 +349,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Artificial Intelligence", "BS Electrical Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://itu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/itu.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "ITU is a smaller, research-focused public university in Lahore founded by Umar Saif, modeled loosely after MIT. Strong startup/incubator culture. Formula shown applies to BS Computer Science and BS AI specifically; other programs may differ.",
   },
   {
@@ -376,7 +376,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Information Technology", "BS Software Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://pu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/pu.png", // TODO: add once a licensed photo/logo is sourced
     about: "Punjab University is one of Pakistan's oldest and largest universities, with a huge range of departments each potentially running its own admission criteria. Unlike UET or NUST, there is no single central merit formula -- verify per-department before relying on any figure.",
   },
   {
@@ -403,7 +403,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Software Engineering", "BS Electrical Engineering", "BBA"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://ucp.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/ucp.png", // TODO: add once a licensed photo/logo is sourced
     about: "UCP is a private university in Lahore. Its published admission criteria describe passing an entry test as an eligibility requirement, with final merit apparently based mainly on academic marks -- but the exact weighting isn't clearly published. Verify directly before relying on this for prep guidance.",
   },
   {
@@ -430,7 +430,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Software Engineering", "BS Electrical Engineering", "BBA"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://umt.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/umt.png", // TODO: add once a licensed photo/logo is sourced
     about: "UMT is a private university in Lahore with a wide program range. Merit criteria genuinely vary by program per the university's own published pages -- no single formula applies across the board. Verify per-program before relying on this for prep guidance.",
   },
   {
@@ -457,7 +457,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Software Engineering", "BE Electrical Engineering", "MBBS/BDS (Karachi campus)"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://bahria.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/bahria.png", // TODO: add once a licensed photo/logo is sourced
     about: "Bahria University is a multi-campus institution run under naval heritage, with strength in Engineering, Computing, and (at its Karachi campus) Medical/Dental programs. Sources disagree on the exact merit formula -- verify against the official portal before relying on this.",
   },
   {
@@ -484,7 +484,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BE Electrical Engineering", "BS Software Engineering"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://au.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/air.png", // TODO: add once a licensed photo/logo is sourced
     about: "Air University is a public university under the Pakistan Air Force, strong in Engineering and Computing. Test/exemption options are flexible (multiple NAT/USAT variants accepted) but the exact Matric/FSc weighting split is unresolved between sources -- verify directly.",
   },
 
@@ -515,7 +515,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["BS Computer Science", "BS Software Engineering", "BS Artificial Intelligence", "BS Data Science"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://nu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/fast.png", // TODO: add once a licensed photo/logo is sourced
     about: "FAST-NUCES is Pakistan's leading dedicated computing university, with 5 campuses across the country. Known for strong CS/software engineering placement outcomes. Looking for FAST's PEC-accredited Engineering programs instead? See FAST-NUCES (Engineering), which uses a different, more FSc-weighted formula.",
   },
 
@@ -546,7 +546,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["MBBS"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://kemu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/kemu.png", // TODO: add once a licensed photo/logo is sourced
     about: "KEMU is Pakistan's oldest medical college (est. 1860) and consistently has the highest closing merit in Punjab.",
   },
   {
@@ -573,7 +573,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["MBBS"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://aimc.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/aimc.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "AIMC is a well-established public medical college in Lahore, affiliated with Jinnah Hospital.",
   },
   {
@@ -600,7 +600,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["MBBS"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://fjmu.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/fjmc.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "FJMU is a public medical university in Lahore, historically a women's medical college, under the same UHS-administered MDCAT merit system.",
   },
   {
@@ -627,7 +627,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["MBBS", "BDS"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://lmdc.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/lmdc.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "LMDC is a private medical/dental college in Lahore, affiliated with UHS and recognized by PMC. Dental students train at the historic De'Montmorency College of Dentistry. Admission process is run entirely by UHS, not the college itself.",
   },
 
@@ -658,7 +658,7 @@ export const UNIVERSITIES: University[] = [
     topPrograms: ["DVM (Doctor of Veterinary Medicine)", "Pharm-D", "BS Zoology", "BS Food Science"],
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://uvas.edu.pk",
-    image: null, // TODO: add once a licensed photo/logo is sourced
+    image: "/universities/uvas.png", // TODO: add once a licensed photo/logo is sourced
     about: "UVAS is Pakistan's leading veterinary sciences university. Unlike ECAT/MDCAT-based universities, admission is based purely on Matric and FSc academic marks -- no entry test score affects the merit ranking.",
   },
 ];

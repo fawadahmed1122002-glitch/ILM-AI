@@ -1,0 +1,75 @@
+{
+  "slug": "nust-aggregate-calculator-formula-examples",
+  "title": "NUST Aggregate Calculator: Formula & Examples",
+  "excerpt": "NUST weighs your entry test at 75% of your final aggregate — here's the exact formula, what each component means, and a full worked example showing how the numbers add up.",
+  "category": "university-guides",
+  "publishedDate": "2026-08-08",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Predicting your admission chances at the National University of Sciences and Technology (NUST) starts with knowing how your final merit is computed. Many students focus entirely on studying for the entrance test without realizing how heavily past academic records influence their final standing. Understanding the official calculation method allows you to set realistic score targets."
+    },
+    {
+      "type": "heading",
+      "text": "The official NUST merit aggregate formula"
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST computes undergraduate merit aggregates using a fixed three-part weightage distribution. This formula balances your standardized entrance test performance with your secondary and intermediate academic background."
+    },
+    {
+      "type": "callout",
+      "text": "Aggregate % = (NET Score × 0.75) + (FSc Part 1 Marks % × 0.15) + (Matric Marks % × 0.10)"
+    },
+    {
+      "type": "list",
+      "items": [
+        "NUST Entry Test (75%): because the test carries three-quarters of the total weight, a strong NET score is your most powerful tool for improving your aggregate",
+        "Intermediate / FSc Part 1 (15%): NUST evaluates your first-year intermediate board marks (or IBCC equivalence) for this component",
+        "Matriculation / SSC (10%): your basic secondary school percentage contributes the remaining tenth of your final score"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? NUST uses FSc Part-I marks instead of waiting for final second-year board transcripts, ensuring that merit lists align smoothly with the national academic calendar."
+    },
+    {
+      "type": "heading",
+      "text": "Step-by-step calculation example for engineering"
+    },
+    {
+      "type": "paragraph",
+      "text": "Let's walk through a practical example for an engineering applicant to see how the numbers come together."
+    },
+    {
+      "type": "table",
+      "headers": ["Component", "Score / Total", "Percentage", "Weighted Contribution"],
+      "rows": [
+        ["NUST Entry Test (NET)", "140 / 200", "(140 ÷ 200) × 100 = 70%", "70 × 0.75 = 52.50%"],
+        ["FSc Part-1", "420 / 550", "(420 ÷ 550) × 100 = 76.36%", "76.36 × 0.15 = 11.45%"],
+        ["Matric (SSC)", "950 / 1100", "(950 ÷ 1100) × 100 = 86.36%", "86.36 × 0.10 = 8.64%"]
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Final Computed Aggregate: 52.50% + 11.45% + 8.64% = 72.59%"
+    },
+    {
+      "type": "heading",
+      "text": "Common mistakes when calculating aggregate"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Using total FSc marks instead of Part-1: applying second-year marks or total intermediate scores instead of the mandatory FSc Part-1 result distorts the final calculation",
+        "Miscalculating NET percentage: forgetting that the NET is scored out of a total 200 marks and dividing incorrectly by a different scale",
+        "Ignoring O/A Level equivalence rules: foreign-system students failing to use official IBCC percentage conversions equivalent to Matric and Intermediate standards"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Mastering the NUST aggregate calculator formula gives you complete control over your admission strategy. By breaking down your target scores across the NET, FSc Part-1, and Matric components, you can approach the entry test season with clear, measurable goals."
+    }
+  ]
+}

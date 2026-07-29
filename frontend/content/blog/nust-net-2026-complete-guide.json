@@ -1,0 +1,69 @@
+{
+  "slug": "nust-net-2026-complete-guide",
+  "title": "Complete Guide to NUST NET 2026: Everything You Need to Know",
+  "excerpt": "The NUST Entry Test (NET) is the cornerstone of admission to NUST's undergraduate programs. Here's how the test series work, how subject weightings differ by stream, and what to know before you sit it.",
+  "category": "university-guides",
+  "publishedDate": "2026-08-03",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "heading",
+      "text": "What is the NUST NET?"
+    },
+    {
+      "type": "paragraph",
+      "text": "The NUST Entry Test (NET) is a university-administered, computer-based exam required for admission into all undergraduate programs at NUST. Unlike board exams that test rote memorization, the NET evaluates conceptual clarity, analytical thinking, and time management based on the SSC (Matric) and HSSC (Intermediate) curricula."
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST conducts the NET in multiple series — usually four series spanning from late autumn through summer. One of the biggest advantages of this system is flexibility: you can appear in more than one series, and NUST considers your highest score for final merit compilation."
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? You do not need to wait to clear your second-year intermediate exams to start attempting the NET. FSc Part-1 students can sit for earlier series to gain valuable testing experience under real exam pressure."
+    },
+    {
+      "type": "heading",
+      "text": "NUST NET test pattern and subject weightings"
+    },
+    {
+      "type": "paragraph",
+      "text": "The format of the exam depends entirely on the academic discipline you are applying for — NUST categorizes the test into specific streams, each with its own subject mix and weightings. Below is an overview of the primary test streams."
+    },
+    {
+      "type": "table",
+      "headers": ["Program Stream", "Core Subjects & Weightings", "Target Disciplines"],
+      "rows": [
+        ["Engineering & Computing", "Mathematics (50%), Physics (30%), English (20%)", "Electrical, Mechanical, Civil, Software, Computer Science"],
+        ["Applied Sciences", "Biology (50%), Chemistry (30%), English (20%)", "Biotechnology, Food Science, Environmental Science"],
+        ["Business & Social Sciences", "Quantitative Mathematics (50%), English (50%)", "BBA, Accounting & Finance, Economics, LLB"],
+        ["Architecture & Design", "Design Aptitude (50%), Mathematics (30%), English (20%)", "Architecture, Industrial Design"]
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Confirm your exact target program's stream and current subject weightings directly at nust.edu.pk before building a study plan — NUST can revise stream categorization and weightings between admission cycles."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "Can I take the NUST NET more than once?",
+          "answer": "Yes. NUST conducts the NET across multiple series (usually four, spanning late autumn through summer), and you can appear in more than one — NUST uses your highest score across all attempts for final merit compilation."
+        },
+        {
+          "question": "Do I need to finish FSc Part 2 before I can sit the NET?",
+          "answer": "No. FSc Part-1 students can sit earlier NET series to gain real exam-condition testing experience before their final HSSC exams are complete."
+        },
+        {
+          "question": "Does every applicant sit the same NUST NET paper?",
+          "answer": "No. The subjects and weightings depend on which program stream you're applying to — Engineering & Computing, Applied Sciences, Business & Social Sciences, and Architecture & Design each use a different subject mix."
+        },
+        {
+          "question": "What subjects are tested for Computer Science and Engineering applicants?",
+          "answer": "Under the Engineering & Computing stream, the NET weighs Mathematics at 50%, Physics at 30%, and English at 20%."
+        }
+      ]
+    }
+  ]
+}

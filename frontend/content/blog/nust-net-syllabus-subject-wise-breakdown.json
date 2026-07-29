@@ -1,0 +1,109 @@
+{
+  "slug": "nust-net-syllabus-subject-wise-breakdown",
+  "title": "NUST NET Syllabus 2026 (Subject-Wise Complete Breakdown)",
+  "excerpt": "A complete, subject-wise breakdown of the NUST NET syllabus across academic streams — exactly which topics to prioritize in Math, Physics, and English.",
+  "category": "subject-guides",
+  "publishedDate": "2026-08-06",
+  "readingMinutes": 7,
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Preparing for the NUST Entry Test (NET) requires a laser-focused approach. Because the exam pulls questions directly from the SSC (Matric) and HSSC (Intermediate) curricula, looking at the entire syllabus can feel overwhelming. Knowing what to study — and how much weight each subject carries — is vital for an efficient preparation strategy."
+    },
+    {
+      "type": "heading",
+      "text": "Overview of NUST NET streams and weightages"
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST structures its entry test into specific streams based on your intended undergraduate discipline. Each stream features a distinct subject combination and percentage distribution."
+    },
+    {
+      "type": "table",
+      "headers": ["Academic Stream", "Core Subjects & Weightage", "Target Undergraduate Programs"],
+      "rows": [
+        ["Engineering & Computing", "Mathematics (50%), Physics (30%), English (20%)", "Electrical, Mechanical, Civil, Software, Computer Science"],
+        ["Applied Sciences", "Biology (50%), Chemistry (30%), English (20%)", "Biotechnology, Food Science, Environmental Science"],
+        ["Business & Social Sciences", "Quantitative Mathematics (50%), English (50%)", "BBA, Accounting & Finance, Economics, LLB"],
+        ["Architecture & Design", "Design Aptitude (50%), Mathematics (30%), English (20%)", "Architecture, Industrial Design"]
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "1. Mathematics syllabus (50% weight for Engineering & Computing)"
+    },
+    {
+      "type": "paragraph",
+      "text": "Mathematics forms the core of the engineering and computing test stream, accounting for 100 out of 200 total questions."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Key areas (Part 1 & Part 2): functions and limits, differentiation, integration, analytic geometry (straight lines and conic sections), quadratic equations, matrices and determinants, sequences and series, trigonometry, vectors, and permutations/combinations",
+        "Preparation tip: focus heavily on calculus and analytical geometry, as they consistently feature a high density of conceptual MCQs"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "2. Physics syllabus (30% weight for Engineering & Computing)"
+    },
+    {
+      "type": "paragraph",
+      "text": "Physics makes up 60 questions in the engineering test, emphasizing both theoretical comprehension and numerical application."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Key areas: motion and force, work and energy, circular motion, oscillations, waves and optics, current electricity and electromagnetism, electronics, and modern physics (nuclear physics and atomic spectra)",
+        "Preparation tip: memorize standard formulas and practice short, conceptual numerical calculations that can be solved in under a minute without a physical calculator"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "3. English syllabus (20% weight across major streams)"
+    },
+    {
+      "type": "paragraph",
+      "text": "The English section contains 40 questions for engineering applicants and serves as a crucial scoring differentiator."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Key areas: reading comprehension, vocabulary (synonyms and antonyms), sentence completion, grammar rules, spotting errors, and analogies",
+        "Preparation tip: regular vocabulary drills and grammar rule revisions prevent silly mistakes that cost valuable merit points"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? The NUST NET does not feature negative marking. Even if you encounter a tricky question near the end of your time limit, make sure to bubble an answer option."
+    },
+    {
+      "type": "heading",
+      "text": "Stream-specific guidelines: pre-medical students applying for computing"
+    },
+    {
+      "type": "paragraph",
+      "text": "If you belong to the Pre-Medical group and are applying for computing or engineering programs, NUST allows admission provided you meet specific criteria. Candidates who take engineering-stream papers without a prior formal math background must complete a designated condensed mathematics course offered by NUST prior to formal enrollment. Always cross-verify current bridging guidelines directly through official university portals."
+    },
+    {
+      "type": "callout",
+      "text": "To test your readiness against the actual syllabus, structured practice platforms like PrepXMentor provide topic-wise practice modules and mock examinations designed around official HSSC curriculum standards."
+    },
+    {
+      "type": "heading",
+      "text": "Common mistakes when studying the syllabus"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Ignoring minor chapters: focusing only on calculus or mechanics while ignoring smaller chapters like vectors or statistics can cost you easy marks — cover the complete blueprint",
+        "Using outdated guides: relying on unverified third-party notes often introduces errors — stick closely to standard provincial or federal textbook editions",
+        "Neglecting mock tests: knowing the theory is different from applying it under a 3-hour digital clock — regular full-length mock tests bridge this gap"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Mastering the NUST NET syllabus requires systematic planning, rigorous textbook reading, and consistent practice. By aligning your daily study schedule with the official subject weightages — especially prioritizing mathematics and physics for technical tracks — you can approach the computer-based examination with absolute clarity and control."
+    }
+  ]
+}

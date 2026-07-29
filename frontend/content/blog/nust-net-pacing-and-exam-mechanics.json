@@ -1,0 +1,73 @@
+{
+  "slug": "nust-net-pacing-and-exam-mechanics",
+  "title": "NUST NET Test Pattern Explained: Marks, Time & Question Distribution",
+  "excerpt": "200 questions, 180 minutes, no negative marking — here's exactly how the NUST NET's timing and digital interface work, and how to pace yourself through it.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-08-07",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Walking into an entrance exam without knowing its structure is a recipe for panic. If you are aiming for admission to the National University of Sciences and Technology (NUST), understanding the exact format of the NUST Entry Test is just as important as mastering your textbooks. Knowing how many questions to expect, how much time you have, and how marks are allocated helps you build an effective exam-day strategy."
+    },
+    {
+      "type": "heading",
+      "text": "Core format and structure of NUST NET"
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST administers its entrance exam primarily as a Computer-Based Test (CBT) at designated campuses, though paper-based options apply in specific regional centers. The exam consists entirely of multiple-choice questions (MCQs) with four options each."
+    },
+    {
+      "type": "table",
+      "headers": ["Feature", "Specification"],
+      "rows": [
+        ["Total Questions", "200 MCQs"],
+        ["Total Time", "3 Hours (180 Minutes)"],
+        ["Test Mode", "Computer-Based Test (CBT) / Paper-Based (depending on center)"],
+        ["Negative Marking", "None"],
+        ["Answering Format", "Single best choice out of four options"]
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? There is zero negative marking in the NUST Entry Test. If you run out of time, you should bubble guesses for all remaining questions because incorrect answers carry no penalty."
+    },
+    {
+      "type": "heading",
+      "text": "Important rules regarding exam timing and pacing"
+    },
+    {
+      "type": "paragraph",
+      "text": "With 200 questions to solve in 180 minutes, time management is your biggest hurdle. On average, you have roughly 54 seconds per question."
+    },
+    {
+      "type": "list",
+      "items": [
+        "The clock is global: the digital timer runs continuously on your screen, and once time expires, the software automatically locks your interface",
+        "Navigation flexibility: unlike paper-based exams where flipping back is tedious, the computer interface allows you to flag questions, skip them, and return to them later before final submission",
+        "No calculators allowed: physical or electronic calculators are strictly prohibited inside the testing auditorium — practice solving calculations using mental shortcuts or basic estimation"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "To master time management under pressure, interactive preparation platforms like PrepXMentor offer timed mock tests that simulate the digital NUST test environment, helping you track your pacing across sections."
+    },
+    {
+      "type": "heading",
+      "text": "Common mistakes during the test"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Spending too much time on tough questions: getting stuck on a complicated calculus or physics numerical can drain 5 minutes — flag it, skip it, and return later if time permits",
+        "Leaving blanks at the end: because wrong answers don't deduct points, leaving any MCQ blank is throwing away free probability — always guess remaining items",
+        "Misinterpreting the digital interface: not practicing on computer-based mock screens beforehand can cause unnecessary panic on exam day — familiarize yourself with digital navigation"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Knowing the precise NUST NET test pattern removes the element of surprise on exam day. By understanding the 200-question format, section weightages, and the absence of negative marking, you can organize your study blocks effectively and pace your attempts to maximize your final score."
+    }
+  ]
+}

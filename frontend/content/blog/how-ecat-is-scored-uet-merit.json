@@ -1,0 +1,132 @@
+{
+  "slug": "how-ecat-is-scored-uet-merit",
+  "title": "How ECAT Is Scored and What Actually Counts Toward Your Merit",
+  "excerpt": "A clear breakdown of how ECAT marks are calculated, how much weight your test score really carries, and where students misjudge their own aggregate.",
+  "category": "exam-strategy",
+  "publishedDate": "2026-08-05",
+  "readingMinutes": 7,
+  "content": [
+    {
+      "type": "heading",
+      "text": "Two different numbers: your ECAT score and your merit score"
+    },
+    {
+      "type": "paragraph",
+      "text": "A lot of students treat their ECAT score as the final word on their admission chances. It isn't. Your ECAT score is one input into a separate calculation — your merit aggregate — that also pulls in your Matric and Intermediate results. Understanding exactly how these combine is the difference between guessing your chances and actually knowing them."
+    },
+    {
+      "type": "paragraph",
+      "text": "This post breaks the process into two parts: how ECAT itself is scored, and how that score gets folded into your final merit percentage."
+    },
+    {
+      "type": "heading",
+      "text": "How the ECAT paper is structured"
+    },
+    {
+      "type": "paragraph",
+      "text": "According to UET Lahore's official ECAT information, the test runs 100 minutes and contains 100 multiple-choice questions. Ten of those questions are on English, and the remaining ninety are split equally across your other subjects, based on the combination you choose. Most Intermediate (FSc Pre-Engineering) students sit Mathematics, Physics, and Chemistry, or Mathematics, Physics, and Computer Science — meaning those three subjects get 30 questions each, alongside the 10 English questions. Pre-Medical students who studied Biology, Physics, and Chemistry follow the same 30/30/30/10 pattern with Biology in place of Math."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Total questions: 100",
+        "Duration: 100 minutes",
+        "Marks per correct answer: 4",
+        "Maximum possible score: 400"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "DAE (diploma) qualified candidates have their own separate combinations — either Physics, Mathematics, English and Chemistry, or Physics, Mathematics, English and Computer Science — rather than the five combinations available to Intermediate stream applicants."
+    },
+    {
+      "type": "heading",
+      "text": "Is there negative marking?"
+    },
+    {
+      "type": "paragraph",
+      "text": "This is worth checking every single cycle rather than trusting last year's answer or a random blog post, because ECAT's negative marking policy has been known to change between test cycles. As of the official announcement for the most recent cycle, each correct answer is worth four marks, and there's no marking deducted for a wrong answer, and no minimum passing threshold on any subject. That matters strategically: if there's genuinely no penalty for a wrong guess in the year you're sitting, leaving a question blank only costs you the chance of getting it right — there's no downside to attempting every question."
+    },
+    {
+      "type": "callout",
+      "text": "Negative marking policies can be revised year to year. Confirm the current policy on ecat.uet.edu.pk before you build your guessing strategy around it."
+    },
+    {
+      "type": "heading",
+      "text": "Multiple attempts, best score counted"
+    },
+    {
+      "type": "paragraph",
+      "text": "UET typically conducts ECAT in more than one phase within the same admission cycle — often referred to as the first and second test. You're allowed to appear in both, and whichever score is higher is the one used for your merit calculation. There's no penalty for a lower second attempt; it simply isn't the one that counts. If your first attempt already reflects your target score, there's no requirement to sit again — but if it didn't go the way you hoped, a second attempt is a real, sanctioned second chance, not a backup plan universities frown on."
+    },
+    {
+      "type": "heading",
+      "text": "How ECAT feeds into your merit aggregate"
+    },
+    {
+      "type": "paragraph",
+      "text": "Here's where the actual weighting comes in, and it depends on your qualification type. For students applying with an Intermediate (FSc or equivalent) background to ECAT-based programs, UET's official merit formula weights the three components as follows:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "ECAT score: 33% of your merit aggregate",
+        "Intermediate Part-I (first year) result: 50% of your merit aggregate",
+        "Matriculation result: 17% of your merit aggregate"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Notice that your Intermediate result actually carries more weight than ECAT itself. A strong first-year FSc percentage protects you even on an average test day, and conversely, a shaky first-year result can't be fully offset by ECAT alone — 33% is significant, but it isn't the majority of the calculation. For O/A-Level applicants, the split is simpler: ECAT still carries 33%, but the remaining 67% comes entirely from your 11th-grade-equivalent marks, since there's no separate matric-equivalent stage in that system."
+    },
+    {
+      "type": "callout",
+      "text": "Because Intermediate marks carry the most weight, treat your FSc Part-I result as seriously as ECAT prep — not as an afterthought to be managed around test season."
+    },
+    {
+      "type": "heading",
+      "text": "Turning a raw ECAT score into a percentage"
+    },
+    {
+      "type": "paragraph",
+      "text": "Since your ECAT weight in the formula is applied as a percentage, not a raw score, you need to convert your result first. With a maximum of 400 marks, the conversion is straightforward: divide your obtained marks by 400 and multiply by 100 to get your ECAT percentage, then apply the 33% weight to that percentage — not to your raw score out of 400. The same logic applies to your Matric and Intermediate results: convert each to a percentage of its own total before applying its weight, then add the three weighted percentages together for your final aggregate."
+    },
+    {
+      "type": "paragraph",
+      "text": "Where students most often go wrong is assuming a good raw ECAT number (say, 300 out of 400) automatically translates to a strong aggregate, without accounting for how their Intermediate percentage — carrying half the total weight — pulls the overall number in a different direction."
+    },
+    {
+      "type": "heading",
+      "text": "The takeaway"
+    },
+    {
+      "type": "paragraph",
+      "text": "Your ECAT score matters, but it's one-third of the equation, not the whole thing, and it isn't even the largest third. Prepare for the test seriously, understand its actual structure so nothing on test day surprises you, and don't let ECAT prep eat into the time you need to protect a strong Intermediate result — since that's the component actually carrying the most weight in your final aggregate. Once you have your numbers, running them through a proper merit calculator gives you a far more honest picture than eyeballing a raw ECAT score ever will."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "How many questions are on the ECAT and how is it marked?",
+          "answer": "100 multiple-choice questions in 100 minutes — 10 English plus 90 split equally across your chosen subject combination. Each correct answer is worth 4 marks, for a maximum score of 400."
+        },
+        {
+          "question": "Does ECAT have negative marking?",
+          "answer": "As of the most recent official cycle, no — there's no deduction for wrong answers and no minimum passing threshold. This policy has changed between cycles before, so confirm the current rule on ecat.uet.edu.pk before building a guessing strategy around it."
+        },
+        {
+          "question": "Can I retake ECAT if my first attempt doesn't go well?",
+          "answer": "Yes — UET typically runs two phases per cycle, and your higher score from either attempt is the one used for merit. There's no penalty for a lower second attempt."
+        },
+        {
+          "question": "What is UET's ECAT merit formula?",
+          "answer": "33% ECAT + 50% Intermediate (FSc) result + 17% Matriculation — meaning your Intermediate result actually carries more weight than ECAT itself. For O/A-Level applicants, ECAT stays at 33% with the remaining 67% coming from 11th-grade-equivalent marks."
+        },
+        {
+          "question": "How do I convert my raw ECAT score into my merit aggregate?",
+          "answer": "Divide your obtained marks by 400 and multiply by 100 to get your ECAT percentage, then apply the 33% weight to that percentage — not your raw score. Do the same for Matric and Intermediate before adding all three weighted percentages together."
+        }
+      ]
+    }
+  ]
+}

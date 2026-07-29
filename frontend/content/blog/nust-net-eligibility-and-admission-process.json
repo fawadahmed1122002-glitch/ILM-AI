@@ -1,0 +1,125 @@
+{
+  "slug": "nust-net-eligibility-and-admission-process",
+  "title": "What is NUST NET? Eligibility, Pattern & Admission Process Explained",
+  "excerpt": "A complete breakdown of NUST NET eligibility requirements, test pattern, and the full admission process — from registration to merit list generation.",
+  "category": "university-guides",
+  "publishedDate": "2026-08-04",
+  "readingMinutes": 7,
+  "content": [
+    {
+      "type": "heading",
+      "text": "What is NUST NET?"
+    },
+    {
+      "type": "paragraph",
+      "text": "The NUST Entry Test (NET) is a university-administered entrance exam mandatory for all undergraduate degree seekers. Unlike board exams that test memorization, the NET evaluates conceptual understanding, analytical thinking, and time management based on the SSC (Matric) and HSSC (Intermediate) curricula."
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST conducts the exam in multiple series throughout the year — typically four series spanning from late autumn to summer. A major benefit of this system is flexibility: students can appear in more than one series, and NUST automatically considers the highest score for final merit compilation."
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? FSc Part-1 students can appear in early NET series to gain real exam experience without waiting to clear their second-year board exams."
+    },
+    {
+      "type": "heading",
+      "text": "NUST eligibility criteria for undergraduate programs"
+    },
+    {
+      "type": "paragraph",
+      "text": "Before registering, you must ensure you meet the baseline academic requirements set by the university. The standard eligibility benchmarks include:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Minimum marks: at least 60% aggregate marks each in SSC (Matric) and HSSC (Intermediate) or equivalent qualifications, such as O/A Levels with IBCC equivalence",
+        "Stream-based subject rules: your intermediate subjects must align with your intended degree track — engineering applicants generally need Pre-Engineering or Computer Science combinations, while natural sciences require relevant science groupings"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "O and A-Level students must obtain an official equivalence certificate from the Inter Boards Coordination Commission (IBCC) showing at least 60% marks."
+    },
+    {
+      "type": "heading",
+      "text": "NUST NET test pattern and structure"
+    },
+    {
+      "type": "paragraph",
+      "text": "The exam is conducted primarily via a Computer-Based Test (CBT) format. It consists of 200 multiple-choice questions (MCQs) that must be completed within 3 hours (180 minutes). The exact subject distribution varies depending on your chosen discipline:"
+    },
+    {
+      "type": "table",
+      "headers": ["Program Stream", "Core Subjects & Distribution", "Key Focus Areas"],
+      "rows": [
+        ["Engineering & Computing", "Mathematics (100), Physics (60), English (40)", "Calculus, mechanics, grammar, comprehension"],
+        ["Business & Social Sciences", "Quantitative Math, English, Intelligence", "Basic arithmetic, logical reasoning, verbal skills"],
+        ["Applied Sciences", "Biology/Math, Chemistry, English, Physics", "Core science concepts and analytical reasoning"]
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "There is no negative marking in the NUST NET — you should attempt all 200 questions without fear of losing marks for incorrect guesses."
+    },
+    {
+      "type": "heading",
+      "text": "The NUST admission process explained"
+    },
+    {
+      "type": "paragraph",
+      "text": "Understanding the timeline helps prevent last-minute stress. The admission pipeline follows a structured sequence:"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Online registration: create an account on the official NUST admissions portal when registration opens for a specific series and fill out your academic details",
+        "Fee submission: deposit the designated processing fee through designated bank challans within the specified deadline",
+        "Test scheduling: choose your preferred test date and session slot from the available computer-based schedules",
+        "Appearing in the test: take the computer-based exam at designated centers, such as Islamabad, Lahore, or Quetta facilities",
+        "Merit generation: NUST compiles the final merit list using an aggregate formula where the NET score holds 75% weight, HSSC Part-I holds 15%, and Matric holds 10%"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "Platforms like PrepXMentor provide topic-wise practice, performance analytics, and structured mock tests to help you master the computer-based test format and track your preparation progress efficiently."
+    },
+    {
+      "type": "heading",
+      "text": "Common mistakes to avoid"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Relying on a single attempt: waiting exclusively for the final series increases test-day anxiety — use multiple attempts across different series to secure your best possible score",
+        "Neglecting textbooks: relying solely on shortcut notes or secondary guides often backfires — read standard provincial or federal textbooks thoroughly, since exam questions test core concepts",
+        "Poor time management: spending too much time on tricky math problems early on leaves little time for the rest of the paper — practice pacing yourself with timed digital mock tests"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Knowing what NUST NET is and how its structure operates is the foundational step toward achieving your academic goals. By familiarizing yourself with the eligibility rules, mastering the 200-question computer format, and leveraging multiple test attempts, you can approach the admissions cycle with confidence. Focus on conceptual clarity and steady practice to turn your university aspirations into reality."
+    },
+    {
+      "type": "faq",
+      "items": [
+        {
+          "question": "What is the minimum eligibility requirement for NUST NET?",
+          "answer": "At least 60% aggregate marks in both SSC (Matric) and HSSC (Intermediate) or equivalent qualifications. O/A-Level students need an IBCC equivalence certificate showing at least 60%."
+        },
+        {
+          "question": "Is there negative marking in the NUST NET?",
+          "answer": "No. There is no negative marking, so you should attempt all 200 questions without fear of losing marks for incorrect guesses."
+        },
+        {
+          "question": "How is the final NUST merit list calculated?",
+          "answer": "NUST compiles merit using an aggregate formula where the NET score holds 75% weight, HSSC Part-I holds 15%, and Matric holds 10%."
+        },
+        {
+          "question": "How long is the NUST NET and how many questions does it have?",
+          "answer": "The test consists of 200 multiple-choice questions to be completed within 3 hours (180 minutes), with the exact subject distribution depending on your program stream."
+        }
+      ]
+    }
+  ]
+}

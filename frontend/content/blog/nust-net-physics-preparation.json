@@ -1,0 +1,69 @@
+{
+  "slug": "nust-net-physics-preparation",
+  "title": "NUST NET Physics Preparation: Topics, Tips & Strategy",
+  "excerpt": "Physics carries 60 questions on the NUST NET's engineering stream — here's which topics carry the most weight, and how to prepare for MCQ speed rather than board-exam-style derivations.",
+  "category": "subject-guides",
+  "publishedDate": "2026-08-12",
+  "readingMinutes": 6,
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "For engineering and computing aspirants, the physics section of the NUST Entry Test (NET) can make or break your aggregate. Comprising 60 questions for engineering streams, physics demands more than rote memorization of formulas — it tests your conceptual clarity and mental math speed. Mastering your NUST NET physics preparation early allows you to transition smoothly from board-level theoretical derivations to rapid-fire MCQ problem-solving."
+    },
+    {
+      "type": "heading",
+      "text": "Understanding the physics syllabus and weightage"
+    },
+    {
+      "type": "paragraph",
+      "text": "NUST derives its physics question bank directly from the national intermediate curriculum (FSc Part-1 and Part-2). However, certain core units consistently carry higher weightage across testing series."
+    },
+    {
+      "type": "table",
+      "headers": ["Physics Unit / Domain", "Estimated Weightage", "Key Focus Areas"],
+      "rows": [
+        ["Mechanics", "High (20-25%)", "Work, energy, momentum, rotational motion, vectors"],
+        ["Electromagnetism", "High (20-25%)", "Gauss's law, magnetic flux, electromagnetic induction, AC circuits"],
+        ["Waves & Oscillations", "Medium (15%)", "Doppler effect, speed of sound, simple harmonic motion"],
+        ["Modern & Nuclear Physics", "Medium (15-20%)", "Photoelectric effect, X-rays, radioactive decay, atomic spectra"],
+        ["Heat & Thermodynamics", "Low-Medium (10%)", "First and second laws, adiabatic/isothermal processes"]
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Key strategies for physics success"
+    },
+    {
+      "type": "paragraph",
+      "text": "Focus on conceptual understanding over rote learning: NUST rarely asks direct, textbook-definition questions. Instead, it tests how well you understand underlying principles — ask why a formula behaves a certain way rather than just memorizing it, and pay close attention to textbook summary boxes, side notes, and graphical representations."
+    },
+    {
+      "type": "paragraph",
+      "text": "Practice numericals without calculators: physical scientific calculators are strictly prohibited in NUST computer-based testing centers. Train yourself to simplify fractions, estimate square roots, and handle trigonometric values manually, and memorize common values (such as pi constants, electron masses, and gravity acceleration values) to speed up calculations."
+    },
+    {
+      "type": "callout",
+      "text": "Did you know? Many physics numericals in NET are designed to be solved in under 60 seconds by spotting algebraic cancellation shortcuts rather than performing long arithmetic computations."
+    },
+    {
+      "type": "callout",
+      "text": "To test your conceptual speed under strict time constraints, structured platforms like PrepXMentor provide chapter-wise physics practice and simulated mock tests that mirror the actual computer-based testing environment."
+    },
+    {
+      "type": "heading",
+      "text": "Common mistakes in physics preparation"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Skipping Part-1 mechanics: neglecting 1st-year physics chapters because they feel old, even though mechanics forms the foundational backbone of the test",
+        "Ignoring units and dimensions: forgetting dimensional analysis, which can help you instantly eliminate incorrect MCQ options during the exam",
+        "Over-relying on long derivations: spending hours deriving formulas that will never appear as long-form questions on an MCQ test"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Rigorous NUST NET physics preparation relies on smart chapter prioritization, active numerical practice without calculators, and consistent textbook revision. By focusing your energy on high-yield domains like mechanics and electromagnetism, you can approach the physics section with speed and accuracy."
+    }
+  ]
+}
