@@ -7,7 +7,13 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { AuthUser } from "@/lib/auth";
 
-const TEST_OPTIONS = ["ECAT", "MDCAT", "NET", "FAST", "Other"];
+// Mirrors backend/app/core/academic_fields.py -- keep these in sync.
+const FIELD_OPTIONS: { value: string; label: string; tests: string }[] = [
+  { value: "pre-engineering", label: "Pre-Engineering", tests: "ECAT · NET" },
+  { value: "pre-medical", label: "Pre-Medical", tests: "MDCAT" },
+  { value: "ics-physics", label: "ICS (Physics)", tests: "ECAT · FAST" },
+  { value: "ics-stats", label: "ICS (Statistics)", tests: "FAST · NET" },
+];
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -18,19 +24,10 @@ export default function RegisterPage() {
     password: "",
     phone: "",
     age: "",
-    interested_tests: [] as string[],
+    field: "" as string,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const toggleTest = (test: string) => {
-    setForm((prev) => ({
-      ...prev,
-      interested_tests: prev.interested_tests.includes(test)
-        ? prev.interested_tests.filter((t) => t !== test)
-        : [...prev.interested_tests, test],
-    }));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +40,7 @@ export default function RegisterPage() {
         password: form.password,
         phone: form.phone || null,
         age: form.age ? parseInt(form.age, 10) : null,
-        interested_tests: form.interested_tests.length > 0 ? form.interested_tests : null,
+        field: form.field || null,
       };
       const user = await api.post<AuthUser>("/auth/register", payload);
       login(user);
@@ -153,24 +150,32 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                Which test(s) are you preparing for?
+                What's your field?
               </label>
-              <div className="flex flex-wrap gap-2">
-                {TEST_OPTIONS.map((test) => {
-                  const selected = form.interested_tests.includes(test);
+              <p className="text-xs text-slate-400 dark:text-slate-500 mb-2.5">
+                This sets which subjects and tests you'll see — you can change it later.
+              </p>
+              <div className="grid grid-cols-1 gap-2">
+                {FIELD_OPTIONS.map((opt) => {
+                  const selected = form.field === opt.value;
                   return (
                     <button
-                      key={test}
+                      key={opt.value}
                       type="button"
-                      onClick={() => toggleTest(test)}
-                      className={`text-sm px-4 py-2 rounded-full font-medium transition-all border
+                      onClick={() => setForm({ ...form, field: opt.value })}
+                      className={`text-left px-4 py-3 rounded-lg border transition-all
                         ${selected
-                          ? "bg-teal-600 dark:bg-teal-500 text-white border-teal-600 dark:border-teal-500"
-                          : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700"
+                          ? "bg-teal-600 dark:bg-teal-500 border-teal-600 dark:border-teal-500"
+                          : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700"
                         }`}
                       aria-pressed={selected}
                     >
-                      {test}
+                      <span className={`block text-sm font-semibold ${selected ? "text-white" : "text-slate-700 dark:text-slate-300"}`}>
+                        {opt.label}
+                      </span>
+                      <span className={`block text-xs mt-0.5 ${selected ? "text-teal-100" : "text-slate-400 dark:text-slate-500"}`}>
+                        {opt.tests}
+                      </span>
                     </button>
                   );
                 })}

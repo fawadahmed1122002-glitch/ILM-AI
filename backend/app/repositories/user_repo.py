@@ -14,7 +14,7 @@ class UserRepository:
 
     def create(self, full_name: str, email: str, password_hash: str,
                phone: str = None, age: int = None,
-               interested_tests: list[str] = None) -> User:
+               interested_tests: list[str] = None, field: str = None) -> User:
         user = User(
             full_name=full_name,
             email=email,
@@ -22,6 +22,7 @@ class UserRepository:
             phone=phone,
             age=age,
             interested_tests=interested_tests,
+            field=field,
         )
         self.db.add(user)
         self.db.commit()

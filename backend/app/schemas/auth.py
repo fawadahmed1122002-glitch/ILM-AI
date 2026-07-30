@@ -1,6 +1,6 @@
 import re
 from pydantic import BaseModel, EmailStr, field_validator
-
+from app.core.academic_fields import VALID_FIELDS
 VALID_TESTS = {"ECAT", "MDCAT", "NET", "FAST", "Other"}
 PK_PHONE_RE = re.compile(r"^(?:\+92|0)3\d{9}$")
 
@@ -11,7 +11,7 @@ class RegisterRequest(BaseModel):
     phone: str | None = None
     age: int | None = None
     interested_tests: list[str] | None = None
-
+    field: str | None = None
     @field_validator("phone")
     @classmethod
     def validate_phone(cls, v: str | None) -> str | None:
@@ -43,7 +43,14 @@ class RegisterRequest(BaseModel):
         if invalid:
             raise ValueError(f"Invalid test(s): {', '.join(invalid)}. Must be one of: {', '.join(VALID_TESTS)}")
         return v
-
+    @field_validator("field")
+    @classmethod
+    def validate_field(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
+        if v not in VALID_FIELDS:
+            raise ValueError(f"Invalid field: {v}. Must be one of: {', '.join(sorted(VALID_FIELDS))}")
+        return v
 
 class LoginRequest(BaseModel):
     email: EmailStr

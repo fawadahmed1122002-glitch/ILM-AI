@@ -6,7 +6,7 @@ from app.repositories.user_repo import UserRepository
 from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
 from app.api.deps import get_current_user
-
+from app.core.academic_fields import tests_for_field
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
@@ -15,13 +15,17 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     if repo.email_exists(payload.email):
         raise HTTPException(status_code=400, detail="Email already registered")
+    interested_tests = payload.interested_tests
+    if not interested_tests and payload.field:
+         interested_tests = tests_for_field(payload.field)
     user = repo.create(
         full_name=payload.full_name,
         email=payload.email,
         password_hash=hash_password(payload.password),
         phone=payload.phone,
         age=payload.age,
-        interested_tests=payload.interested_tests,
+        interested_tests=interested_tests,
+        field=payload.field             
     )
     token = create_access_token(str(user.id))
     return TokenResponse(

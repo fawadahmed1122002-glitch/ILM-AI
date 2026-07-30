@@ -13,6 +13,7 @@ class User(Base):
     phone: Mapped[str | None] = mapped_column(String(20), nullable=True)
     age: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     interested_tests: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
+    field: Mapped[str | None] = mapped_column(String(30), nullable=True)
     password_hash: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(String(20), nullable=False, server_default="student")
     plan: Mapped[str] = mapped_column(String(20), nullable=False, server_default="free")
