@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
-
 from app.db.session import get_db
 from app.api.deps import get_current_user
 from app.core.rate_limit import limiter
+from app.core.products import subjects_for_product
 from app.models.user import User
 from app.services.query_service import QueryService
 from app.services.tier_gate import check_explain_limit, check_mcq_limit
@@ -12,7 +12,6 @@ from app.schemas.query import (
     McqRequest, McqResponse,
     McqSubmitRequest, McqSubmitResponse
 )
-
 router = APIRouter(prefix="/query", tags=["query"])
 
 
@@ -59,7 +58,7 @@ def explain(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    check_explain_limit(current_user, db)
+    check_explain_limit(current_user, db, subject=payload.subject)
     result = QueryService.explain(
         query=payload.query,
         subject=payload.subject,
@@ -77,7 +76,7 @@ def get_mcqs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    check_mcq_limit(current_user, db)
+    check_mcq_limit(current_user, db, subject=payload.subject)
     result = QueryService.get_mcqs(
         topic=payload.topic,
         subject=payload.subject,
@@ -92,19 +91,25 @@ def get_usage(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Returns current user's daily usage and limits."""
+    """Returns current user's daily usage and limits, plus which subjects
+    are unlimited under the user's active product (if any)."""
     from app.services.tier_gate import FREE_EXPLAIN_LIMIT, FREE_MCQ_LIMIT, _reset_if_new_day
     _reset_if_new_day(current_user, db)
+    unlimited_subjects = subjects_for_product(current_user.product_id) if current_user.plan == "pro" else []
     return {
         "plan": current_user.plan,
+        "product_id": current_user.product_id,
+        "unlimited_subjects": unlimited_subjects,
         "explain": {
             "used": current_user.daily_explain_count,
-            "limit": None if current_user.plan == "pro" else FREE_EXPLAIN_LIMIT,
-            "remaining": None if current_user.plan == "pro" else max(0, FREE_EXPLAIN_LIMIT - current_user.daily_explain_count),
+            "limit": FREE_EXPLAIN_LIMIT,
+            "remaining": max(0, FREE_EXPLAIN_LIMIT - current_user.daily_explain_count),
+            "note": "limit/remaining only apply to subjects OUTSIDE unlimited_subjects",
         },
         "mcq": {
             "used": current_user.daily_mcq_count,
-            "limit": None if current_user.plan == "pro" else FREE_MCQ_LIMIT,
-            "remaining": None if current_user.plan == "pro" else max(0, FREE_MCQ_LIMIT - current_user.daily_mcq_count),
+            "limit": FREE_MCQ_LIMIT,
+            "remaining": max(0, FREE_MCQ_LIMIT - current_user.daily_mcq_count),
+            "note": "limit/remaining only apply to subjects OUTSIDE unlimited_subjects",
         }
     }

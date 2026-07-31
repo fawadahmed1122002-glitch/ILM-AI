@@ -12,7 +12,6 @@ class DocumentUploadResponse(BaseModel):
     status: str
     chunk_count: int
     created_at: datetime
-
     class Config:
         from_attributes = True
 
@@ -31,7 +30,6 @@ class PendingMcqResponse(BaseModel):
     option_d: str
     correct_option: str
     explanation: Optional[str] = None
-
     class Config:
         from_attributes = True
 
@@ -45,6 +43,7 @@ class AdminPlanChangeRequest(BaseModel):
     method: str  # "jazzcash", "easypaisa", "manual"
     amount: float
     transaction_ref: Optional[str] = None
+    product_id: Optional[str] = None  # e.g. "ecat", "mdcat", "engineering_bundle" -- if omitted, falls back to legacy_full_access
 
 
 class PaymentRecordResponse(BaseModel):
@@ -56,9 +55,9 @@ class PaymentRecordResponse(BaseModel):
     status: str
     transaction_ref: Optional[str] = None
     plan: Optional[str] = None
+    product_id: Optional[str] = None
     valid_from: Optional[datetime] = None
     valid_until: Optional[datetime] = None
     created_at: datetime
-
     class Config:
         from_attributes = True

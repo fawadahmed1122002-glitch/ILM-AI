@@ -17,7 +17,8 @@ from app.schemas.admin import (
     AdminPlanChangeRequest, PaymentRecordResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf
-from app.services.payment_service import grant_pro_plan, ALLOWED_METHODS
+from app.services.payment_service import grant_pro_plan, grant_product, ALLOWED_METHODS
+from app.core.products import PRODUCT_CATALOG, PURCHASABLE_PRODUCTS
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -213,8 +214,10 @@ def change_user_plan(
 ):
     """
     Manually flip a user's plan after confirming payment outside the system
-    (e.g. WhatsApp screenshot). Delegates to the shared grant_pro_plan()
-    service, the same function the Safepay webhook uses.
+    (e.g. WhatsApp screenshot). Delegates to grant_product() if a
+    product_id is given, otherwise falls back to the legacy
+    grant_pro_plan() (assigns "legacy_full_access") for backward
+    compatibility with older callers that don't know about products yet.
     """
     if payload.plan not in ALLOWED_PLANS:
         raise HTTPException(
@@ -222,30 +225,43 @@ def change_user_plan(
             detail={"code": "INVALID_PLAN", "message": f"Plan must be one of: {', '.join(ALLOWED_PLANS)}"},
         )
     if payload.plan != "pro":
-        # Downgrade path -- keep the old direct logic for this, since
-        # grant_pro_plan only handles the upgrade case
         user = db.query(User).filter(User.id == user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail={"code": "USER_NOT_FOUND", "message": "User not found."})
         user.plan = payload.plan
+        user.product_id = None
         db.commit()
         return PaymentRecordResponse(
             id=uuid.uuid4(), user_id=user_id, amount=0, currency="PKR",
             method=payload.method, status="completed", transaction_ref=payload.transaction_ref,
             plan=payload.plan, valid_from=datetime.now(timezone.utc), valid_until=None,
         )
-
+    product_id = getattr(payload, "product_id", None)
     try:
-        payment = grant_pro_plan(
-            db=db,
-            user_id=user_id,
-            amount=payload.amount,
-            method=payload.method,
-            transaction_ref=payload.transaction_ref,
-        )
+        if product_id:
+            if product_id not in PRODUCT_CATALOG:
+                raise HTTPException(
+                    status_code=400,
+                    detail={"code": "INVALID_PRODUCT", "message": f"Unknown product_id: {product_id}"},
+                )
+            payment = grant_product(
+                db=db,
+                user_id=user_id,
+                product_id=product_id,
+                amount=payload.amount,
+                method=payload.method,
+                transaction_ref=payload.transaction_ref,
+            )
+        else:
+            payment = grant_pro_plan(
+                db=db,
+                user_id=user_id,
+                amount=payload.amount,
+                method=payload.method,
+                transaction_ref=payload.transaction_ref,
+            )
     except ValueError as e:
         raise HTTPException(status_code=400, detail={"code": "GRANT_FAILED", "message": str(e)})
-
     return payment
 
 @router.get("/payments", response_model=list[PaymentRecordResponse])

@@ -18,6 +18,7 @@ class Payment(Base):
     status: Mapped[str] = mapped_column(String(20), nullable=False, server_default="pending")
     transaction_ref: Mapped[str | None] = mapped_column(String(255), nullable=True)
     plan: Mapped[str | None] = mapped_column(String(30), nullable=True)
+    product_id: Mapped[str | None] = mapped_column(String(30), nullable=True)
     valid_from: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     valid_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))
