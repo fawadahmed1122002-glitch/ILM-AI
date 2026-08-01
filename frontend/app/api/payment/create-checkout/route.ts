@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Safepay } from "@sfpy/node-sdk";
-import { PRO_PRICE_PKR, getSafepayEnvironment } from "@/lib/payment";
+import { getSafepayEnvironment } from "@/lib/payment";
+import { getProduct } from "@/lib/products";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, email } = await req.json();
+    const { userId, email, productId } = await req.json();
 
-    if (!userId || !email) {
-      return NextResponse.json({ error: "Missing userId or email" }, { status: 400 });
+    if (!userId || !email || !productId) {
+      return NextResponse.json({ error: "Missing userId, email, or productId" }, { status: 400 });
+    }
+
+    const product = getProduct(productId);
+    if (!product) {
+      return NextResponse.json({ error: `Unknown product: ${productId}` }, { status: 400 });
     }
 
     const safepay = new Safepay({
@@ -17,14 +23,17 @@ export async function POST(req: NextRequest) {
       webhookSecret: process.env.SAFEPAY_WEBHOOK_SECRET!,
     });
 
-    const orderId = `pxm_${userId}_${Date.now()}`;
+    // orderId encodes BOTH userId and productId. productId may itself
+    // contain an underscore (e.g. "engineering_bundle") -- see the
+    // webhook route for the matching robust parse that handles this
+    // correctly (splits on "_", takes parts[1] as userId, the LAST part
+    // as the timestamp, and everything in between, rejoined, as productId).
+    const orderId = `pxm_${userId}_${productId}_${Date.now()}`;
 
     const paymentToken = await safepay.payments.create({
-      amount: PRO_PRICE_PKR,
+      amount: product.price,
       currency: "PKR",
     });
-
-    console.log("Safepay payments.create() response:", JSON.stringify(paymentToken));
 
     const checkoutUrl = safepay.checkout.create({
       token: paymentToken.token,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Safepay } from "@sfpy/node-sdk";
-import { PRO_PRICE_PKR, getSafepayEnvironment } from "@/lib/payment";
+import { getSafepayEnvironment } from "@/lib/payment";
 
 export async function POST(req: NextRequest) {
   const safepay = new Safepay({
@@ -24,9 +24,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  // CONFIRMED real shape from live sandbox delivery (Jul 26, 2026):
-  // body.data.type ("payment:created"), body.data.notification.{state,amount,tracker},
-  // body.data.notification.metadata.order_id (flat field, NOT an array).
   const notification = body.data?.notification;
 
   if (!notification) {
@@ -42,17 +39,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
   }
 
-  // Only PAID is confirmed as a real success state so far.
+  // orderId format: pxm_{userId}_{productId}_{timestamp}
+  // productId may itself contain underscores (e.g. "engineering_bundle"),
+  // so we can't just index by position naively. Robust parse: part[0] is
+  // always "pxm", part[1] is always the userId (a UUID -- never contains
+  // underscores), the LAST part is always the timestamp (pure digits).
+  // Everything strictly between those, rejoined with "_", is the productId.
+  const parts = orderId.split("_");
+  if (parts.length < 4) {
+    console.error("orderId has unexpected shape, cannot parse productId:", orderId);
+    return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
+  }
+  const userId = parts[1];
+  const productId = parts.slice(2, -1).join("_");
+
+  if (!userId || !productId) {
+    console.error("Failed to extract userId/productId from orderId:", orderId);
+    return NextResponse.json({ error: "Malformed order reference" }, { status: 400 });
+  }
+
   if (state !== "PAID") {
     return NextResponse.json({ received: true, ignored: true, state });
   }
 
-  // orderId format: pxm_{userId}_{timestamp}
-  const parts = orderId.split("_");
-  const userId = parts[1];
-
-  // amount comes through as a string like "799.00"
-  const amount = notification.amount ? parseFloat(notification.amount) : PRO_PRICE_PKR;
+  const amount = notification.amount ? parseFloat(notification.amount) : null;
 
   try {
     const res = await fetch(`${process.env.BACKEND_INTERNAL_URL}/api/v1/internal/grant-pro-plan`, {
@@ -63,6 +73,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         user_id: userId,
+        product_id: productId,
         amount,
         transaction_ref: notification.tracker || orderId,
       }),

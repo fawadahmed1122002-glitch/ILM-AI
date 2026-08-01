@@ -63,7 +63,7 @@ const DEMO_EXAMPLES: DemoExample[] = [
   },
 ];
 
-const TRUST_TESTS = ["ECAT", "MDCAT", "NET", "NAT", "GAT"];
+const TRUST_TESTS = ["ECAT", "MDCAT", "NET"];
 const TRUST_UNIS = ["NUST", "UET", "GIKI", "PIEAS", "FAST-NUCES"];
 
 type DemoStage = "question" | "explanation" | "mcq" | "answered";
@@ -175,7 +175,7 @@ function Hero() {
           </h1>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
             An AI study partner that explains your exact textbook topic — in English or Urdu —
-            then tests you on it with real past papers and timed mock exams.
+            then quizzes you on it with AI-generated practice questions grounded in your syllabus.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
@@ -237,9 +237,9 @@ const PILLARS: Pillar[] = [
     accent: true,
   },
   {
-    title: "Real past papers, timed mock tests",
+    title: "AI-generated practice, grounded in your syllabus",
     description:
-      "Practice on actual past paper questions, then sit full-length mock exams under real test-day timing — not just an endless MCQ feed.",
+      "Every MCQ is generated from your actual textbook content and reviewed for accuracy — not generic questions that don't match what's on your exam.",
   },
   {
     title: "Adaptive weak-topic drilling",
@@ -284,26 +284,26 @@ function Pillars() {
   );
 }
 
-type LoopTab = "understand" | "practice" | "mock";
+type LoopTab = "understand" | "practice" | "track";
 
 const LOOP_CONTENT: Record<LoopTab, { label: string; heading: string; body: string }> = {
   understand: {
     label: "Understand",
     heading: "Ask like you'd ask a person",
     body:
-      "Type or photograph the exact question you're stuck on. Get an explanation grounded in your own textbook, in the language that actually makes it click.",
+      "Type the exact question you're stuck on. Get an explanation grounded in your own textbook, in the language that actually makes it click.",
   },
   practice: {
     label: "Practice",
-    heading: "Drill it with real past paper questions",
+    heading: "Test yourself as you go",
     body:
-      "Not generic MCQs — actual past paper questions from ECAT, MDCAT, and NET, filtered to the topics you're weakest on right now.",
+      "After every explanation, drill the concept immediately with AI-generated MCQs tied to that exact topic — not a generic question bank.",
   },
-  mock: {
-    label: "Mock Test",
-    heading: "Sit the real thing before you sit the real thing",
+  track: {
+    label: "Track",
+    heading: "Watch your weak topics shrink",
     body:
-      "Full-length, timed mock exams that mirror the actual test format — so test day feels like the tenth time, not the first.",
+      "Every question you answer is logged. The system flags exactly which topics need more work, so your next session focuses where it actually matters.",
   },
 };
 
@@ -353,11 +353,11 @@ function DeepDive() {
 }
 
 const PROCESS_STEPS = [
-  { n: 1, title: "Ask", body: "Type or photograph any question you're stuck on." },
+  { n: 1, title: "Ask", body: "Type any question you're stuck on." },
   { n: 2, title: "Understand", body: "Get an explanation tied to your exact textbook and board." },
-  { n: 3, title: "Practice", body: "Drill real past paper questions on that exact topic." },
-  { n: 4, title: "Simulate", body: "Sit a full timed mock test under real exam conditions." },
-  { n: 5, title: "Track", body: "See your weak topics shrink, session over session." },
+  { n: 3, title: "Practice", body: "Drill AI-generated MCQs on that exact topic." },
+  { n: 4, title: "Track", body: "See exactly which topics you're weakest on." },
+  { n: 5, title: "Improve", body: "Your next session rebalances toward what needs work." },
 ];
 
 function ProcessSteps() {
@@ -399,7 +399,7 @@ function CostComparison() {
           </div>
           <span className="text-slate-600 text-2xl" aria-hidden="true">→</span>
           <div>
-            <p className="font-mono text-5xl sm:text-6xl font-bold text-teal-400">Rs. 1,500</p>
+            <p className="font-mono text-5xl sm:text-6xl font-bold text-teal-400">Rs. 799</p>
             <p className="text-slate-400 text-xs uppercase tracking-wide mt-2">PrepXMentor, per month</p>
           </div>
         </div>
@@ -424,8 +424,8 @@ function GrowthVisualized() {
             Watch your weak topics shrink
           </h2>
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-6 max-w-md">
-            Every mock test score, every drilled topic, tracked in one place — so you're
-            reacting to real data on test day, not a gut feeling.
+            Every question you answer is tracked in one place — so you're reacting to real
+            data on test day, not a gut feeling.
           </p>
           <div className="flex flex-col gap-3 max-w-sm">
             <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
@@ -439,7 +439,7 @@ function GrowthVisualized() {
           </div>
         </div>
         <div className="bg-slate-950 border border-white/10 rounded-2xl p-6">
-          <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-4">Mock test score trend</p>
+          <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-4">Topic accuracy trend</p>
           <svg viewBox="0 0 140 44" className="w-full h-32" preserveAspectRatio="none" aria-hidden="true">
             <polyline points={points} fill="none" stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -474,7 +474,13 @@ const PRICING_TIERS: PricingTier[] = [
     name: "Pro",
     price: "Rs. 799",
     cadence: "/ month",
-    features: ["Unlimited topic explanations", "Unlimited MCQ practice", "Bilingual (English + Urdu)", "Full progress dashboard", "Weak topic detection"],
+    features: [
+      "Unlimited topic explanations",
+      "Unlimited MCQ practice",
+      "Bilingual (English + Urdu)",
+      "Full progress dashboard",
+      "Weak topic detection",
+    ],
     cta: "Get Pro access",
     featured: true,
   },
@@ -490,7 +496,7 @@ function Pricing() {
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-base">Invest in your future. No hidden academy fees.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
           {PRICING_TIERS.map((tier) => (
             <div
               key={tier.name}
