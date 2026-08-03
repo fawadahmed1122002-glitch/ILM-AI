@@ -1,19 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { UNIVERSITIES } from "../universities/data";
-import type { University, MeritWeights, FormulaConfidence } from "../universities/data";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { UNIVERSITIES, University, MeritWeights } from "../universities/data";
+import {
+  UET_CLOSING_MERITS,
+  MeritCategory,
+  ProgramOffering,
+  getProjectedCutoff,
+  getTrend,
+  getTier,
+  groupByProgram,
+  TIER_LABELS,
+} from "../universities/uet-closing-merits";
 
-function ConfidenceBadge({ confidence }: { confidence: FormulaConfidence }) {
-  const config: Record<FormulaConfidence, { label: string; className: string }> = {
+function ConfidenceBadge({ confidence }: { confidence: string }) {
+  const config: Record<string, { label: string; className: string }> = {
     high: { label: "Verified", className: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800" },
     medium: { label: "Likely accurate", className: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800" },
     low: { label: "Unconfirmed", className: "bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800" },
     unverified: { label: "Not verified", className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700" },
   };
-  const c = config[confidence];
+  const c = config[confidence] ?? config.unverified;
   return (
     <span className={`text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border ${c.className}`}>
       {c.label}
@@ -142,33 +151,100 @@ function MarksField({
   );
 }
 
-// Only pre-fill the test's total when we actually have a real, positive
-// question count. Universities with no test (totalQuestions: 0) or an
-// unresearched count (totalQuestions: null) must NOT be seeded here --
-// String(0) and String(null) both produce a value that silently makes
-// this field permanently invalid before the user has typed anything.
-function seedTestMarks(uni: University | undefined): MarksState {
-  const seedTotal = uni?.totalQuestions && uni.totalQuestions > 0 ? String(uni.totalQuestions) : "";
-  return { obtained: "", total: seedTotal };
+function TrendIndicator({ history }: { history: { year: number; pct: number }[] }) {
+  if (history.length < 2) {
+    return <span className="text-slate-400 dark:text-slate-500">only {history[0]?.year} on record</span>;
+  }
+  const trend = getTrend(history);
+  const years = `${history[0].year}\u2013${history[history.length - 1].year}`;
+  if (Math.abs(trend) < 0.3) {
+    return <span className="text-slate-400 dark:text-slate-500">steady across {years}</span>;
+  }
+  if (trend > 0) {
+    return <span className="text-rose-500 dark:text-rose-400">\u25B2 rising ~{trend.toFixed(1)}pt/yr ({years})</span>;
+  }
+  return <span className="text-emerald-600 dark:text-emerald-400">\u25BC falling ~{Math.abs(trend).toFixed(1)}pt/yr ({years})</span>;
+}
+
+function ProgramMatchCard({ program, offerings, userScore }: { program: string; offerings: ProgramOffering[]; userScore: number }) {
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+      <h4 className="font-display text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">{program}</h4>
+      <div className="space-y-2">
+        {offerings.map((o, i) => {
+          const projected = getProjectedCutoff(o.history);
+          if (projected === null) return null;
+          const tier = getTier(userScore, projected);
+          const tierInfo = TIER_LABELS[tier];
+          const latest = o.history[o.history.length - 1];
+          return (
+            <div key={i} className="flex items-center justify-between gap-3 text-xs py-1.5 border-t border-slate-100 dark:border-slate-800 first:border-t-0 first:pt-0">
+              <div className="min-w-0">
+                <p className="text-slate-700 dark:text-slate-300 font-medium truncate">
+                  {o.campus}{o.session ? ` \u00b7 ${o.session}` : ""}
+                </p>
+                <p className="text-slate-400 dark:text-slate-500 mt-0.5">
+                  <TrendIndicator history={o.history} /> &middot; {latest.year}: {latest.pct.toFixed(1)}%
+                </p>
+              </div>
+              <span className={`flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded-full whitespace-nowrap ${
+                tier === "safe" ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400" :
+                tier === "likely" ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400" :
+                tier === "reach" ? "bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400" :
+                "bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400"
+              }`}>
+                {tierInfo.emoji} {tierInfo.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Only rendered for UET (the only university we have real historical
+// closing-merit data for). Groups the flat offering list by program, ranks
+// programs by their single best (highest-margin) offering so the most
+// achievable options surface first, and compares the user's score against
+// each offering's *projected* next-cycle cutoff rather than a stale raw
+// number -- see getProjectedCutoff in uet-closing-merits.ts.
+function ProgramMatches({ userScore, category }: { userScore: number; category: MeritCategory }) {
+  const grouped = useMemo(() => {
+    const filtered = UET_CLOSING_MERITS.filter((o) => o.category === category);
+    const byProgram = groupByProgram(filtered);
+    const entries = Array.from(byProgram.entries());
+    entries.sort(([, offeringsA], [, offeringsB]) => {
+      const bestMargin = (offerings: ProgramOffering[]) =>
+        Math.max(
+          ...offerings.map((o) => {
+            const projected = getProjectedCutoff(o.history);
+            return projected === null ? -Infinity : userScore - projected;
+          })
+        );
+      return bestMargin(offeringsB) - bestMargin(offeringsA);
+    });
+    return entries;
+  }, [category, userScore]);
+
+  return (
+    <div className="mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {grouped.map(([program, offerings]) => (
+          <ProgramMatchCard key={program} program={program} offerings={offerings} userScore={userScore} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function MeritCalculatorClient() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Pre-select from ?university=<slug> if present and valid (e.g. arriving
-  // via the "Calculate your merit" link on a university's detail page).
-  // Falls back to no selection for a bare /merit-calculator visit or an
-  // unrecognized slug -- never silently selects something the link didn't ask for.
-  const initialSlugParam = searchParams.get("university");
-  const initialSlug = UNIVERSITIES.some((u) => u.slug === initialSlugParam) ? initialSlugParam : null;
-
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(initialSlug);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [matricMarks, setMatricMarks] = useState<MarksState>(EMPTY_MARKS);
   const [fscMarks, setFscMarks] = useState<MarksState>(EMPTY_MARKS);
-  const [testMarks, setTestMarks] = useState<MarksState>(
-    initialSlug ? seedTestMarks(UNIVERSITIES.find((u) => u.slug === initialSlug)) : EMPTY_MARKS
-  );
+  const [testMarks, setTestMarks] = useState<MarksState>(EMPTY_MARKS);
+  const [meritCategory, setMeritCategory] = useState<MeritCategory>("A1");
 
   const selectedUni: University | undefined = useMemo(() => UNIVERSITIES.find((u) => u.slug === selectedSlug), [selectedSlug]);
 
@@ -182,15 +258,30 @@ export default function MeritCalculatorClient() {
     setMatricMarks(EMPTY_MARKS);
     setFscMarks(EMPTY_MARKS);
     const uni = UNIVERSITIES.find((u) => u.slug === slug);
-    setTestMarks(seedTestMarks(uni));
-    // Keep the URL in sync so the current selection is shareable/bookmarkable --
-    // shallow, no scroll jump, no full navigation/remount.
-    router.replace(`/merit-calculator?university=${encodeURIComponent(slug)}`, { scroll: false });
+    // Only pre-fill the test's total when we actually have a real, positive
+    // question count. Universities with no test (totalQuestions: 0) or an
+    // unresearched count (totalQuestions: null) must NOT be seeded here --
+    // String(0) and String(null) both produce a value that silently makes
+    // this field permanently invalid before the user has typed anything.
+    const seedTotal = uni?.totalQuestions && uni.totalQuestions > 0 ? String(uni.totalQuestions) : "";
+    setTestMarks({ obtained: "", total: seedTotal });
   }
 
   const matricPct = computePercent(matricMarks);
   const fscPct = computePercent(fscMarks);
   const testPct = computePercent(testMarks);
+
+  // Supports deep-linking from a university detail page's
+  // "Calculate my merit for X" button (?university=slug). Only runs once on
+  // load -- after that, the university picker below is the source of truth,
+  // so we don't fight the user if they pick something else.
+  useEffect(() => {
+    const param = searchParams.get("university");
+    if (param && UNIVERSITIES.some((u) => u.slug === param)) {
+      selectUniversity(param);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const pctByKey: Record<FieldKey, number | null> = { matric: matricPct, fsc: fscPct, test: testPct };
   const marksByKey: Record<FieldKey, MarksState> = { matric: matricMarks, fsc: fscMarks, test: testMarks };
@@ -296,6 +387,32 @@ export default function MeritCalculatorClient() {
                   <p className="text-slate-400 dark:text-slate-500 text-sm">Enter obtained and total marks above to see your estimated merit.</p>
                 )}
               </div>
+
+              {selectedUni.slug === "uet" && meritScore !== null && (
+                <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between gap-3 mb-1">
+                    <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Where this could get you in</h3>
+                    <div className="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 p-0.5 flex-shrink-0">
+                      {(["A1", "A2"] as MeritCategory[]).map((cat) => (
+                        <button
+                          key={cat}
+                          onClick={() => setMeritCategory(cat)}
+                          className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${meritCategory === cat ? "bg-teal-600 text-white" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"}`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-slate-400 dark:text-slate-500 text-[11px] mb-1">
+                    {meritCategory === "A1" ? "Punjab-domicile, subsidized (lower fee) merit category." : "Punjab-domicile, higher-fee merit category."}
+                  </p>
+                  <p className="text-slate-400 dark:text-slate-500 text-[11px] mb-4">
+                    Based on UET&apos;s last 4 years of published closing merit (2022&ndash;2025) per program and campus. Tiers compare your score against a projected next-cycle cutoff, not last year&apos;s raw number, so a rapidly rising program shows up as harder than its old figure alone would suggest. This is directional, not a guarantee &mdash; confirm against UET&apos;s official merit list before making decisions.
+                  </p>
+                  <ProgramMatches userScore={meritScore} category={meritCategory} />
+                </div>
+              )}
             </div>
           )}
         </div>

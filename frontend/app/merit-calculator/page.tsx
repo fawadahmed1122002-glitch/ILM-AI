@@ -76,12 +76,6 @@ export default function MeritCalculatorPage() {
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      {/* useSearchParams() inside MeritCalculatorClient (for ?university=
-          deep-linking) requires a Suspense boundary -- without it, Next
-          forces this entire route out of static generation and into
-          fully client-side rendering. With it, only this subtree opts
-          into dynamic rendering; the JSON-LD and page shell above stay
-          static and crawlable. */}
       <Suspense fallback={null}>
         <MeritCalculatorClient />
       </Suspense>

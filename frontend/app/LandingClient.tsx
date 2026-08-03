@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
+import { PRODUCTS } from "@/lib/products";
 
 // ============================================================================
 // Respects the "reduced motion" requirement from the design quality floor:
@@ -399,7 +400,7 @@ function CostComparison() {
           </div>
           <span className="text-slate-600 text-2xl" aria-hidden="true">→</span>
           <div>
-            <p className="font-mono text-5xl sm:text-6xl font-bold text-teal-400">Rs. 799</p>
+            <p className="font-mono text-5xl sm:text-6xl font-bold text-teal-400">From Rs. 799</p>
             <p className="text-slate-400 text-xs uppercase tracking-wide mt-2">PrepXMentor, per month</p>
           </div>
         </div>
@@ -453,93 +454,42 @@ function GrowthVisualized() {
   );
 }
 
-interface PricingTier {
-  name: string;
-  price: string;
-  cadence: string;
-  features: string[];
-  cta: string;
-  featured?: boolean;
-}
-
-const PRICING_TIERS: PricingTier[] = [
-  {
-    name: "Free",
-    price: "Rs. 0",
-    cadence: "forever",
-    features: ["3 topic explanations / day", "5 MCQ sessions / day", "English only"],
-    cta: "Try for free",
-  },
-  {
-    name: "Pro",
-    price: "Rs. 799",
-    cadence: "/ month",
-    features: [
-      "Unlimited topic explanations",
-      "Unlimited MCQ practice",
-      "Bilingual (English + Urdu)",
-      "Full progress dashboard",
-      "Weak topic detection",
-    ],
-    cta: "Get Pro access",
-    featured: true,
-  },
-];
-
 function Pricing() {
+  const cheapest = Math.min(...PRODUCTS.map((p) => p.price));
   return (
     <section id="pricing" className="bg-white dark:bg-slate-950 py-20 sm:py-28">
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-14">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight mb-3">
-            Simple, transparent pricing
+            Pick exactly what you're prepping for
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-base">Invest in your future. No hidden academy fees.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-base">
+            Plans start at Rs. {cheapest}/month. No hidden academy fees.
+          </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
-          {PRICING_TIERS.map((tier) => (
-            <div
-              key={tier.name}
-              className={`relative rounded-2xl p-6 border flex flex-col ${
-                tier.featured
-                  ? "bg-slate-950 border-teal-500/40 shadow-xl shadow-teal-950/20"
-                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
-              }`}
-            >
-              {tier.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-mono uppercase tracking-widest bg-teal-500 text-slate-950 px-3 py-1 rounded-full">
-                  Most popular
-                </span>
-              )}
-              <p className={`text-xs uppercase tracking-wide mb-2 ${tier.featured ? "text-teal-400" : "text-slate-400 dark:text-slate-500"}`}>
-                {tier.name}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <p className="text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2">Free</p>
+            <p className="font-mono text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Rs. 0</p>
+            <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li>3 topic explanations / day</li>
+              <li>5 MCQ sessions / day</li>
+            </ul>
+          </div>
+          {PRODUCTS.map((product) => (
+            <div key={product.id} className="bg-slate-950 border border-teal-500/40 rounded-2xl p-6">
+              <p className="text-xs uppercase tracking-wide text-teal-400 mb-2">{product.name}</p>
+              <p className="font-mono text-3xl font-bold text-white mb-1">
+                Rs. {product.price}<span className="text-sm font-normal text-slate-400 ml-1">/mo</span>
               </p>
-              <p className={`font-mono text-3xl font-bold mb-1 ${tier.featured ? "text-white" : "text-slate-900 dark:text-slate-100"}`}>
-                {tier.price}
-                <span className={`text-sm font-normal ml-1 ${tier.featured ? "text-slate-400" : "text-slate-400 dark:text-slate-500"}`}>
-                  {tier.cadence}
-                </span>
-              </p>
-              <ul className="space-y-2 my-6 flex-1">
-                {tier.features.map((f) => (
-                  <li key={f} className={`text-sm flex items-start gap-2 ${tier.featured ? "text-slate-300" : "text-slate-600 dark:text-slate-300"}`}>
-                    <span className={tier.featured ? "text-teal-400" : "text-teal-600 dark:text-teal-400"} aria-hidden="true">✓</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/register"
-                className={`inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm no-underline transition-colors ${
-                  tier.featured
-                    ? "bg-teal-500 text-slate-950 hover:bg-teal-400"
-                    : "border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-teal-300 dark:hover:border-teal-700"
-                }`}
-              >
-                {tier.cta}
-              </Link>
+              <p className="text-xs text-slate-400 mb-4">{product.description}</p>
             </div>
           ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link href="/register" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-teal-500 text-slate-950 font-semibold text-sm hover:bg-teal-400 transition-colors no-underline">
+            Start free — no card needed
+          </Link>
         </div>
       </div>
     </section>

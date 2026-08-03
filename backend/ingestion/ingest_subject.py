@@ -3,6 +3,15 @@ ILMAI Generalized Ingestion Pipeline
 Ingests ALL chapter PDFs for a given subject folder into ChromaDB.
 Usage: python ingestion/ingest_subject.py <subject_name>
 Example: python ingestion/ingest_subject.py biology
+
+FIXED (this version):
+- Removed duplicate embed/store block that ran after every successful chapter
+  ingestion — it re-embedded every chapter a second time and called
+  collection.add() with IDs that already existed from the upsert() above it,
+  which would throw a duplicate-ID error and crash mid-run.
+- Added page_number tracking per chunk (per Master Doc §5.3 metadata spec).
+  Page boundaries are tracked during PDF text extraction instead of being
+  lost when all pages get joined into one string.
 """
 
 import os
@@ -16,8 +25,11 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 
 # ---- CONFIG ----
-PDFS_ROOT = "/home/fawad/project/ILM-AI/data/pdfs"
-CHROMA_DB_PATH = "/home/fawad/project/ILM-AI/data/chroma_db"
+# Falls back to local dev paths if env vars aren't set, so nothing changes
+# for local runs. On Railway, set PDFS_ROOT / CHROMA_DB_PATH env vars to
+# point at the mounted volume paths (see deployment notes).
+PDFS_ROOT = os.environ.get("PDFS_ROOT", "/home/fawad/project/ILM-AI/data/pdfs")
+CHROMA_DB_PATH = os.environ.get("CHROMA_DB_PATH", "/home/fawad/project/ILM-AI/data/chroma_db")
 COLLECTION_NAME = "ilmai_knowledge_base"
 
 SUBJECT_DISPLAY_NAMES = {
@@ -28,17 +40,24 @@ SUBJECT_DISPLAY_NAMES = {
     "computer_science": "Computer Science",
 }
 
+# A page-break marker inserted between pages so we can recover page numbers
+# after the whitespace-collapsing clean_text() step runs.
+PAGE_MARKER = "\x00PAGE_BREAK\x00"
 
-def load_pdf_text(pdf_path: str) -> str:
+
+def load_pdf_text_with_pages(pdf_path: str) -> str:
+    """Load PDF text, inserting a page marker between pages so page numbers
+    can be recovered later even after whitespace collapsing."""
     reader = PdfReader(pdf_path)
-    text = ""
-    for page in reader.pages:
+    parts = []
+    for i, page in enumerate(reader.pages):
         page_text = page.extract_text() or ""
-        text += page_text + "\n"
-    return text
+        parts.append(f"{PAGE_MARKER}{i + 1}{PAGE_MARKER}" + page_text)
+    return "\n".join(parts)
 
 
 def clean_text(text: str) -> str:
+    # Collapse whitespace but preserve our page markers (they contain no whitespace)
     text = re.sub(r'\s+', ' ', text)
     text = re.sub(r'(\d+\.\d+(?:\.\d+)*)\s', r'\n\n\1 ', text)
     text = re.sub(r'(Chapter\s*#\s*\d+)', r'\n\n\1', text)
@@ -49,10 +68,26 @@ def fix_missing_spaces(text: str) -> str:
     return re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
 
 
+def extract_page_number(chunk_text: str, default: int = 0) -> int:
+    """Pull the most recent page marker found in a chunk, so each chunk is
+    tagged with the page it started on. Falls back to `default` if none found."""
+    matches = re.findall(rf'{PAGE_MARKER}(\d+){PAGE_MARKER}', chunk_text)
+    return int(matches[0]) if matches else default
+
+
+def strip_page_markers(text: str) -> str:
+    return re.sub(rf'{PAGE_MARKER}\d+{PAGE_MARKER}', '', text)
+
+
 def chunk_by_sections(text: str, max_chunk_size: int = 800):
+    """
+    Primary split: by numbered section headers (1.1, 1.2.2.6, etc.) and Chapter headers.
+    Fallback: if a section is still too long, sub-split with RecursiveCharacterTextSplitter.
+    Returns list of (chunk_text, page_number) tuples.
+    """
     pattern = r'(?=\n\n\d+\.\d+(?:\.\d+)*\s|\n\nChapter\s*#\s*\d+)'
     sections = re.split(pattern, text)
-    sections = [s.strip() for s in sections if len(s.strip()) >= 100]
+    sections = [s.strip() for s in sections if len(strip_page_markers(s).strip()) >= 100]
 
     fallback_splitter = RecursiveCharacterTextSplitter(
         chunk_size=max_chunk_size,
@@ -62,12 +97,23 @@ def chunk_by_sections(text: str, max_chunk_size: int = 800):
     )
 
     final_chunks = []
+    last_known_page = 1
+
     for section in sections:
+        page_num = extract_page_number(section, default=last_known_page)
+        last_known_page = page_num
+
         if len(section) <= max_chunk_size:
-            final_chunks.append(section)
+            clean_chunk = strip_page_markers(section).strip()
+            if len(clean_chunk) >= 100:
+                final_chunks.append((clean_chunk, page_num))
         else:
             sub_chunks = fallback_splitter.split_text(section)
-            final_chunks.extend([c for c in sub_chunks if len(c) >= 100])
+            for sc in sub_chunks:
+                sub_page = extract_page_number(sc, default=page_num)
+                clean_sub = strip_page_markers(sc).strip()
+                if len(clean_sub) >= 100:
+                    final_chunks.append((clean_sub, sub_page))
 
     return final_chunks
 
@@ -105,6 +151,7 @@ def ingest_subject(subject_folder: str):
     collection = client.get_or_create_collection(name=COLLECTION_NAME)
 
     total_chunks_stored = 0
+    failed_files = []
 
     for pdf_path in pdf_files:
         filename = os.path.basename(pdf_path)
@@ -113,18 +160,23 @@ def ingest_subject(subject_folder: str):
         print(f"\n--- Processing: {filename} (Ch.{chapter_num}: {chapter_name}) ---")
 
         try:
-            raw_text = load_pdf_text(pdf_path)
+            raw_text = load_pdf_text_with_pages(pdf_path)
             if len(raw_text.strip()) == 0:
                 print(f"⚠️  No text extracted from {filename} — likely a scanned PDF. Skipping (needs OCR).")
+                failed_files.append((filename, "no text / scanned PDF"))
                 continue
 
             cleaned = clean_text(raw_text)
             cleaned = fix_missing_spaces(cleaned)
-            chunks = chunk_by_sections(cleaned)
+            chunk_pairs = chunk_by_sections(cleaned)
 
-            if not chunks:
+            if not chunk_pairs:
                 print(f"⚠️  No valid chunks produced from {filename}. Skipping.")
+                failed_files.append((filename, "no valid chunks"))
                 continue
+
+            chunks = [c for c, _ in chunk_pairs]
+            page_numbers = [p for _, p in chunk_pairs]
 
             embeddings = model.encode(chunks, show_progress_bar=False)
 
@@ -134,9 +186,10 @@ def ingest_subject(subject_folder: str):
                     "subject": subject_display,
                     "chapter": chapter_num if chapter_num else 0,
                     "chapter_name": chapter_name,
+                    "page": page_numbers[i],
                     "source_file": filename,
                 }
-                for _ in chunks
+                for i in range(len(chunks))
             ]
 
             collection.upsert(
@@ -153,32 +206,14 @@ def ingest_subject(subject_folder: str):
             print(f"❌ FAILED on {filename}: {type(e).__name__}: {e}")
             import traceback
             traceback.print_exc()
+            failed_files.append((filename, f"{type(e).__name__}: {e}"))
             continue
 
-        embeddings = model.encode(chunks, show_progress_bar=False)
-
-        ids = [f"{subject_folder}_ch{chapter_num}_{i}" for i in range(len(chunks))]
-        metadatas = [
-            {
-                "subject": subject_display,
-                "chapter": chapter_num if chapter_num else 0,
-                "chapter_name": chapter_name,
-                "source_file": filename,
-            }
-            for _ in chunks
-        ]
-
-        collection.add(
-            ids=ids,
-            embeddings=embeddings.tolist(),
-            documents=chunks,
-            metadatas=metadatas,
-        )
-
-        print(f"✅ Stored {len(chunks)} chunks for Ch.{chapter_num}: {chapter_name}")
-        total_chunks_stored += len(chunks)
-
     print(f"\n🎉 Done. Total chunks stored for {subject_display}: {total_chunks_stored}")
+    if failed_files:
+        print(f"\n⚠️  {len(failed_files)} file(s) had issues:")
+        for fname, reason in failed_files:
+            print(f"   - {fname}: {reason}")
 
 
 if __name__ == "__main__":

@@ -197,7 +197,13 @@ export const UNIVERSITIES: University[] = [
     category: "Engineering",
     test: "FAST Entry Test",
     city: "Lahore",
-    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad"],
+    // Multan added Jul 2026 -- confirmed as a genuine 6th campus (launched Fall
+    // 2025) via nu.edu.pk/MultanCampus. Per FAST's own launch announcement,
+    // Multan initially offered only BS AI / CS / SE (Computing track) --
+    // no Engineering-formula programs (EE/CE/Civil) have been confirmed
+    // there as of this research pass, so it is NOT added to this entry's
+    // topPrograms or assumed to run the Engineering formula at that campus.
+    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad", "Multan"],
     province: "Punjab",
     establishedYear: null,
     lastVerified: "2026-07",
@@ -325,33 +331,15 @@ export const UNIVERSITIES: University[] = [
     image: "/universities/ned.jpg", // TODO: add once a licensed photo/logo is sourced
     about: "NED is Karachi's flagship engineering university. Uniquely among major engineering universities, it excludes Matric marks entirely from merit. Most seats reserved for Sindh-domicile candidates.",
   },
-  {
-    slug: "itu",
-    name: "ITU",
-    fullName: "Information Technology University, Lahore",
-    category: "Computing",
-    test: "ITU Admissions Test",
-    city: "Lahore",
-    campuses: [],
-    province: "Punjab",
-    establishedYear: null,
-    lastVerified: "2026-07",
-    totalQuestions: null,
-    duration: null,
-    formulaConfidence: "high", // Official itu.edu.pk/admissions/application-process, "Norms & Criteria" -- specific to BS Computer Science / BS AI
-    meritWeights: { matricLabel: "Matric", fscLabel: "Inter Part I", testLabel: "Admission Test/SAT-I/USAT", matric: 0.15, fsc: 0.35, test: 0.50 },
-    subjects: ["Physics", "Mathematics", "Chemistry / CS"],
-    minAggregate: "50% minimum in ITU Admissions Test",
-    negativeMarking: null,
-    seats: "~150",
-    seatsApprox: 150,
-    testType: "Own test; ECAT/SAT/USAT/NTS/GAT/GRE accepted as exemptions for some programs",
-    topPrograms: ["BS Computer Science", "BS Artificial Intelligence", "BS Electrical Engineering"],
-    allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
-    website: "https://itu.edu.pk",
-    image: "/universities/itu.jpg", // TODO: add once a licensed photo/logo is sourced
-    about: "ITU is a smaller, research-focused public university in Lahore founded by Umar Saif, modeled loosely after MIT. Strong startup/incubator culture. Formula shown applies to BS Computer Science and BS AI specifically; other programs may differ.",
-  },
+  // NOTE: category mismatch flagged for product review -- category is
+  // "Engineering" but every topPrograms entry below is a Computing degree
+  // (BS Computer Science / IT / Software Engineering). Confirm with the
+  // product team whether this should be recategorized as "Computing", split
+  // into two entries (mirroring the fast / fast-engineering pattern), or PU's
+  // actual engineering programs should be added to topPrograms. Left
+  // unchanged pending that decision -- do not silently "fix" this by
+  // recategorizing without checking what PU's Engineering faculty (if any)
+  // actually offers.
   {
     slug: "punjab-university",
     name: "University of the Punjab",
@@ -492,13 +480,47 @@ export const UNIVERSITIES: University[] = [
   // COMPUTING
   // ---------------------------------------------------------------------
   {
+    slug: "itu",
+    name: "ITU",
+    fullName: "Information Technology University, Lahore",
+    category: "Computing",
+    test: "ITU Admissions Test",
+    city: "Lahore",
+    campuses: [],
+    province: "Punjab",
+    establishedYear: null,
+    lastVerified: "2026-07",
+    totalQuestions: null,
+    duration: null,
+    formulaConfidence: "high", // Official itu.edu.pk/admissions/application-process, "Norms & Criteria" -- specific to BS Computer Science / BS AI
+    meritWeights: { matricLabel: "Matric", fscLabel: "Inter Part I", testLabel: "Admission Test/SAT-I/USAT", matric: 0.15, fsc: 0.35, test: 0.50 },
+    subjects: ["Physics", "Mathematics", "Chemistry / CS"],
+    minAggregate: "50% minimum in ITU Admissions Test",
+    negativeMarking: null,
+    seats: "~150",
+    seatsApprox: 150,
+    testType: "Own test; ECAT/SAT/USAT/NTS/GAT/GRE accepted as exemptions for some programs",
+    topPrograms: ["BS Computer Science", "BS Artificial Intelligence", "BS Electrical Engineering"],
+    allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
+    website: "https://itu.edu.pk",
+    image: "/universities/itu.jpg", // TODO: add once a licensed photo/logo is sourced
+    about: "ITU is a smaller, research-focused public university in Lahore founded by Umar Saif, modeled loosely after MIT. Strong startup/incubator culture. Formula shown applies to BS Computer Science and BS AI specifically; other programs may differ.",
+  },
+  {
     slug: "fast",
     name: "FAST-NUCES (Computing/Business)",
     fullName: "National University of Computer and Emerging Sciences",
     category: "Computing",
     test: "FAST Entry Test",
     city: "Lahore",
-    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad"],
+    // Multan added Jul 2026 -- confirmed as a genuine 6th campus (launched
+    // Fall 2025) via nu.edu.pk/MultanCampus. It launched with only BS AI /
+    // CS / SE; a third-party 2026 cutoff source also showed a Multan BS
+    // Business Analytics figure not present in that campus's 2025 cutoffs,
+    // consistent with a second program being added in year two rather than
+    // a data error -- not yet independently confirmed via an official
+    // source, so topPrograms below is left unchanged pending that.
+    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad", "Multan"],
     province: "Punjab",
     establishedYear: null,
     lastVerified: "2026-07",
@@ -516,7 +538,7 @@ export const UNIVERSITIES: University[] = [
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://nu.edu.pk",
     image: "/universities/fast.png", // TODO: add once a licensed photo/logo is sourced
-    about: "FAST-NUCES is Pakistan's leading dedicated computing university, with 5 campuses across the country. Known for strong CS/software engineering placement outcomes. Looking for FAST's PEC-accredited Engineering programs instead? See FAST-NUCES (Engineering), which uses a different, more FSc-weighted formula.",
+    about: "FAST-NUCES is Pakistan's leading dedicated computing university, with 6 campuses across the country (including the newly launched Multan campus). Known for strong CS/software engineering placement outcomes. Looking for FAST's PEC-accredited Engineering programs instead? See FAST-NUCES (Engineering), which uses a different, more FSc-weighted formula.",
   },
 
   // ---------------------------------------------------------------------
