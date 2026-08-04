@@ -1,3 +1,6 @@
+from http.client import HTTPException
+from fastapi import HTTPException
+from app.rag.llm_client import LLMGenerationError
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from app.db.session import get_db
@@ -59,12 +62,21 @@ def explain(
     db: Session = Depends(get_db)
 ):
     check_explain_limit(current_user, db, subject=payload.subject)
-    result = QueryService.explain(
-        query=payload.query,
-        subject=payload.subject,
-        user=current_user,
-        db=db
-    )
+    try:
+        result = QueryService.explain(
+            query=payload.query,
+            subject=payload.subject,
+            user=current_user,
+            db=db
+        )
+    except LLMGenerationError:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "code": "EXPLANATION_QUALITY_CHECK_FAILED",
+                "message": "We couldn't generate a reliable explanation for this topic right now. Please try again in a moment.",
+            },
+        )
     return ExplainResponse(**result)
 
 
