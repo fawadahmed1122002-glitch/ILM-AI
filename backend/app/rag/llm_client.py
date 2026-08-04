@@ -18,6 +18,37 @@ _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 # Groq's fast Llama 3.3 model — good balance of speed + quality for MVP
 MODEL_NAME = "llama-3.3-70b-versatile"
 
+
+class LLMGenerationError(Exception):
+    """
+    Raised when LLM output fails quality validation (e.g. Urdu section
+    contains foreign script that survived retry + sanitization) and should
+    NOT be served to a student. Callers (API routes) should catch this and
+    return a clean, user-facing error instead of a raw 500.
+    """
+    pass
+
+
+def log_flagged_response(query: str, subject: str, result: str) -> None:
+    """
+    Records a response that failed the foreign-script quality check after
+    retry + sanitization, for manual review.
+
+    MVP implementation: prints a structured, greppable log line so it shows
+    up in `railway logs` and can be found later with:
+        railway logs | grep "FLAGGED_RESPONSE"
+    TODO: once volume grows, replace with a real `flagged_responses` table
+    (query, subject, raw_output, created_at) so this is queryable instead
+    of log-only.
+    """
+    print(
+        "🚩 FLAGGED_RESPONSE | "
+        f"subject={subject!r} | "
+        f"query={query!r} | "
+        f"output={result!r}"
+    )
+
+
 FOREIGN_SCRIPT_FIXES = {
     "三角 میٹری": "ٹریگنومیٹری",  # must come BEFORE the standalone "三角" entry
     "三角": "ٹریگنومیٹری",
@@ -105,7 +136,6 @@ def sanitize_foreign_script(text: str) -> str:
 
 
 def generate_explanation(context: str, subject: str, query: str, _retry_count: int = 0) -> str:
-    # Check cache first (only on the initial call, not retries)
     if _retry_count == 0:
         cached = get_cached_response(query, subject)
         if cached:
@@ -115,8 +145,8 @@ def generate_explanation(context: str, subject: str, query: str, _retry_count: i
     system_prompt = EXPLANATION_SYSTEM_PROMPT.format(subject=subject)
     user_message = build_explanation_prompt(context, subject, query)
     result = call_groq(system_prompt, user_message, temperature=0.3, max_tokens=900)
-
     urdu_section = extract_urdu_section(result)
+
     if contains_foreign_script(urdu_section) and _retry_count < 1:
         print("⚠️  Foreign script detected in Urdu output — retrying generation...")
         return generate_explanation(context, subject, query, _retry_count=_retry_count + 1)
@@ -125,9 +155,13 @@ def generate_explanation(context: str, subject: str, query: str, _retry_count: i
         print("⚠️  Foreign script still present after retry — applying known-pattern cleanup...")
         result = sanitize_foreign_script(result)
         if contains_foreign_script(extract_urdu_section(result)):
-            print("❌ WARNING: Unrecognized foreign script pattern remains. Flagging for manual review.")
+            # Genuinely broken — log for review AND stop it from reaching the student.
+            print("❌ Unrecognized foreign script pattern remains. Blocking response.")
+            log_flagged_response(query, subject, result)
+            raise LLMGenerationError(
+                "Urdu explanation failed quality validation. Please try again."
+            )
 
-    # Cache the final clean result (only cache successful, non-flagged results)
     if _retry_count == 0 or not contains_foreign_script(extract_urdu_section(result)):
         store_response(query, subject, {"explanation": result})
 
