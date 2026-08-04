@@ -26,6 +26,7 @@ For technical terms with no common Urdu word, write the English term phoneticall
 - "microscopic" -> خوردبینی یا مائیکروسکوپک (NOT 微观)
 - "reversible" -> قابل واپسی (NOT 反応性 or 反)
 - "defined" -> متعین یا بیان کیا جاتا ہے (NOT 定 or định)
+- "formula" -> فارمولا (NOT формула or формуле or any Cyrillic script)
 ]
 
 KEY EXAM POINT: [One sentence - the single fact most likely to appear in ECAT/MDCAT.]
