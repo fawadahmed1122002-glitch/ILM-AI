@@ -195,10 +195,13 @@ def validate_mcq(mcq: dict) -> list[str]:
     if "difficulty" in mcq and mcq["difficulty"] not in ["Easy", "Medium", "Hard"]:
         errors.append(f"Invalid 'difficulty' value: {mcq.get('difficulty')}")
 
+    if "question_ur" in mcq and contains_foreign_script(str(mcq["question_ur"])):
+        errors.append("question_ur contains non-Urdu script (CJK/Cyrillic/Devanagari/Korean)")
+
     return errors
 
 
-def generate_mcqs(context: str, subject: str, topic: str) -> dict:
+def generate_mcqs(context: str, subject: str, topic: str, _retry_count: int = 0) -> dict:
     """
     Generates 5 MCQs grounded in context. Returns a dict with:
     - 'valid_mcqs': list of MCQs that passed validation
@@ -235,11 +238,21 @@ def generate_mcqs(context: str, subject: str, topic: str) -> dict:
         else:
             valid_mcqs.append(mcq)
 
+    # If any MCQ failed specifically due to foreign-script contamination,
+    # retry the whole batch once — same one-retry pattern as generate_explanation.
+    has_script_failure = any(
+        any("non-Urdu script" in err for err in errs) for _, errs in invalid_mcqs
+    )
+    if has_script_failure and _retry_count < 1:
+        print("⚠️  Foreign script detected in MCQ Urdu output — retrying batch generation...")
+        return generate_mcqs(context, subject, topic, _retry_count=_retry_count + 1)
+
     return {
         "valid_mcqs": valid_mcqs,
         "invalid_mcqs": invalid_mcqs,
         "parse_error": None,
     }
+
 
 if __name__ == "__main__":
     # Quick test
