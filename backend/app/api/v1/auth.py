@@ -25,6 +25,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         phone=payload.phone,
         age=payload.age,
         interested_tests=interested_tests,
+        subjects=payload.subjects,
         field=payload.field             
     )
     token = create_access_token(str(user.id))
@@ -36,6 +37,7 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         plan=user.plan,
         field=user.field,
         interested_tests=user.interested_tests,
+        subjects=user.subjects,
     )
 
 
@@ -56,6 +58,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         plan=user.plan,
         field=user.field,
         interested_tests=user.interested_tests,
+        subjects=user.subjects,
     )
 
 
@@ -69,4 +72,5 @@ def me(current_user: User = Depends(get_current_user)):
         full_name=current_user.full_name,
         email=current_user.email,
         plan=current_user.plan,
+        subjects=current_user.subjects,
     )

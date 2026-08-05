@@ -12,15 +12,14 @@ class UserRepository:
     def get_by_id(self, user_id: str) -> User | None:
         return self.db.query(User).filter(User.id == str(user_id)).first()
 
-    def create(self, full_name: str, email: str, password_hash: str,
-               phone: str = None, age: int = None,
-               interested_tests: list[str] = None, field: str = None) -> User:
+    def create(self, full_name: str, email: str, password_hash: str,phone: str = None, age: int = None, subjects: list[str] = None,interested_tests: list[str] = None, field: str = None) -> User:
         user = User(
             full_name=full_name,
             email=email,
             password_hash=password_hash,
             phone=phone,
             age=age,
+            subjects=subjects,
             interested_tests=interested_tests,
             field=field,
         )

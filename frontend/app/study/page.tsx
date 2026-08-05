@@ -66,7 +66,7 @@ export default function StudyPage() {
 
   // Subjects available to this student, filtered by their registered
   // academic field (falls back to the full subject list if no field is set).
-  const SUBJECTS = subjectsForField(user?.field);
+  const SUBJECTS = subjectsForField(user?.field, user?.subjects);
 
   // Explain state
   const [subject, setSubject] = useState(SUBJECTS[0] || "Biology");

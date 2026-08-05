@@ -34,6 +34,7 @@ interface MeResponse {
   plan: string;
   field: string | null;
   interested_tests: string[] | null;
+  subjects: string[] | null;
 }
 
 interface AuthContextType {
@@ -80,6 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         full_name: fresh.full_name,
         email: fresh.email,
         plan: fresh.plan,
+        field: fresh.field,
+        interested_tests: fresh.interested_tests,
+        subjects: fresh.subjects,
       };
       authStorage.save(updated);
       dispatch({ type: "SET_USER", payload: updated });

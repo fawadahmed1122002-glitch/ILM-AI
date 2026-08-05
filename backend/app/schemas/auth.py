@@ -1,8 +1,11 @@
 import re
 from pydantic import BaseModel, EmailStr, field_validator
 from app.core.academic_fields import VALID_FIELDS
+
 VALID_TESTS = {"ECAT", "MDCAT", "NET", "FAST", "Other"}
+VALID_SUBJECTS = {"Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"}
 PK_PHONE_RE = re.compile(r"^(?:\+92|0)3\d{9}$")
+
 
 class RegisterRequest(BaseModel):
     full_name: str
@@ -10,8 +13,16 @@ class RegisterRequest(BaseModel):
     password: str
     phone: str | None = None
     age: int | None = None
+    subjects: list[str] | None = None
     interested_tests: list[str] | None = None
+    # `field` kept for backward compatibility with the old single-field
+    # picker. No longer shown on the registration form -- new signups use
+    # explicit `subjects` + `interested_tests` multi-select instead. If a
+    # legacy caller still sends `field`, it's still validated and stored,
+    # but it no longer drives subject access on its own (see
+    # subjectsForField() on the frontend, which now checks `subjects` first).
     field: str | None = None
+
     @field_validator("phone")
     @classmethod
     def validate_phone(cls, v: str | None) -> str | None:
@@ -34,15 +45,30 @@ class RegisterRequest(BaseModel):
             raise ValueError("Age must be between 13 and 60")
         return v
 
+    @field_validator("subjects")
+    @classmethod
+    def validate_subjects(cls, v: list[str] | None) -> list[str] | None:
+        if v is None:
+            return None
+        if len(v) == 0:
+            raise ValueError("Select at least one subject")
+        invalid = set(v) - VALID_SUBJECTS
+        if invalid:
+            raise ValueError(f"Invalid subject(s): {', '.join(invalid)}. Must be one of: {', '.join(sorted(VALID_SUBJECTS))}")
+        return v
+
     @field_validator("interested_tests")
     @classmethod
     def validate_tests(cls, v: list[str] | None) -> list[str] | None:
         if v is None:
             return None
+        if len(v) == 0:
+            raise ValueError("Select at least one entry test")
         invalid = set(v) - VALID_TESTS
         if invalid:
             raise ValueError(f"Invalid test(s): {', '.join(invalid)}. Must be one of: {', '.join(VALID_TESTS)}")
         return v
+
     @field_validator("field")
     @classmethod
     def validate_field(cls, v: str | None) -> str | None:
@@ -51,6 +77,7 @@ class RegisterRequest(BaseModel):
         if v not in VALID_FIELDS:
             raise ValueError(f"Invalid field: {v}. Must be one of: {', '.join(sorted(VALID_FIELDS))}")
         return v
+
 
 class LoginRequest(BaseModel):
     email: EmailStr
@@ -65,7 +92,9 @@ class TokenResponse(BaseModel):
     email: str
     plan: str
     field: str | None = None
+    subjects: list[str] | None = None
     interested_tests: list[str] | None = None
+
 
 class MeResponse(BaseModel):
     user_id: str
@@ -73,4 +102,5 @@ class MeResponse(BaseModel):
     email: str
     plan: str
     field: str | None = None
+    subjects: list[str] | None = None
     interested_tests: list[str] | None = None

@@ -9,6 +9,7 @@ export interface AuthUser {
   email: string;
   field: string | null;
   interested_tests: string[] | null;
+  subjects: string[] | null;
 }
 
 export const authStorage = {
