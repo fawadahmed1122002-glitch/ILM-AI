@@ -25,3 +25,6 @@ class User(Base):
     daily_explain_count: Mapped[int] = mapped_column(server_default="0")
     daily_mcq_count: Mapped[int] = mapped_column(server_default="0")
     last_reset_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    current_streak: Mapped[int] = mapped_column(server_default="0")
+    longest_streak: Mapped[int] = mapped_column(server_default="0")
+    last_streak_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

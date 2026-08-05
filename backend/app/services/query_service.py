@@ -6,7 +6,7 @@ from app.models.mcq_attempt import McqAttempt
 from app.models.topic_stats import TopicStats
 from app.rag.retrieve import retrieve_top_chunks, format_context_string
 from app.rag.llm_client import generate_explanation, generate_mcqs
-
+from app.services.streak_service import update_streak
 
 class QueryService:
 
@@ -24,6 +24,7 @@ class QueryService:
             }
         context = format_context_string(chunks)
         explanation = generate_explanation(context=context, subject=subject, query=normalized_query)
+        update_streak(user, db)
         return {
             "explanation": explanation,
             "normalized_query": normalized_query,
@@ -120,4 +121,6 @@ class QueryService:
             "topics": topics,
             "total_sessions": len(topics),
             "weak_topics": weak_topics,
+            "current_streak": user.current_streak,
+            "longest_streak": user.longest_streak,
         }

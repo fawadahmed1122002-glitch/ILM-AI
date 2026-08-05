@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Sidebar from "@/components/layout/Sidebar";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
+import StreakBadge from "@/components/layout/StreakBadge";
 
 // Decides which layout chrome to render:
 // - Logged out (or still loading auth state): public top Navbar + Footer,
@@ -46,6 +47,7 @@ function AuthedShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Sidebar />
+      <StreakBadge />
       {/* Desktop padding tracks the sidebar's current width (w-64 expanded,
           w-16 collapsed). Mobile has no left offset since Sidebar renders
           as a top bar there instead of a fixed rail. */}

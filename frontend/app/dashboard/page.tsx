@@ -21,6 +21,8 @@ interface ProgressData {
   topics: TopicStat[];
   total_sessions: number;
   weak_topics: TopicStat[];
+  current_streak: number;
+  longest_streak: number;
 }
 
 function AccuracyBadge({ score }: { score: number }) {
@@ -78,6 +80,7 @@ export default function DashboardPage() {
           Plan: <span className="font-medium text-teal-600 dark:text-teal-400 uppercase">{user.plan}</span>
         </p>
       </div>
+      
 
       {/* Weak Topic Alert */}
       {progress && progress.weak_topics.length > 0 && (
