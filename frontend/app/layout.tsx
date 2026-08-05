@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/context/AuthContext";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import AppChrome from "@/components/layout/AppChrome";
 
 export const metadata: Metadata = {
   title: "PrepXMentor — AI Tutor for ECAT and MDCAT",
@@ -28,13 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <ThemeProvider attribute="class" defaultTheme="light">
           <AuthProvider>
-            <Navbar />
-            <main className="min-h-[calc(100vh-60px)]">
-              {children}
-            </main>
+            <AppChrome>{children}</AppChrome>
           </AuthProvider>
         </ThemeProvider>
-        <Footer />
       </body>
     </html>
   );
