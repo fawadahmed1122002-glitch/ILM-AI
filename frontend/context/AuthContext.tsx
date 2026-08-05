@@ -32,6 +32,8 @@ interface MeResponse {
   full_name: string;
   email: string;
   plan: string;
+  field: string | null;
+  interested_tests: string[] | null;
 }
 
 interface AuthContextType {

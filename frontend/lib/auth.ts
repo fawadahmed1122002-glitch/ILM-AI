@@ -7,6 +7,8 @@ export interface AuthUser {
   plan: string;
   access_token: string;
   email: string;
+  field: string | null;
+  interested_tests: string[] | null;
 }
 
 export const authStorage = {

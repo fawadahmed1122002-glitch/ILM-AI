@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
-
-const SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"];
+import { subjectsForField } from "@/lib/academicFields";
 
 interface ExplainResponse {
   explanation: string;
@@ -65,8 +64,12 @@ export default function StudyPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  // Subjects available to this student, filtered by their registered
+  // academic field (falls back to the full subject list if no field is set).
+  const SUBJECTS = subjectsForField(user?.field);
+
   // Explain state
-  const [subject, setSubject] = useState("Biology");
+  const [subject, setSubject] = useState(SUBJECTS[0] || "Biology");
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<ExplainResponse | null>(null);
   const [explainLoading, setExplainLoading] = useState(false);

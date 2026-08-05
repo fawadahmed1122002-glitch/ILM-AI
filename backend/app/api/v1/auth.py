@@ -34,6 +34,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         full_name=user.full_name,
         email=user.email,
         plan=user.plan,
+        field=user.field,
+        interested_tests=user.interested_tests,
     )
 
 
@@ -52,6 +54,8 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         full_name=user.full_name,
         email=user.email,
         plan=user.plan,
+        field=user.field,
+        interested_tests=user.interested_tests,
     )
 
 

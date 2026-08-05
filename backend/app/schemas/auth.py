@@ -64,9 +64,13 @@ class TokenResponse(BaseModel):
     full_name: str
     email: str
     plan: str
-    
+    field: str | None = None
+    interested_tests: list[str] | None = None
+
 class MeResponse(BaseModel):
     user_id: str
     full_name: str
     email: str
     plan: str
+    field: str | None = None
+    interested_tests: list[str] | None = None
