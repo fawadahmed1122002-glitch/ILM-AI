@@ -125,3 +125,11 @@ def get_usage(
             "note": "limit/remaining only apply to subjects OUTSIDE unlimited_subjects",
         }
     }
+
+
+@router.get("/analytics/me")
+def get_analytics(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return QueryService.get_analytics(user=current_user, db=db)

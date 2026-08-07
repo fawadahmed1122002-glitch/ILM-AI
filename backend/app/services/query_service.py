@@ -1,12 +1,14 @@
 import uuid
+from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, case
 from app.models.user import User
 from app.models.mcq_attempt import McqAttempt
 from app.models.topic_stats import TopicStats
 from app.rag.retrieve import retrieve_top_chunks, format_context_string
 from app.rag.llm_client import generate_explanation, generate_mcqs
 from app.services.streak_service import update_streak
+
 
 class QueryService:
 
@@ -123,6 +125,81 @@ class QueryService:
             "topics": topics,
             "total_sessions": len(topics),
             "weak_topics": weak_topics,
+            "current_streak": user.current_streak,
+            "longest_streak": user.longest_streak,
+        }
+
+    @staticmethod
+    def get_analytics(user: User, db: Session) -> dict:
+        """
+        Returns aggregated analytics for the student's Analytics page:
+        - daily_trend: accuracy % per day for the last 30 days, from real
+          per-attempt timestamps (mcq_attempts.created_at). Days with zero
+          attempts are omitted (not zero-filled) -- frontend decides how to
+          render gaps.
+        - subject_breakdown: current accuracy per subject, from topic_stats
+          (aggregated across all topics within each subject).
+        - activity: attempt count per day for the last 30 days (for a
+          streak/activity visualization).
+        - current_streak / longest_streak: from users table.
+
+        NOTE: subject/topic on mcq_attempts only exists for attempts made
+        AFTER the schema migration adding those columns -- older attempts
+        will have subject=NULL and are excluded from subject-scoped queries
+        but still count in the overall daily_trend and activity aggregates.
+        """
+        thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+
+        # Daily accuracy trend (all subjects combined) -- real per-attempt data.
+        daily_rows = (
+            db.query(
+                func.date(McqAttempt.created_at).label("day"),
+                func.count(McqAttempt.id).label("total"),
+                func.sum(case((McqAttempt.is_correct == True, 1), else_=0)).label("correct"),
+            )
+            .filter(McqAttempt.user_id == user.id, McqAttempt.created_at >= thirty_days_ago)
+            .group_by(func.date(McqAttempt.created_at))
+            .order_by(func.date(McqAttempt.created_at))
+            .all()
+        )
+        daily_trend = [
+            {
+                "date": row.day.isoformat(),
+                "total_attempts": row.total,
+                "correct": row.correct,
+                "accuracy_percent": round((row.correct / row.total * 100), 1) if row.total > 0 else 0,
+            }
+            for row in daily_rows
+        ]
+
+        # Subject breakdown -- aggregated from topic_stats (all-time, current state).
+        subject_rows = (
+            db.query(
+                TopicStats.subject,
+                func.sum(TopicStats.total_attempts).label("total_attempts"),
+                func.sum(TopicStats.correct_count).label("correct_count"),
+            )
+            .filter(TopicStats.user_id == user.id)
+            .group_by(TopicStats.subject)
+            .all()
+        )
+        subject_breakdown = [
+            {
+                "subject": row.subject,
+                "total_attempts": row.total_attempts,
+                "correct_count": row.correct_count,
+                "accuracy_percent": round((row.correct_count / row.total_attempts * 100), 1) if row.total_attempts > 0 else 0,
+            }
+            for row in subject_rows
+        ]
+
+        # Activity history -- attempt count per day, last 30 days.
+        activity = [{"date": row["date"], "attempts": row["total_attempts"]} for row in daily_trend]
+
+        return {
+            "daily_trend": daily_trend,
+            "subject_breakdown": subject_breakdown,
+            "activity": activity,
             "current_streak": user.current_streak,
             "longest_streak": user.longest_streak,
         }
