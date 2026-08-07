@@ -55,6 +55,8 @@ class QueryService:
             attempt = McqAttempt(
                 user_id=user.id,
                 mcq_id=None,
+                subject=subject,
+                topic=topic,
                 selected_option=ans.selected_option,
                 is_correct=ans.is_correct,
                 time_spent_ms=ans.time_spent_ms,
