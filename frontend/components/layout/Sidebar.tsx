@@ -23,6 +23,7 @@ import { useSidebar } from "@/context/SidebarContext";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", short: "D" },
   { href: "/study", label: "Study", short: "S" },
+  { href: "/analytics", label: "Analytics", short: "A" },
 ];
 
 export default function Sidebar() {
