@@ -61,11 +61,12 @@ function getOptionText(mcq: McqItem, opt: Option): string {
 }
 
 export default function StudyPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
 
   // Subjects available to this student, filtered by their registered
-  // academic field (falls back to the full subject list if no field is set).
+  // academic field / explicit subject selection (falls back to the full
+  // subject list if neither is set).
   const SUBJECTS = subjectsForField(user?.field, user?.subjects);
 
   // Explain state
@@ -106,6 +107,11 @@ export default function StudyPage() {
     } catch (err: unknown) {
       if (err instanceof ApiError && err.code === "EXPLAIN_LIMIT_REACHED") {
         setExplainError("LIMIT_REACHED");
+      } else if (err instanceof ApiError && err.status === 401) {
+        // Session expired or invalid mid-use -- clean logout + redirect
+        // instead of showing the raw "Invalid or expired token" error text.
+        logout();
+        router.push("/login?reason=session_expired");
       } else {
         setExplainError(err instanceof Error ? err.message : "Something went wrong");
       }
@@ -128,6 +134,9 @@ export default function StudyPage() {
     } catch (err: unknown) {
       if (err instanceof ApiError && err.code === "MCQ_LIMIT_REACHED") {
         setMcqError("LIMIT_REACHED");
+      } else if (err instanceof ApiError && err.status === 401) {
+        logout();
+        router.push("/login?reason=session_expired");
       } else {
         setMcqError(err instanceof Error ? err.message : String(err));
       }

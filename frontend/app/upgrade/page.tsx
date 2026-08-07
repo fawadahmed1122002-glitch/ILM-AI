@@ -65,7 +65,7 @@ function PaymentStatusBanner() {
 }
 
 export default function UpgradePage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout, refreshUser } = useAuth();
   const router = useRouter();
   const [selectedProduct, setSelectedProduct] = useState<string>(PRODUCTS[0].id);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -80,11 +80,27 @@ export default function UpgradePage() {
     if (!user) return;
     setCheckoutError("");
     setCheckoutLoading(true);
+
+    // Validate the session is actually still live server-side before
+    // sending anyone to a real payment page. A JWT can remain valid
+    // (unexpired, correctly signed) even after the underlying user account
+    // no longer exists -- e.g. deleted during testing/cleanup. Catching
+    // that here means checkout never gets initiated with a dead user_id,
+    // rather than the customer paying and the webhook later failing with
+    // "user not found" after the fact.
+    const freshUser = await refreshUser();
+    if (!freshUser) {
+      setCheckoutLoading(false);
+      logout();
+      router.push("/login?reason=session_expired");
+      return;
+    }
+
     try {
       const res = await fetch("/api/payment/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.user_id, email: user.email, productId: selectedProduct }),
+        body: JSON.stringify({ userId: freshUser.user_id, email: freshUser.email, productId: selectedProduct }),
       });
       const data = await res.json();
       if (!res.ok || !data.checkoutUrl) {

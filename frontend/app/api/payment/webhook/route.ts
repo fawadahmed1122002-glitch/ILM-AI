@@ -82,6 +82,20 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const errBody = await res.text();
       console.error("Backend grant-pro-plan call failed:", res.status, errBody);
+
+      // Distinguish permanent failures (retrying won't help -- e.g. the
+      // user_id in this order no longer exists, most likely a stale JWT
+      // used at checkout after the underlying account was deleted) from
+      // transient ones (network blip, a genuine 5xx from our own backend,
+      // worth retrying). Returning 200 for permanent failures tells
+      // Safepay "received, don't retry" while the error above still lands
+      // in our own logs for visibility -- otherwise Safepay retries a
+      // request that can never succeed, indefinitely, flooding the logs.
+      const isPermanentFailure = res.status === 400 || res.status === 404;
+      if (isPermanentFailure) {
+        return NextResponse.json({ received: true, granted: false, reason: errBody }, { status: 200 });
+      }
+
       return NextResponse.json({ error: "Failed to grant plan" }, { status: 500 });
     }
   } catch (err) {
