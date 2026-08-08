@@ -30,11 +30,13 @@ def _reset_if_new_day(user: User, db: Session):
 
 def _has_unlimited_access(user: User, subject: str) -> bool:
     """
-    True only if the user has an active paid product AND that product
-    covers the requested subject. plan == "pro" alone is no longer
-    sufficient -- product_id + subject scope decides it.
+    True only if the user has an active paid product, that product covers
+    the requested subject, AND the user's email is verified. An unverified
+    user stays at free-tier limits even with an active paid product.
     """
     if user.plan != "pro":
+        return False
+    if not user.is_email_verified:
         return False
     allowed_subjects = subjects_for_product(user.product_id)
     return subject in allowed_subjects

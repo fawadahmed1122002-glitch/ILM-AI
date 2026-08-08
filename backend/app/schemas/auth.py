@@ -94,6 +94,7 @@ class TokenResponse(BaseModel):
     field: str | None = None
     subjects: list[str] | None = None
     interested_tests: list[str] | None = None
+    is_email_verified: bool = False
 
 
 class MeResponse(BaseModel):
@@ -104,3 +105,13 @@ class MeResponse(BaseModel):
     field: str | None = None
     subjects: list[str] | None = None
     interested_tests: list[str] | None = None
+    is_email_verified: bool = False
+
+
+class VerifyEmailResponse(BaseModel):
+    success: bool
+    message: str
+
+
+class ResendVerificationRequest(BaseModel):
+    email: EmailStr

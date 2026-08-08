@@ -29,3 +29,4 @@ class User(Base):
     current_streak: Mapped[int] = mapped_column(server_default="0")
     longest_streak: Mapped[int] = mapped_column(server_default="0")
     last_streak_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    is_email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("false"))
