@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import Sidebar from "@/components/layout/Sidebar";
 import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
 import StreakBadge from "@/components/layout/StreakBadge";
+import EmailVerificationBanner from "@/components/layout/EmailVerificationBanner";
 
 // Decides which layout chrome to render:
 // - Logged out (or still loading auth state): public top Navbar + Footer,
@@ -52,6 +53,7 @@ function AuthedShell({ children }: { children: React.ReactNode }) {
           w-16 collapsed). Mobile has no left offset since Sidebar renders
           as a top bar there instead of a fixed rail. */}
       <main className={`min-h-screen transition-all duration-200 ${collapsed ? "lg:pl-16" : "lg:pl-64"}`}>
+        <EmailVerificationBanner />
         {children}
       </main>
     </>

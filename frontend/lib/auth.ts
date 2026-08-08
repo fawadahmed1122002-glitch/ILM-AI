@@ -10,6 +10,7 @@ export interface AuthUser {
   field: string | null;
   interested_tests: string[] | null;
   subjects: string[] | null;
+  is_email_verified: boolean;
 }
 
 export const authStorage = {
