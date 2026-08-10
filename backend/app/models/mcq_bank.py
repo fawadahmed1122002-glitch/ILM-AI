@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import String, SmallInteger, Text, CHAR, Boolean, DateTime, ForeignKey, text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base
 
@@ -27,4 +27,7 @@ class McqBank(Base):
     is_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, server_default=text("false"))
     rejected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     reject_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    target_tests: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=False, server_default="{}")
+    approved_by: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))

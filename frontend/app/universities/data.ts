@@ -356,6 +356,14 @@ export const UNIVERSITIES: University[] = [
     slug: "punjab-university",
     name: "University of the Punjab",
     fullName: "University of the Punjab, Lahore",
+    // NOTE: tagged "Engineering" but every program in topPrograms below (BS
+    // Computer Science, BS Information Technology, BS Software Engineering)
+    // is a Computing program -- PU has no verified engineering-formula
+    // programs in this dataset yet. Left as "Engineering" deliberately,
+    // pending a product decision on whether to recategorize, split PU into
+    // separate entries per faculty (like FAST), or add real engineering
+    // programs alongside these. Do not silently "fix" by flipping the
+    // category without checking what else in the app assumes it.
     category: "Engineering",
     test: "PU Entry Test",
     city: "Lahore",
@@ -498,7 +506,7 @@ export const UNIVERSITIES: University[] = [
     category: "Computing",
     test: "FAST Entry Test",
     city: "Lahore",
-    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad"],
+    campuses: ["Islamabad", "Karachi", "Peshawar", "Chiniot-Faisalabad", "Multan"],
     province: "Punjab",
     establishedYear: null,
     lastVerified: "2026-07",
@@ -516,7 +524,7 @@ export const UNIVERSITIES: University[] = [
     allPrograms: null, // TODO: add full verified catalog; falls back to topPrograms in UI
     website: "https://nu.edu.pk",
     image: "/universities/fast.png", // TODO: add once a licensed photo/logo is sourced
-    about: "FAST-NUCES is Pakistan's leading dedicated computing university, with 5 campuses across the country. Known for strong CS/software engineering placement outcomes. Looking for FAST's PEC-accredited Engineering programs instead? See FAST-NUCES (Engineering), which uses a different, more FSc-weighted formula.",
+    about: "FAST-NUCES is Pakistan's leading dedicated computing university, with 6 campuses across the country (Multan launched Fall 2025, offering AI/CS/SE only -- no PEC-accredited engineering programs there). Known for strong CS/software engineering placement outcomes. Looking for FAST's PEC-accredited Engineering programs instead? See FAST-NUCES (Engineering), which uses a different, more FSc-weighted formula.",
   },
 
   // ---------------------------------------------------------------------
