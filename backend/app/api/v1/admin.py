@@ -18,13 +18,16 @@ from app.schemas.admin import (
 )
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, grant_product, ALLOWED_METHODS
+from sqlalchemy import func
 from app.core.products import PRODUCT_CATALOG, PURCHASABLE_PRODUCTS
+from app.services.mcq_generation_service import generate_mcqs_for_chapter
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 PDF_STORAGE_ROOT = os.path.join(DATA_DIR, "pdfs", "_admin_uploads")
 ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
 ALLOWED_PLANS = ["free", "pro"]
+ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual"]
 PRO_PLAN_DURATION_DAYS = 30
 
 
@@ -205,6 +208,23 @@ def reject_mcq(
     return {"id": str(mcq_id), "status": "rejected", "reason": payload.reason}
 
 
+@router.post("/mcqs/generate")
+def generate_mcqs_endpoint(
+    subject: str,
+    chapter_number: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Generates MCQs for a specific ingested chapter and saves them to
+    mcq_bank as unverified. Use /admin/mcqs/pending to review afterward.
+    """
+    try:
+        result = generate_mcqs_for_chapter(subject=subject, chapter_number=chapter_number, db=db)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail={"code": "GENERATION_FAILED", "message": str(e)})
+    return result
+
 @router.post("/users/{user_id}/plan", response_model=PaymentRecordResponse)
 def change_user_plan(
     user_id: uuid.UUID,
@@ -229,20 +249,22 @@ def change_user_plan(
         if not user:
             raise HTTPException(status_code=404, detail={"code": "USER_NOT_FOUND", "message": "User not found."})
         user.plan = payload.plan
-        user.product_id = None
+        user.product_id = None  # clear product on downgrade -- no active product on free plan
         db.commit()
         return PaymentRecordResponse(
             id=uuid.uuid4(), user_id=user_id, amount=0, currency="PKR",
             method=payload.method, status="completed", transaction_ref=payload.transaction_ref,
             plan=payload.plan, valid_from=datetime.now(timezone.utc), valid_until=None,
         )
+
     product_id = getattr(payload, "product_id", None)
+
     try:
         if product_id:
             if product_id not in PRODUCT_CATALOG:
                 raise HTTPException(
                     status_code=400,
-                    detail={"code": "INVALID_PRODUCT", "message": f"Unknown product_id: {product_id}"},
+                    detail={"code": "INVALID_PRODUCT", "message": f"Unknown product_id: {product_id}. Valid: {', '.join(PRODUCT_CATALOG.keys())}"},
                 )
             payment = grant_product(
                 db=db,
@@ -262,7 +284,17 @@ def change_user_plan(
             )
     except ValueError as e:
         raise HTTPException(status_code=400, detail={"code": "GRANT_FAILED", "message": str(e)})
+
     return payment
+
+
+@router.get("/products")
+def list_products(
+    admin: User = Depends(get_current_admin),
+):
+    """Returns the purchasable product catalog -- used by the /upgrade
+    page to render available plans, and here for admin visibility."""
+    return {"products": PURCHASABLE_PRODUCTS}
 
 @router.get("/payments", response_model=list[PaymentRecordResponse])
 def list_payment_audit_log(
