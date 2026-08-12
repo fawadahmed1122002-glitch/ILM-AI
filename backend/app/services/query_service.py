@@ -8,7 +8,7 @@ from app.models.topic_stats import TopicStats
 from app.rag.retrieve import retrieve_top_chunks, format_context_string
 from app.rag.llm_client import generate_explanation, generate_mcqs
 from app.services.streak_service import update_streak
-
+from app.models.mcq_bank import McqBank
 
 class QueryService:
 
@@ -33,9 +33,53 @@ class QueryService:
             "subject": subject,
             "cached": False,
         }
-
     @staticmethod
     def get_mcqs(topic: str, subject: str, user: User, db: Session) -> dict:
+        # Bank-first: serve approved MCQs if we have enough for this
+        # subject+topic combo, no LLM call needed.
+        banked = (
+            db.query(McqBank)
+            .filter(
+                McqBank.subject == subject,
+                McqBank.topic == topic,
+                McqBank.is_verified == True,
+                McqBank.rejected_at.is_(None),
+            )
+            .limit(5)
+            .all()
+        )
+        if len(banked) >= 5:
+            mcqs = [
+                {
+                    "question_en": m.question_text,
+                    "question_ur": m.question_text_ur,
+                    "opt_a": m.option_a,
+                    "opt_b": m.option_b,
+                    "opt_c": m.option_c,
+                    "opt_d": m.option_d,
+                    "correct": m.correct_option,
+                    "explanation_en": m.explanation,
+                    "difficulty": m.difficulty.capitalize(),
+                }
+                for m in banked
+            ]
+            return {"mcqs": mcqs, "subject": subject, "topic": topic, "count": len(mcqs), "source": "bank"}
+
+        # Fallback: live-generate, exactly as before.
+        chunks, metadatas, distances, normalized_topic = retrieve_top_chunks(
+            query=topic, subject=subject, top_k=5
+        )
+        if not chunks:
+            return {"mcqs": [], "subject": subject, "topic": topic, "count": 0, "source": "live"}
+        context = format_context_string(chunks)
+        result = generate_mcqs(context=context, subject=subject, topic=normalized_topic)
+        return {
+            "mcqs": result["valid_mcqs"],
+            "subject": subject,
+            "topic": normalized_topic,
+            "count": len(result["valid_mcqs"]),
+            "source": "live",
+        }
         chunks, metadatas, distances, normalized_topic = retrieve_top_chunks(
             query=topic, subject=subject, top_k=5
         )

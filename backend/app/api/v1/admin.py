@@ -212,15 +212,12 @@ def reject_mcq(
 def generate_mcqs_endpoint(
     subject: str,
     chapter_number: int,
+    force: bool = False,
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin),
 ):
-    """
-    Generates MCQs for a specific ingested chapter and saves them to
-    mcq_bank as unverified. Use /admin/mcqs/pending to review afterward.
-    """
     try:
-        result = generate_mcqs_for_chapter(subject=subject, chapter_number=chapter_number, db=db)
+        result = generate_mcqs_for_chapter(subject=subject, chapter_number=chapter_number, db=db, force=force)
     except ValueError as e:
         raise HTTPException(status_code=400, detail={"code": "GENERATION_FAILED", "message": str(e)})
     return result

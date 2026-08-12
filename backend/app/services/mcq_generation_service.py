@@ -26,12 +26,14 @@ _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 _collection = _client.get_or_create_collection(COLLECTION_NAME)
 
 
-def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session) -> dict:
+def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, force: bool = False) -> dict:
     """
     Generates MCQs for a specific ingested chapter and persists valid ones
     to mcq_bank as unverified (is_verified=False). Returns a summary dict.
 
-    Raises ValueError if the chapter isn't found or isn't ready.
+    Raises ValueError if the chapter isn't found, isn't ready, or if MCQs
+    already exist for this chapter and force=False (prevents accidental
+    duplicate generation from a double-click or repeated request).
     """
     document = (
         db.query(Document)
@@ -42,6 +44,17 @@ def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session) ->
         raise ValueError(f"No ingested document found for {subject} chapter {chapter_number}.")
     if document.status != "ready":
         raise ValueError(f"Chapter {chapter_number} for {subject} is not ready (status: {document.status}).")
+
+    existing_count = (
+        db.query(McqBank)
+        .filter(McqBank.subject == subject, McqBank.chapter_number == chapter_number)
+        .count()
+    )
+    if existing_count > 0 and not force:
+        raise ValueError(
+            f"MCQs already exist for {subject} chapter {chapter_number} "
+            f"({existing_count} rows). Pass force=true to generate more anyway."
+        )
 
     # Pull ALL chunks for this chapter via metadata filter -- not a
     # semantic search, since we want comprehensive chapter coverage for
