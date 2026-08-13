@@ -80,6 +80,7 @@ class McqResponse(BaseModel):
     subject: str
     topic: str
     count: int
+    source: str = "live"
 
 class McqSubmitItem(BaseModel):
     mcq_index: int
