@@ -61,7 +61,7 @@ export default function AdminMcqReviewPage() {
     setProcessingId(id);
     try {
       const token = authStorage.getToken();
-      await api.post(`/admin/mcqs/${id}/approve`, {}, token || undefined);
+      await api.patch(`/admin/mcqs/${id}/approve`, {}, token || undefined);
       setMcqs((prev) => prev.filter((m) => m.id !== id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Approve failed");
@@ -76,7 +76,7 @@ export default function AdminMcqReviewPage() {
     setProcessingId(id);
     try {
       const token = authStorage.getToken();
-      await api.post(`/admin/mcqs/${id}/reject`, { reason }, token || undefined);
+      await api.patch(`/admin/mcqs/${id}/reject`, { reason }, token || undefined);
       setMcqs((prev) => prev.filter((m) => m.id !== id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Reject failed");
