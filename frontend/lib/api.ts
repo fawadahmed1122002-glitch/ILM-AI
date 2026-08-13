@@ -85,6 +85,8 @@ async function request<T>(
 export const api = {
   post: <T>(path: string, body: unknown, token?: string) =>
     request<T>("POST", path, body, token),
+  patch: <T>(path: string, body: unknown, token?: string) =>
+    request<T>("PATCH", path, body, token),
   get: <T>(path: string, token?: string) =>
     request<T>("GET", path, undefined, token),
 };
