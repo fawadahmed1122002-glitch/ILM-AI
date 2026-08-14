@@ -68,6 +68,17 @@ def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, fo
         raise ValueError(f"No chunks found in ChromaDB for {subject} chapter {chapter_number}.")
 
     context = format_context_string(chunks)
+
+    # Groq's TPM limit on this org's tier is 12,000 tokens/minute. Large
+    # chapters can produce 15-20k+ tokens of context, which gets rejected
+    # with a 413 before the LLM call even happens. Cap context length
+    # conservatively (~20k chars ~= 5k tokens) to leave headroom for the
+    # system prompt template and the response itself, which share the
+    # same per-minute budget.
+    MAX_CONTEXT_CHARS = 20000
+    if len(context) > MAX_CONTEXT_CHARS:
+        context = context[:MAX_CONTEXT_CHARS]
+
     result = generate_mcqs(context=context, subject=subject, topic=document.chapter_title)
 
     if result["parse_error"]:
