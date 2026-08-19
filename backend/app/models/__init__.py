@@ -6,3 +6,5 @@ from app.models.mcq_attempt import McqAttempt
 from app.models.topic_stats import TopicStats
 from app.models.response_cache import ResponseCache
 from app.models.payment import Payment
+from app.models.mock_test import MockTest
+from app.models.mock_test_question import MockTestQuestion

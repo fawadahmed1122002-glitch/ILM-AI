@@ -75,7 +75,7 @@ def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, fo
     # conservatively (~20k chars ~= 5k tokens) to leave headroom for the
     # system prompt template and the response itself, which share the
     # same per-minute budget.
-    MAX_CONTEXT_CHARS = 20000
+    MAX_CONTEXT_CHARS = 12000
     if len(context) > MAX_CONTEXT_CHARS:
         context = context[:MAX_CONTEXT_CHARS]
 

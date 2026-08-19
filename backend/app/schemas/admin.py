@@ -34,6 +34,27 @@ class PendingMcqResponse(BaseModel):
         from_attributes = True
 
 
+class McqBankResponse(BaseModel):
+    id: uuid.UUID
+    subject: str
+    chapter_number: int
+    topic: Optional[str] = None
+    difficulty: str
+    question_text: str
+    question_text_ur: Optional[str] = None
+    option_a: str
+    option_b: str
+    option_c: str
+    option_d: str
+    correct_option: str
+    explanation: Optional[str] = None
+    is_verified: bool
+    rejected_at: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
 class McqRejectRequest(BaseModel):
     reason: str
 

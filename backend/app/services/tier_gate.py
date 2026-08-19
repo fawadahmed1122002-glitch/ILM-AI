@@ -89,3 +89,32 @@ def check_mcq_limit(user: User, db: Session, subject: str):
         )
     user.daily_mcq_count += 1
     db.commit()
+
+FREE_MOCK_TEST_LIMIT = 1
+
+
+def check_mock_test_limit(user: User, db: Session):
+    """
+    Mock tests are gated differently from explain/MCQ: a full-length test
+    spans multiple subjects, so subject-scoped product access doesn't
+    apply cleanly here. Pro + verified email = unlimited mock tests.
+    Free or unverified = 1 mock test total (lifetime, not daily).
+    """
+    from app.models.mock_test import MockTest
+
+    if user.plan == "pro" and user.is_email_verified:
+        return
+
+    existing_count = db.query(MockTest).filter(MockTest.user_id == user.id).count()
+    if existing_count >= FREE_MOCK_TEST_LIMIT:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "code": "MOCK_TEST_LIMIT_REACHED",
+                "message": f"Free plan allows {FREE_MOCK_TEST_LIMIT} mock test. "
+                           f"Upgrade to unlock unlimited mock tests.",
+                "limit": FREE_MOCK_TEST_LIMIT,
+                "used": existing_count,
+                "upgrade_url": "/upgrade",
+            }
+        )

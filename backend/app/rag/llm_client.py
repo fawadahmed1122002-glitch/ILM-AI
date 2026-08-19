@@ -16,7 +16,7 @@ load_dotenv()  # loads GROQ_API_KEY from .env
 _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 # Groq's fast Llama 3.3 model — good balance of speed + quality for MVP
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "openai/gpt-oss-120b"
 
 
 class LLMGenerationError(Exception):
@@ -209,7 +209,7 @@ def generate_mcqs(context: str, subject: str, topic: str, _retry_count: int = 0)
     - 'parse_error': error message if JSON parsing failed entirely, else None
     """
     user_message = build_mcq_prompt(context, subject, topic)
-    raw_response = call_groq(MCQ_SYSTEM_PROMPT, user_message, temperature=0.3, max_tokens=2000)
+    raw_response = call_groq(MCQ_SYSTEM_PROMPT, user_message, temperature=0.3, max_tokens=3200)
 
     cleaned = _extract_json(raw_response)
 

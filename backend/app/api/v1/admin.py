@@ -14,7 +14,7 @@ from app.models.mcq_bank import McqBank
 from app.models.payment import Payment
 from app.schemas.admin import (
     DocumentUploadResponse, PendingMcqResponse, McqRejectRequest,
-    AdminPlanChangeRequest, PaymentRecordResponse,
+    AdminPlanChangeRequest, PaymentRecordResponse, McqBankResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, grant_product, ALLOWED_METHODS
@@ -345,6 +345,107 @@ def get_mcq_coverage(
         "diagnostic_ready": len(below_minimum) == 0,
         "subjects_below_minimum": below_minimum,
     }
+
+
+
+@router.get("/mcqs/chapter-status")
+def get_chapter_mcq_status(
+    subject: str,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Per-chapter MCQ counts for a subject -- drives the bulk MCQ
+    generation admin UI so it can show which chapters still need
+    generation vs which are done.
+    """
+    if subject not in ALLOWED_SUBJECTS:
+        raise HTTPException(
+            status_code=400,
+            detail={"code": "INVALID_SUBJECT", "message": f"Subject must be one of: {', '.join(ALLOWED_SUBJECTS)}"},
+        )
+
+    docs = (
+        db.query(Document)
+        .filter(Document.subject == subject)
+        .order_by(Document.chapter_number)
+        .all()
+    )
+
+    mcq_counts = dict(
+        db.query(McqBank.document_id, func.count(McqBank.id))
+        .filter(McqBank.subject == subject)
+        .group_by(McqBank.document_id)
+        .all()
+    )
+    verified_counts = dict(
+        db.query(McqBank.document_id, func.count(McqBank.id))
+        .filter(McqBank.subject == subject, McqBank.is_verified == True)
+        .group_by(McqBank.document_id)
+        .all()
+    )
+
+    chapters = []
+    for doc in docs:
+        total = mcq_counts.get(doc.id, 0)
+        verified = verified_counts.get(doc.id, 0)
+        chapters.append({
+            "document_id": str(doc.id),
+            "chapter_number": doc.chapter_number,
+            "chapter_title": doc.chapter_title,
+            "chunk_count": doc.chunk_count,
+            "mcq_total": total,
+            "mcq_verified": verified,
+            "status": "empty" if total == 0 else ("partial" if total < 5 else "done"),
+        })
+
+    return {"subject": subject, "chapters": chapters}
+
+
+@router.get("/mcqs/bank", response_model=list[McqBankResponse])
+def get_mcq_bank(
+    subject: str,
+    chapter_number: int | None = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Full browsable MCQ bank for a subject (optionally filtered to one
+    chapter) -- includes verified, pending, and rejected questions,
+    unlike /mcqs/pending which only shows unverified ones.
+    """
+    if subject not in ALLOWED_SUBJECTS:
+        raise HTTPException(
+            status_code=400,
+            detail={"code": "INVALID_SUBJECT", "message": f"Subject must be one of: {', '.join(ALLOWED_SUBJECTS)}"},
+        )
+
+    query = db.query(McqBank).filter(McqBank.subject == subject)
+    if chapter_number is not None:
+        query = query.filter(McqBank.chapter_number == chapter_number)
+
+    mcqs = query.order_by(McqBank.chapter_number, McqBank.created_at).all()
+
+    return [
+        McqBankResponse(
+            id=m.id,
+            subject=m.subject,
+            chapter_number=m.chapter_number,
+            topic=m.topic,
+            difficulty=m.difficulty,
+            question_text=m.question_text,
+            question_text_ur=m.question_text_ur,
+            option_a=m.option_a,
+            option_b=m.option_b,
+            option_c=m.option_c,
+            option_d=m.option_d,
+            correct_option=m.correct_option,
+            explanation=m.explanation,
+            is_verified=m.is_verified,
+            rejected_at=m.rejected_at.isoformat() if m.rejected_at else None,
+        )
+        for m in mcqs
+    ]
 
 
 @router.get("/revenue")
