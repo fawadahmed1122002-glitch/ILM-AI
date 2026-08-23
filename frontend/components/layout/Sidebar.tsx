@@ -14,15 +14,10 @@ import { useSidebar } from "@/context/SidebarContext";
 // (drawer is always full-width when open -- collapse only applies to the
 // desktop rail, since a "collapsed" mobile drawer doesn't make sense).
 //
-// Deliberately does NOT include "Mock Test" / "Past Papers" links yet --
-// those features don't exist. Adding disabled/placeholder nav items here
-// would repeat the same overclaiming problem already fixed once on the
-// landing page. Add them for real once the MCQ bank + mock test pipeline
-// ships.
-
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", short: "D" },
   { href: "/study", label: "Study", short: "S" },
+  { href: "/mock-test", label: "Mock Test", short: "M" },
   { href: "/analytics", label: "Analytics", short: "A" },
 ];
 

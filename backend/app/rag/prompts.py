@@ -98,6 +98,18 @@ BAD MCQ URDU EXAMPLE:
 question_en: "What is the primary purpose of mitosis?"
 question_ur: "وات اس د پرائمری پرپز آف مائٹوسس؟" ✗ (Roman structure in Urdu script)
 
+OPTION LANGUAGE RULE (applies to opt_a, opt_b, opt_c, opt_d):
+- All four options MUST always be written in English, regardless of the subject or the language of question_ur.
+- There is no separate Urdu field for options — only question_ur is Urdu. Options stay in English every time, with no exceptions.
+- Scientific terms, names, and numbers in options should use standard English/scientific notation, not Urdu script.
+
+GOOD OPTION EXAMPLE:
+opt_a: "Hyaline cartilage" ✓
+opt_b: "Fibrocartilage" ✓
+
+BAD OPTION EXAMPLE:
+opt_a: "ہائیلین کارٹیلیج" ✗ (Urdu script — options must be English)
+
 JSON structure for each MCQ:
 {"question_en": "...", "question_ur": "...", "opt_a": "...", "opt_b": "...", "opt_c": "...", "opt_d": "...", "correct": "A", "explanation_en": "...", "difficulty": "Medium"}
 
