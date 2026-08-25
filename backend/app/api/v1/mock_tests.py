@@ -75,7 +75,13 @@ TEST_COMPOSITIONS = {
 
 
 def _pick_random_approved(db: Session, subject: str, count: int) -> list[McqBank]:
-    """Randomly select up to `count` approved, non-rejected MCQs for a subject."""
+    """
+    Randomly select up to `count` approved, non-rejected MCQs for a
+    subject, deduped by question_text -- protects against duplicate or
+    near-duplicate rows in mcq_bank (e.g. from an early double-generation
+    before the duplicate-guard existed) ever putting the same question
+    into a single test twice, even if the bank itself isn't fully clean.
+    """
     if count <= 0:
         return []
     rows = (
@@ -88,7 +94,17 @@ def _pick_random_approved(db: Session, subject: str, count: int) -> list[McqBank
         .all()
     )
     random.shuffle(rows)
-    return rows[:count]
+
+    seen_text: set[str] = set()
+    deduped: list[McqBank] = []
+    for row in rows:
+        key = row.question_text.strip().lower()
+        if key in seen_text:
+            continue
+        seen_text.add(key)
+        deduped.append(row)
+
+    return deduped[:count]
 
 
 @router.get("/availability")

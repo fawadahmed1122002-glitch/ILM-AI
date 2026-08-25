@@ -110,6 +110,19 @@ opt_b: "Fibrocartilage" ✓
 BAD OPTION EXAMPLE:
 opt_a: "ہائیلین کارٹیلیج" ✗ (Urdu script — options must be English)
 
+REAL ECAT STYLE CALIBRATION (based on analysis of actual UET ECAT past papers 2010-2017 -- match this style, do not copy any real exam question):
+- Physics/Chemistry: mix direct definitional recall ("X is called:", "Which of the following is...") with numerical problems using clean specific values. Distractors should be plausible near-misses (off by a power of ten, an adjacent formula, a similar-sounding term) rather than obviously wrong.
+- Mathematics: favor "evaluate/solve/simplify" phrasing. Distractors should be algebraically similar to the correct answer (sign flip, swapped coefficient, off-by-one exponent) to test precision, not just recognition.
+- Keep question stems terse and exam-register, not conversational. Avoid unnecessary preamble in the question itself.
+
+ORIGINAL STYLE EXAMPLE (Physics, illustrating the calibration above -- written fresh, not copied from any real paper):
+question_en: "The escape velocity of a body from Earth's surface is independent of:"
+opt_a: "Mass of the body"
+opt_b: "Radius of the Earth"
+opt_c: "Mass of the Earth"
+opt_d: "Gravitational constant"
+(correct: A -- distractors B, C, D are all quantities that genuinely appear in the escape velocity formula, making them plausible near-misses rather than random wrong answers)
+
 JSON structure for each MCQ:
 {"question_en": "...", "question_ur": "...", "opt_a": "...", "opt_b": "...", "opt_c": "...", "opt_d": "...", "correct": "A", "explanation_en": "...", "difficulty": "Medium"}
 
