@@ -41,5 +41,6 @@ class ChatSendRequest(BaseModel):
 
 class ChatSendResponse(BaseModel):
     thread_id: uuid.UUID
+    user_message_id: uuid.UUID
     message_id: uuid.UUID
     response: str

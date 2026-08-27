@@ -477,6 +477,9 @@ def get_mock_test_results(
     if not mock_test:
         raise HTTPException(status_code=404, detail={"code": "NOT_FOUND", "message": "Mock test not found"})
 
+    if mock_test.status != "completed":
+        raise HTTPException(status_code=400, detail="Test not yet completed")
+
     questions = (
         db.query(MockTestQuestion)
         .filter(MockTestQuestion.mock_test_id == mock_test.id)

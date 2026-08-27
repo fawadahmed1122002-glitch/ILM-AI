@@ -33,11 +33,24 @@ def _has_unlimited_access(user: User, subject: str) -> bool:
     True only if the user has an active paid product, that product covers
     the requested subject, AND the user's email is verified. An unverified
     user stays at free-tier limits even with an active paid product.
+
+    Inconsistent state guard: plan='pro' with NO product_id (e.g. a plan
+    flipped by raw SQL, bypassing grant_product()) must never silently
+    drop a paying student to free limits. Log loudly and fall back to
+    the legacy_full_access subject set while the data gets repaired.
     """
     if user.plan != "pro":
         return False
     if not user.is_email_verified:
         return False
+    if not user.product_id:
+        print(
+            f"⚠️  PLAN_PRODUCT_MISMATCH: user {user.id} ({user.email}) has "
+            f"plan='pro' but no product_id -- falling back to "
+            f"legacy_full_access subjects. Fix the data via "
+            f"POST /admin/users/{{user_id}}/plan."
+        )
+        return subject in subjects_for_product("legacy_full_access")
     allowed_subjects = subjects_for_product(user.product_id)
     return subject in allowed_subjects
 

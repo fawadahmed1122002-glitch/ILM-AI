@@ -391,6 +391,10 @@ def get_past_paper_results(
 ):
     """Score + per-question breakdown with correct answers revealed."""
     attempt = _get_owned_attempt(db, attempt_id, user)
+
+    if attempt.status != "completed":
+        raise HTTPException(status_code=400, detail="Test not yet completed")
+
     paper = _get_paper_or_404(db, attempt.paper_id)
 
     questions = (

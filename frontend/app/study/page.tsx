@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
 import { subjectsForField } from "@/lib/academicFields";
+import StudyChatDrawer from "@/components/StudyChatDrawer";
 
 interface ExplainResponse {
   explanation: string;
@@ -84,6 +85,9 @@ export default function StudyPage() {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
+  // Study Chat drawer state
+  const [chatOpen, setChatOpen] = useState(false);
+
   useEffect(() => {
     if (!loading && !user) router.push("/login");
   }, [user, loading, router]);
@@ -99,6 +103,7 @@ export default function StudyPage() {
     setMcqs([]);
     setAnswers({});
     setSubmitted(false);
+    setChatOpen(false);
     setExplainLoading(true);
     try {
       const token = authStorage.getToken();
@@ -271,11 +276,17 @@ export default function StudyPage() {
             </div>
           )}
 
-          {/* Practice MCQs Button */}
-          <button onClick={handleGetMcqs} disabled={mcqLoading}
-            className="w-full py-3 border-2 border-teal-600 dark:border-teal-500 text-teal-700 dark:text-teal-400 rounded-xl text-sm font-semibold hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            {mcqLoading ? "Generating MCQs..." : "Practice MCQs on this topic"}
-          </button>
+          {/* Continue in chat + Practice MCQs Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button onClick={() => setChatOpen(true)}
+              className="flex-1 py-3 bg-teal-700 hover:bg-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500 text-white rounded-xl text-sm font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-teal-500/20">
+              Continue in chat
+            </button>
+            <button onClick={handleGetMcqs} disabled={mcqLoading}
+              className="flex-1 py-3 border-2 border-teal-600 dark:border-teal-500 text-teal-700 dark:text-teal-400 rounded-xl text-sm font-semibold hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              {mcqLoading ? "Generating MCQs..." : "Practice MCQs on this topic"}
+            </button>
+          </div>
 
           {mcqError && (
             <div className="p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 text-sm rounded-xl">{mcqError}</div>
@@ -364,6 +375,20 @@ export default function StudyPage() {
             </div>
           )}
         </div>
+      )}
+
+      {/* Study Chat drawer -- persistent per (subject, topic) */}
+      {result && !topicNotFound && (
+        <StudyChatDrawer
+          open={chatOpen}
+          onClose={() => setChatOpen(false)}
+          subject={result.subject}
+          topic={result.normalized_query}
+          onUnauthorized={() => {
+            logout();
+            router.push("/login?reason=session_expired");
+          }}
+        />
       )}
     </div>
   );

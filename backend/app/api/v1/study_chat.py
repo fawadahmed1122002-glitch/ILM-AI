@@ -219,10 +219,16 @@ def send_message(
     db.add(assistant_msg)
     update_streak(current_user, db)
     db.commit()
+    # PKs are server-generated (uuid_generate_v4()), so refresh both
+    # rows to read back their real ids.
+    db.refresh(user_msg)
     db.refresh(assistant_msg)
 
     return ChatSendResponse(
         thread_id=thread.id,
+        # Lets the frontend append the user bubble with its real
+        # persisted id instead of a synthetic placeholder.
+        user_message_id=user_msg.id,
         message_id=assistant_msg.id,
         response=reply,
     )

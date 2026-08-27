@@ -106,11 +106,31 @@ def get_usage(
     """Returns current user's daily usage and limits, plus which subjects
     are unlimited under the user's active product (if any)."""
     from app.services.tier_gate import FREE_EXPLAIN_LIMIT, FREE_MCQ_LIMIT, _reset_if_new_day
+    from app.core.products import PRODUCT_CATALOG
     _reset_if_new_day(current_user, db)
-    unlimited_subjects = subjects_for_product(current_user.product_id) if current_user.plan == "pro" else []
+    # Mirror the tier gate: pro + verified with no product_id is an
+    # inconsistent state -- fall back to legacy subjects (same as
+    # _has_unlimited_access) and flag it so the frontend can surface it.
+    plan_product_mismatch = (
+        current_user.plan == "pro"
+        and current_user.is_email_verified
+        and not current_user.product_id
+    )
+    if current_user.plan != "pro" or not current_user.is_email_verified:
+        unlimited_subjects = []
+    elif plan_product_mismatch:
+        print(
+            f"⚠️  PLAN_PRODUCT_MISMATCH: user {current_user.id} "
+            f"({current_user.email}) has plan='pro' but no product_id -- "
+            f"usage/me falling back to legacy_full_access subjects."
+        )
+        unlimited_subjects = PRODUCT_CATALOG["legacy_full_access"]["subjects"]
+    else:
+        unlimited_subjects = subjects_for_product(current_user.product_id)
     return {
         "plan": current_user.plan,
         "product_id": current_user.product_id,
+        "plan_product_mismatch": plan_product_mismatch,
         "unlimited_subjects": unlimited_subjects,
         "explain": {
             "used": current_user.daily_explain_count,

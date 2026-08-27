@@ -13,12 +13,58 @@
   to   { opacity: 1; transform: scale(1); }
 }
 
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 .animate-fade-up {
   animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-score {
   animation: scoreReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-out-right {
+  animation: slideOutRight 0.25s cubic-bezier(0.7, 0, 0.84, 0) both;
+}
+
+/* Directional shadow for the right-edge Study Chat drawer (casts left,
+   separating the panel edge from the dimmed backdrop). No built-in
+   Tailwind shadow is directional, so this lives here. */
+.drawer-edge-shadow {
+  box-shadow: -16px 0 40px -8px rgba(0, 0, 0, 0.35);
+}
+.dark .drawer-edge-shadow {
+  box-shadow: -16px 0 48px -8px rgba(0, 0, 0, 0.7);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out both;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.25s ease-in both;
 }
 
 .font-display {
