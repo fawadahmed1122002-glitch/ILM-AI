@@ -18,7 +18,7 @@ from app.schemas.admin import (
     AdminPlanChangeRequest, PaymentRecordResponse, McqBankResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf
-from app.services.payment_service import grant_pro_plan, grant_product, ALLOWED_METHODS
+from app.services.payment_service import grant_pro_plan, grant_product
 from sqlalchemy import func
 from app.core.products import PRODUCT_CATALOG, PURCHASABLE_PRODUCTS
 from app.services.mcq_generation_service import generate_mcqs_for_chapter
@@ -53,7 +53,7 @@ def _ingest_pdf_in_background(
             )
             doc.status = "ready"
             doc.chunk_count = chunk_count
-            doc.updated_at = datetime.utcnow()
+            doc.updated_at = datetime.now(timezone.utc)
         except Exception as e:
             doc.status = "failed"
             print(f"⚠️  INGESTION_FAILED: document {doc_id} ({subject} ch{chapter_number}): {e}")
@@ -62,7 +62,7 @@ def _ingest_pdf_in_background(
         db.close()
 ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
 ALLOWED_PLANS = ["free", "pro"]
-ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual"]
+ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual", "safepay"]
 PRO_PLAN_DURATION_DAYS = 30
 
 
@@ -247,7 +247,7 @@ def reject_mcq(
     if not mcq:
         raise HTTPException(status_code=404, detail={"code": "MCQ_NOT_FOUND", "message": "MCQ not found."})
 
-    mcq.rejected_at = datetime.utcnow()
+    mcq.rejected_at = datetime.now(timezone.utc)
     mcq.reject_reason = payload.reason
     db.commit()
     return {"id": str(mcq_id), "status": "rejected", "reason": payload.reason}
@@ -292,12 +292,27 @@ def change_user_plan(
             raise HTTPException(status_code=404, detail={"code": "USER_NOT_FOUND", "message": "User not found."})
         user.plan = payload.plan
         user.product_id = None  # clear product on downgrade -- no active product on free plan
-        db.commit()
-        return PaymentRecordResponse(
-            id=uuid.uuid4(), user_id=user_id, amount=0, currency="PKR",
-            method=payload.method, status="completed", transaction_ref=payload.transaction_ref,
-            plan=payload.plan, valid_from=datetime.now(timezone.utc), valid_until=None,
+
+        # Persist a real downgrade audit row so every plan transition is
+        # traceable in payments (audit-trail integrity). valid_from ==
+        # valid_until == now marks the exact moment the subscription ended.
+        now = datetime.now(timezone.utc)
+        payment = Payment(
+            user_id=user_id,
+            amount=0,
+            currency="PKR",
+            method=payload.method,
+            status="completed",
+            transaction_ref=payload.transaction_ref,
+            plan=payload.plan,
+            product_id=None,
+            valid_from=now,
+            valid_until=now,
         )
+        db.add(payment)
+        db.commit()
+        db.refresh(payment)
+        return payment
 
     product_id = getattr(payload, "product_id", None)
 

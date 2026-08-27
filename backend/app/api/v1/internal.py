@@ -2,6 +2,7 @@
 import os
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, Header
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.services.payment_service import grant_pro_plan, grant_product
@@ -20,7 +21,7 @@ def verify_internal_secret(x_internal_secret: str = Header(...)):
         raise HTTPException(status_code=403, detail="Invalid internal service secret")
 
 
-class InternalGrantPlanRequest(PaymentRecordResponse.__base__):
+class InternalGrantPlanRequest(BaseModel):
     user_id: str
     amount: float | None = None
     product_id: str | None = None

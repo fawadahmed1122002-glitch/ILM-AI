@@ -8,7 +8,13 @@ import { PRODUCTS, getProduct } from "@/lib/products";
 
 const JAZZCASH_LINK = "https://payment.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform";
 const EASYPAISA_LINK = "https://easypaisa.com.pk";
-const WHATSAPP_NUMBER = "923001234567";
+
+// --- Contact & payment details -----------------------------------------
+// TODO: replace these placeholders with the real PrepXMentor values.
+// Centralized here so they can be updated in one place.
+const WHATSAPP_NUMBER = "923001234567"; // country code + number, no + or spaces (wa.me format)
+const PAYMENT_NUMBER_DISPLAY = "0300-1234567"; // JazzCash/EasyPaisa number shown to students
+const PAYMENT_ACCOUNT_NAME = "PrepXMentor"; // account title shown next to the payment number
 
 function PaymentStatusBanner() {
   const searchParams = useSearchParams();
@@ -220,10 +226,10 @@ export default function UpgradePage() {
           <div className="mt-5 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Send payment to</p>
             <p className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mono">
-              0300-1234567
+              {PAYMENT_NUMBER_DISPLAY}
             </p>
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-              JazzCash or EasyPaisa — account name: PrepXMentor
+              JazzCash or EasyPaisa — account name: {PAYMENT_ACCOUNT_NAME}
             </p>
           </div>
         </div>
@@ -248,7 +254,7 @@ export default function UpgradePage() {
         </div>
 
         <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-6">
-          Questions? Contact us on WhatsApp at 0300-1234567
+          Questions? Contact us on WhatsApp at {PAYMENT_NUMBER_DISPLAY}
         </p>
       </div>
     </div>

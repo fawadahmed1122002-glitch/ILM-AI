@@ -7,12 +7,15 @@ active paid product gets unlimited access ONLY for subjects covered by
 that product (see app.core.products). Outside their product's subject
 scope, free-tier daily limits still apply even to a paying customer.
 """
+import logging
 from datetime import date, datetime, timezone
 from fastapi import HTTPException
 from sqlalchemy.orm import Session, object_session
 from app.models.user import User
 from app.models.payment import Payment
 from app.core.products import subjects_for_product
+
+logger = logging.getLogger(__name__)
 
 FREE_EXPLAIN_LIMIT = 3
 FREE_MCQ_LIMIT = 5
@@ -73,11 +76,12 @@ def _has_unlimited_access(user: User, subject: str) -> bool:
     if not user.is_email_verified:
         return False
     if not user.product_id:
-        print(
-            f"⚠️  PLAN_PRODUCT_MISMATCH: user {user.id} ({user.email}) has "
-            f"plan='pro' but no product_id -- falling back to "
-            f"legacy_full_access subjects. Fix the data via "
-            f"POST /admin/users/{{user_id}}/plan."
+        logger.warning(
+            "⚠️  PLAN_PRODUCT_MISMATCH: user %s (%s) has "
+            "plan='pro' but no product_id -- falling back to "
+            "legacy_full_access subjects. Fix the data via "
+            "POST /admin/users/{user_id}/plan.",
+            user.id, user.email,
         )
         return subject in subjects_for_product("legacy_full_access")
     allowed_subjects = subjects_for_product(user.product_id)

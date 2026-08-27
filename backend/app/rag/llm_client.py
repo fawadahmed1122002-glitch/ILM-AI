@@ -3,6 +3,7 @@ PrepXMentor LLM Client — Groq wrapper
 Shared by: explanation generation, MCQ generation, Roman Urdu query normalization.
 """
 
+import logging
 import os
 from dotenv import load_dotenv
 from groq import Groq
@@ -12,6 +13,8 @@ import re
 from app.rag.prompts import MCQ_SYSTEM_PROMPT, build_mcq_prompt
 from app.services.cache_service import get_cached_response, store_response
 load_dotenv()  # loads GROQ_API_KEY from .env
+
+logger = logging.getLogger(__name__)
 
 _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
@@ -41,11 +44,12 @@ def log_flagged_response(query: str, subject: str, result: str) -> None:
     (query, subject, raw_output, created_at) so this is queryable instead
     of log-only.
     """
-    print(
+    logger.warning(
         "🚩 FLAGGED_RESPONSE | "
-        f"subject={subject!r} | "
-        f"query={query!r} | "
-        f"output={result!r}"
+        "subject=%r | "
+        "query=%r | "
+        "output=%r",
+        subject, query, result,
     )
 
 
@@ -139,7 +143,7 @@ def generate_explanation(context: str, subject: str, query: str, _retry_count: i
     if _retry_count == 0:
         cached = get_cached_response(query, subject)
         if cached:
-            print("💰 Cache HIT — skipping LLM call")
+            logger.info("💰 Cache HIT — skipping LLM call")
             return cached["explanation"]
 
     system_prompt = EXPLANATION_SYSTEM_PROMPT.format(subject=subject)
@@ -148,15 +152,15 @@ def generate_explanation(context: str, subject: str, query: str, _retry_count: i
     urdu_section = extract_urdu_section(result)
 
     if contains_foreign_script(urdu_section) and _retry_count < 1:
-        print("⚠️  Foreign script detected in Urdu output — retrying generation...")
+        logger.warning("⚠️  Foreign script detected in Urdu output — retrying generation...")
         return generate_explanation(context, subject, query, _retry_count=_retry_count + 1)
 
     if contains_foreign_script(urdu_section):
-        print("⚠️  Foreign script still present after retry — applying known-pattern cleanup...")
+        logger.warning("⚠️  Foreign script still present after retry — applying known-pattern cleanup...")
         result = sanitize_foreign_script(result)
         if contains_foreign_script(extract_urdu_section(result)):
             # Genuinely broken — log for review AND stop it from reaching the student.
-            print("❌ Unrecognized foreign script pattern remains. Blocking response.")
+            logger.error("❌ Unrecognized foreign script pattern remains. Blocking response.")
             log_flagged_response(query, subject, result)
             raise LLMGenerationError(
                 "Urdu explanation failed quality validation. Please try again."
@@ -244,7 +248,7 @@ def generate_mcqs(context: str, subject: str, topic: str, _retry_count: int = 0)
         any("non-Urdu script" in err for err in errs) for _, errs in invalid_mcqs
     )
     if has_script_failure and _retry_count < 1:
-        print("⚠️  Foreign script detected in MCQ Urdu output — retrying batch generation...")
+        logger.warning("⚠️  Foreign script detected in MCQ Urdu output — retrying batch generation...")
         return generate_mcqs(context, subject, topic, _retry_count=_retry_count + 1)
 
     return {
@@ -264,6 +268,6 @@ if __name__ == "__main__":
     ]
     for q in test_queries:
         normalized = normalize_query(q)
-        print(f"Original:   {q}")
-        print(f"Normalized: {normalized}")
-        print("-" * 40)
+        logger.info("Original:   %s", q)
+        logger.info("Normalized: %s", normalized)
+        logger.info("-" * 40)

@@ -435,7 +435,7 @@ def submit_mock_test(
     score = round((correct_count / mock_test.question_count) * 100) if mock_test.question_count else 0
 
     mock_test.status = "completed"
-    mock_test.submitted_at = datetime.utcnow()
+    mock_test.submitted_at = datetime.now(timezone.utc)
     mock_test.correct_count = correct_count
     mock_test.score = score
 
