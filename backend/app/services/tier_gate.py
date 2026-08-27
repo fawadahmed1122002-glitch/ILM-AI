@@ -7,10 +7,11 @@ active paid product gets unlimited access ONLY for subjects covered by
 that product (see app.core.products). Outside their product's subject
 scope, free-tier daily limits still apply even to a paying customer.
 """
-from datetime import date
+from datetime import date, datetime, timezone
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, object_session
 from app.models.user import User
+from app.models.payment import Payment
 from app.core.products import subjects_for_product
 
 FREE_EXPLAIN_LIMIT = 3
@@ -28,6 +29,32 @@ def _reset_if_new_day(user: User, db: Session):
         db.commit()
 
 
+def _subscription_currently_valid(user: User) -> bool:
+    """
+    True only if the user's latest completed payment has a valid_until
+    still in the future. Once valid_until has passed the user is treated
+    as free regardless of plan or product_id. If the expiry can't be
+    determined (no completed payments, or no DB session on the object),
+    fail open so we never silently downgrade a paying student.
+    """
+    db = object_session(user)
+    if db is None:
+        return True
+    latest = (
+        db.query(Payment)
+        .filter(Payment.user_id == user.id, Payment.status == "completed")
+        .order_by(Payment.valid_until.desc())
+        .first()
+    )
+    if latest is None or latest.valid_until is None:
+        return True
+    now = datetime.now(timezone.utc)
+    expires = latest.valid_until
+    if expires.tzinfo is None:
+        expires = expires.replace(tzinfo=timezone.utc)
+    return expires > now
+
+
 def _has_unlimited_access(user: User, subject: str) -> bool:
     """
     True only if the user has an active paid product, that product covers
@@ -40,6 +67,8 @@ def _has_unlimited_access(user: User, subject: str) -> bool:
     the legacy_full_access subject set while the data gets repaired.
     """
     if user.plan != "pro":
+        return False
+    if not _subscription_currently_valid(user):
         return False
     if not user.is_email_verified:
         return False

@@ -1,5 +1,5 @@
 import re
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from app.core.academic_fields import VALID_FIELDS
 
 VALID_TESTS = {"ECAT", "MDCAT", "NET", "FAST", "Other"}
@@ -10,7 +10,7 @@ PK_PHONE_RE = re.compile(r"^(?:\+92|0)3\d{9}$")
 class RegisterRequest(BaseModel):
     full_name: str
     email: EmailStr
-    password: str
+    password: str = Field(min_length=6, max_length=128)
     phone: str | None = None
     age: int | None = None
     subjects: list[str] | None = None
