@@ -8,8 +8,12 @@ __pycache__/
 # Data (per Master Doc 3.10 security checklist)
 chroma_db/
 data/pdfs/
-data/past_paper
+data/mcq_cleanup/
 *.sqlite
+
+# data/past_paper/ is deliberately TRACKED: it holds the verified
+# ECAT 2015 past-paper source artifact (ilmai_ecat_2015_questions.json)
+data/past_paper/*Zone.Identifier*
 
 # Node/Next.js
 node_modules/
