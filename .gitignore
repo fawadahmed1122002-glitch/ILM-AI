@@ -1,5 +1,6 @@
 # Python
 venv/
+.venv/
 __pycache__/
 *.pyc
 .env
@@ -7,6 +8,7 @@ __pycache__/
 # Data (per Master Doc 3.10 security checklist)
 chroma_db/
 data/pdfs/
+data/past_paper
 *.sqlite
 
 # Node/Next.js

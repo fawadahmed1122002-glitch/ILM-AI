@@ -17,7 +17,7 @@ temporarily-understocked subject still runs on what's actually stocked.
 """
 import random
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
@@ -359,6 +359,16 @@ def save_mock_test_answer(
             detail={"code": "ALREADY_SUBMITTED", "message": "This mock test has already been submitted"},
         )
 
+    # Real-exam enforcement: no NEW answers after the time limit has
+    # elapsed. Submission itself stays allowed past the cutoff (see
+    # /submit) so whatever was autosaved before expiry still gets graded.
+    deadline = mock_test.started_at + timedelta(minutes=mock_test.time_limit_minutes)
+    if datetime.now(timezone.utc) > deadline:
+        raise HTTPException(
+            status_code=403,
+            detail={"code": "TIME_EXPIRED", "message": "Time for this mock test has expired; no further answers can be saved"},
+        )
+
     q = (
         db.query(MockTestQuestion)
         .filter(MockTestQuestion.mock_test_id == mock_test.id, MockTestQuestion.mcq_id == body.mcq_id)
@@ -381,6 +391,9 @@ def submit_mock_test(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
+    # Deliberately NOT blocked by time expiry -- like a real exam, once
+    # time is up the student submits what they already saved; only NEW
+    # answers are rejected (see the TIME_EXPIRED guard in PATCH /answer).
     mock_test = (
         db.query(MockTest)
         .filter(MockTest.id == mock_test_id, MockTest.user_id == user.id)

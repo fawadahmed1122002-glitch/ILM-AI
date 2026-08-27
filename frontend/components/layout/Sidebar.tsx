@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", short: "D" },
   { href: "/study", label: "Study", short: "S" },
   { href: "/mock-test", label: "Mock Test", short: "M" },
+  { href: "/past-papers", label: "Past Papers", short: "P" },
   { href: "/analytics", label: "Analytics", short: "A" },
 ];
 

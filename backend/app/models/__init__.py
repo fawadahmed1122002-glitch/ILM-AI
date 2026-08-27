@@ -8,3 +8,7 @@ from app.models.response_cache import ResponseCache
 from app.models.payment import Payment
 from app.models.mock_test import MockTest
 from app.models.mock_test_question import MockTestQuestion
+from app.models.past_paper import PastPaper
+from app.models.past_paper_question import PastPaperQuestion
+from app.models.past_paper_attempt import PastPaperAttempt
+from app.models.past_paper_answer import PastPaperAnswer
