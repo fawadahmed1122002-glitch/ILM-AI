@@ -25,6 +25,7 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))
     daily_explain_count: Mapped[int] = mapped_column(server_default="0")
     daily_mcq_count: Mapped[int] = mapped_column(server_default="0")
+    daily_chat_count: Mapped[int] = mapped_column(server_default="0")
     last_reset_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     current_streak: Mapped[int] = mapped_column(server_default="0")
     longest_streak: Mapped[int] = mapped_column(server_default="0")

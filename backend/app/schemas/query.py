@@ -42,14 +42,16 @@ class McqOption(BaseModel):
     d: str
 
 class McqItem(BaseModel):
+    id: str | None = None  # bank MCQ id; absent for live-generated sets
     question_en: str
     question_ur: str
     opt_a: str
     opt_b: str
     opt_c: str
     opt_d: str
-    correct: str
-    explanation_en: str
+    # NOTE: correct / explanation_en are intentionally NOT exposed here --
+    # shipping answers with the questions let students read them before
+    # answering. Grading happens server-side on /mcq/submit instead.
     difficulty: str
 
 class McqRequest(BaseModel):
@@ -84,6 +86,7 @@ class McqResponse(BaseModel):
 
 class McqSubmitItem(BaseModel):
     mcq_index: int
+    mcq_id: str | None = None  # bank MCQ id; server recomputes is_correct from it
     selected_option: str
     is_correct: bool
     time_spent_ms: int | None = None
@@ -93,8 +96,17 @@ class McqSubmitRequest(BaseModel):
     topic: str
     answers: list[McqSubmitItem]
 
+class McqGradedQuestion(BaseModel):
+    """Per-question grading feedback, revealed only AFTER submission --
+    the fetch endpoint intentionally withholds answers/explanations."""
+    mcq_index: int
+    is_correct: bool
+    correct_option: str | None = None
+    explanation_en: str | None = None
+
 class McqSubmitResponse(BaseModel):
     total: int
     correct: int
     score_percent: float
     weak_topic: bool
+    questions: list[McqGradedQuestion] = []

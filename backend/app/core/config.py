@@ -1,7 +1,10 @@
+import logging
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 # Database
 DATABASE_URL = os.environ.get(
@@ -16,8 +19,11 @@ if not JWT_SECRET_KEY or JWT_SECRET_KEY == "dev-secret-change-in-production":
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
-# Data paths — absolute, derived from env or default to ~/project/ILM-AI/data
-DATA_DIR = os.environ.get("DATA_DIR", "/home/fawad/project/ILM-AI/data")
+# Data paths — derived from env or default to ./data relative to the
+# process working directory, so it works on any machine (incl. Railway)
+# without requiring an exact env var match.
+DATA_DIR = os.environ.get("DATA_DIR", "./data")
+logger.info("DATA_DIR resolved to %s", os.path.abspath(DATA_DIR))
 CHROMA_DB_PATH = os.path.join(DATA_DIR, "chroma_db")
 CACHE_DB_PATH = os.path.join(DATA_DIR, "cache.sqlite")
 

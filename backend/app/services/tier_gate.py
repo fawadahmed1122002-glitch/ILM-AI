@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 FREE_EXPLAIN_LIMIT = 3
 FREE_MCQ_LIMIT = 5
+FREE_CHAT_LIMIT = 10
 
 
 def _reset_if_new_day(user: User, db: Session):
@@ -28,6 +29,7 @@ def _reset_if_new_day(user: User, db: Session):
     if last_reset != today:
         user.daily_explain_count = 0
         user.daily_mcq_count = 0
+        user.daily_chat_count = 0
         user.last_reset_date = today
         db.commit()
 
@@ -136,6 +138,32 @@ def check_mcq_limit(user: User, db: Session, subject: str):
     user.daily_mcq_count += 1
     db.commit()
 
+
+def check_chat_limit(user: User, db: Session, subject: str):
+    """
+    Raises 403 if the user lacks unlimited access for this subject and
+    has exceeded the free daily study-chat message limit. Increments
+    counter on success (free-tier usage, or paid-but-out-of-scope usage,
+    both count).
+    """
+    if _has_unlimited_access(user, subject):
+        return
+    _reset_if_new_day(user, db)
+    if user.daily_chat_count >= FREE_CHAT_LIMIT:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "code": "CHAT_LIMIT_REACHED",
+                "message": f"Free plan allows {FREE_CHAT_LIMIT} study chat messages per day. "
+                           f"Upgrade to unlock unlimited access for {subject}.",
+                "limit": FREE_CHAT_LIMIT,
+                "used": user.daily_chat_count,
+                "upgrade_url": "/upgrade",
+            }
+        )
+    user.daily_chat_count += 1
+    db.commit()
+
 FREE_MOCK_TEST_LIMIT = 1
 
 
@@ -145,14 +173,25 @@ def check_mock_test_limit(user: User, db: Session):
     spans multiple subjects, so subject-scoped product access doesn't
     apply cleanly here. Pro + verified email + unexpired subscription =
     unlimited mock tests. Free, unverified, or expired = 1 mock test
-    total (lifetime, not daily).
+    total (lifetime, not daily). Expired attempts (time ran out, never
+    submitted) don't count against the free allotment, so an abandoned
+    test doesn't lock a student out forever.
     """
     from app.models.mock_test import MockTest
 
     if user.plan == "pro" and user.is_email_verified and _subscription_currently_valid(user):
         return
 
-    existing_count = db.query(MockTest).filter(MockTest.user_id == user.id).count()
+    # Atomic check-and-hold: lock the user row (SELECT FOR UPDATE, held
+    # until the caller's commit) so two concurrent /start requests cannot
+    # both read count 0 and both insert. The second transaction blocks on
+    # the lock, then sees the first's row.
+    db.query(User).filter(User.id == user.id).with_for_update().one()
+    existing_count = (
+        db.query(MockTest)
+        .filter(MockTest.user_id == user.id, MockTest.status != "expired")
+        .count()
+    )
     if existing_count >= FREE_MOCK_TEST_LIMIT:
         raise HTTPException(
             status_code=403,

@@ -52,6 +52,7 @@ class QueryService:
         if len(banked) >= 5:
             mcqs = [
                 {
+                    "id": str(m.id),
                     "question_en": m.question_text,
                     "question_ur": m.question_text_ur,
                     "opt_a": m.option_a,
@@ -98,19 +99,46 @@ class QueryService:
     @staticmethod
     def submit_mcqs(subject: str, topic: str, answers: list, user: User, db: Session) -> dict:
         correct = 0
+        question_results = []
         for ans in answers:
+            # is_correct is computed server-side, never trusted from the
+            # client: fetch the bank MCQ by id and compare its stored
+            # correct_option against the submitted selection. Answers
+            # without a resolvable bank id (live-generated MCQs) fall back
+            # to the client value.
+            mcq_id = getattr(ans, "mcq_id", None)
+            bank_mcq = (
+                db.query(McqBank).filter(McqBank.id == mcq_id).first()
+                if mcq_id else None
+            )
+            if bank_mcq is not None:
+                is_correct = (
+                    ans.selected_option.strip().upper()
+                    == bank_mcq.correct_option.strip().upper()
+                )
+            else:
+                is_correct = ans.is_correct
             attempt = McqAttempt(
                 user_id=user.id,
-                mcq_id=None,
+                mcq_id=bank_mcq.id if bank_mcq else None,
                 subject=subject,
                 topic=topic,
                 selected_option=ans.selected_option,
-                is_correct=ans.is_correct,
+                is_correct=is_correct,
                 time_spent_ms=ans.time_spent_ms,
             )
             db.add(attempt)
-            if ans.is_correct:
+            if is_correct:
                 correct += 1
+            # Post-submission feedback for the client: correct option +
+            # explanation come from the bank row; live-generated MCQs
+            # (no bank row) get the client-graded result only.
+            question_results.append({
+                "mcq_index": ans.mcq_index,
+                "is_correct": is_correct,
+                "correct_option": bank_mcq.correct_option if bank_mcq else None,
+                "explanation_en": bank_mcq.explanation if bank_mcq else None,
+            })
 
         stats = db.query(TopicStats).filter(
             TopicStats.user_id == user.id,
@@ -144,6 +172,7 @@ class QueryService:
             "correct": correct,
             "score_percent": round(score_percent, 1),
             "weak_topic": weak_topic,
+            "questions": question_results,
         }
 
     @staticmethod

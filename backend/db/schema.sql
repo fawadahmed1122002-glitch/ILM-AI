@@ -30,6 +30,7 @@ CREATE TABLE users (
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     daily_explain_count INTEGER NOT NULL DEFAULT 0,
     daily_mcq_count     INTEGER NOT NULL DEFAULT 0,
+    daily_chat_count    INTEGER NOT NULL DEFAULT 0,
     last_reset_date     TIMESTAMPTZ,
     current_streak      INTEGER NOT NULL DEFAULT 0,
     longest_streak      INTEGER NOT NULL DEFAULT 0,

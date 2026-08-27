@@ -17,14 +17,18 @@ interface ExplainResponse {
 }
 
 interface McqItem {
+  id?: string; // bank MCQ id; absent for live-generated sets
   question_en: string;
   question_ur: string;
   opt_a: string;
   opt_b: string;
   opt_c: string;
   opt_d: string;
-  correct: string;
-  explanation_en: string;
+  // No longer served by the fetch endpoint (answers are withheld until
+  // submission); kept only because the submit payload still references
+  // them as a fallback field for live-generated sets.
+  correct?: string;
+  explanation_en?: string;
   difficulty: string;
 }
 
@@ -33,6 +37,23 @@ interface McqResponse {
   subject: string;
   topic: string;
   count: number;
+}
+
+// Per-question grading feedback returned by POST /query/mcq/submit --
+// the single source of truth for post-submit highlighting/explanations.
+interface McqGradedQuestion {
+  mcq_index: number;
+  is_correct: boolean;
+  correct_option: string | null;
+  explanation_en: string | null;
+}
+
+interface McqSubmitResponse {
+  total: number;
+  correct: number;
+  score_percent: number;
+  weak_topic: boolean;
+  questions: McqGradedQuestion[];
 }
 
 function parseExplanation(raw: string) {
@@ -84,6 +105,9 @@ export default function StudyPage() {
   const [answers, setAnswers] = useState<Record<number, Option>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  // Server grading results from the submit response, keyed lookup by
+  // mcq_index -- drives highlighting + explanations after submission.
+  const [gradedQuestions, setGradedQuestions] = useState<McqGradedQuestion[] | null>(null);
 
   // Study Chat drawer state
   const [chatOpen, setChatOpen] = useState(false);
@@ -103,6 +127,7 @@ export default function StudyPage() {
     setMcqs([]);
     setAnswers({});
     setSubmitted(false);
+    setGradedQuestions(null);
     setChatOpen(false);
     setExplainLoading(true);
     try {
@@ -131,6 +156,7 @@ export default function StudyPage() {
     setMcqs([]);
     setAnswers({});
     setSubmitted(false);
+    setGradedQuestions(null);
     setMcqLoading(true);
     try {
       const token = authStorage.getToken();
@@ -153,6 +179,7 @@ export default function StudyPage() {
   const handleSubmitMcqs = async () => {
     const answersPayload = mcqs.map((mcq, i) => ({
       mcq_index: i,
+      mcq_id: mcq.id ?? null,
       selected_option: answers[i] || "A",
       is_correct: answers[i] === mcq.correct,
       time_spent_ms: null,
@@ -164,11 +191,15 @@ export default function StudyPage() {
 
     try {
       const token = authStorage.getToken();
-      await api.post("/query/mcq/submit", {
+      const data = await api.post<McqSubmitResponse>("/query/mcq/submit", {
         subject,
         topic: result?.normalized_query || query,
         answers: answersPayload,
       }, token || undefined);
+      // Server grading is authoritative: its per-question results drive
+      // the highlighting/explanations and its count updates the score.
+      setGradedQuestions(data.questions ?? []);
+      setScore(data.correct);
     } catch (err) {
       console.error("Failed to save MCQ attempt:", err);
     }
@@ -320,7 +351,8 @@ export default function StudyPage() {
               <div className="space-y-2">
                 {OPTIONS.map((opt) => {
                   const isSelected = answers[i] === opt;
-                  const isCorrect = mcq.correct === opt;
+                  const graded = gradedQuestions?.find(q => q.mcq_index === i);
+                  const isCorrect = (graded ? graded.correct_option : mcq.correct) === opt;
                   const showResult = submitted;
 
                   let optClass = "border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-teal-400 dark:hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/20";
@@ -339,11 +371,13 @@ export default function StudyPage() {
                 })}
               </div>
 
-              {/* Explanation (after submit) */}
+              {/* Explanation (after submit) -- from the submit response */}
               {submitted && (
                 <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Explanation</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{mcq.explanation_en}</p>
+                  <p className="text-sm text-slate-700 dark:text-slate-300">
+                    {(gradedQuestions?.find(q => q.mcq_index === i)?.explanation_en) ?? "No explanation available for this question."}
+                  </p>
                 </div>
               )}
             </div>
@@ -368,7 +402,7 @@ export default function StudyPage() {
                  score >= mcqs.length / 2 ? "Good work! Keep practicing" :
                  "Need more practice"}
               </p>
-              <button onClick={() => { setMcqs([]); setAnswers({}); setSubmitted(false); }}
+              <button onClick={() => { setMcqs([]); setAnswers({}); setSubmitted(false); setGradedQuestions(null); }}
                 className="mt-4 text-sm text-teal-600 dark:text-teal-400 hover:underline">
                 Try again
               </button>

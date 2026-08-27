@@ -15,6 +15,7 @@ slice is skipped and the shortfall is reported back to the client
 rather than failing the whole test -- so a full-length test with a
 temporarily-understocked subject still runs on what's actually stocked.
 """
+import random
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -95,6 +96,32 @@ def _pick_random_approved(db: Session, subject: str, count: int) -> list[McqBank
     )
 
 
+def check_and_expire_abandoned_tests(db: Session) -> int:
+    """
+    Marks in-progress mock tests whose time limit has already elapsed as
+    'expired' -- covers students who closed the browser mid-test and never
+    submitted. Returns the number of attempts expired. Active-test timer
+    enforcement (answer-save cutoff, submission grading) is untouched.
+    """
+    now = datetime.now(timezone.utc)
+    expired_count = 0
+    abandoned = (
+        db.query(MockTest)
+        .filter(MockTest.status == "in_progress")
+        .all()
+    )
+    for test in abandoned:
+        started = test.started_at
+        if started.tzinfo is None:
+            started = started.replace(tzinfo=timezone.utc)
+        if started + timedelta(minutes=test.time_limit_minutes) <= now:
+            test.status = "expired"
+            expired_count += 1
+    if expired_count:
+        db.commit()
+    return expired_count
+
+
 @router.get("/availability")
 def get_mock_test_availability(
     db: Session = Depends(get_db),
@@ -106,6 +133,10 @@ def get_mock_test_availability(
     right now (and grey out the rest) instead of failing after a
     student picks an option that turns out to be understocked.
     """
+    # Clean up abandoned attempts (browser closed, timer ran out) BEFORE
+    # availability / free-test state is evaluated, so an expired attempt
+    # no longer blocks a fresh start.
+    check_and_expire_abandoned_tests(db)
     all_subjects = list(dict.fromkeys(
         ALLOWED_SUBJECTS
         + [s for subj_list in TEST_COMPOSITIONS.values() for s, _ in subj_list["subjects"]]
@@ -135,7 +166,9 @@ def get_mock_test_availability(
         "single_subject_runnable": {s: subjects_out[s] > 0 for s in ALLOWED_SUBJECTS},
         "full_ecat": composition_available("full_ecat"),
         "full_mdcat": composition_available("full_mdcat"),
-        "has_used_free_test": db.query(MockTest).filter(MockTest.user_id == user.id).count() > 0,
+        "has_used_free_test": db.query(MockTest).filter(
+            MockTest.user_id == user.id, MockTest.status != "expired"
+        ).count() > 0,
     }
 
 
@@ -145,6 +178,33 @@ def start_mock_test(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
+    # Serialize concurrent starts per user: this FOR UPDATE lock is held
+    # until the request's final commit, so the in-progress guard below and
+    # the free-tier count in check_mock_test_limit cannot race between
+    # parallel /start calls.
+    db.query(User).filter(User.id == user.id).with_for_update().one()
+
+    # Expire any abandoned attempts (browser closed, timer ran out) before
+    # the in-progress guard and free-tier limit evaluate them -- same
+    # cleanup the availability endpoint performs.
+    check_and_expire_abandoned_tests(db)
+
+    # Mirror of the past-papers guard: one in-progress mock test at a time.
+    existing = (
+        db.query(MockTest)
+        .filter(MockTest.user_id == user.id, MockTest.status == "in_progress")
+        .first()
+    )
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "code": "ATTEMPT_IN_PROGRESS",
+                "message": "You already have a mock test in progress",
+                "attempt_id": str(existing.id),
+            },
+        )
+
     check_mock_test_limit(user, db)
 
     if body.test_type == "subject":

@@ -13,6 +13,7 @@ from app.rag.prompts import STUDY_CHAT_SYSTEM_PROMPT, build_study_chat_prompt
 from app.rag.retrieve import retrieve_top_chunks, format_context_string
 from app.rag.llm_client import call_groq, normalize_query
 from app.services.streak_service import update_streak
+from app.services.tier_gate import check_chat_limit
 from app.schemas.study_chat import (
     ChatStartRequest, ChatStartResponse,
     ChatThreadResponse, ChatMessageOut,
@@ -150,6 +151,11 @@ def send_message(
     db: Session = Depends(get_db),
 ):
     thread = _get_owned_thread(db, thread_id, current_user)
+
+    # Free-tier daily message gate (mirrors check_explain_limit /
+    # check_mcq_limit): pro users with unlimited access for this
+    # thread's subject pass through without consuming quota.
+    check_chat_limit(current_user, db, subject=thread.subject)
 
     # Last 2-3 turns of THIS thread (oldest-first), for both retrieval
     # and the prompt's RECENT CONVERSATION section.

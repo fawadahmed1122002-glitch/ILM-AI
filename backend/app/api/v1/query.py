@@ -61,7 +61,12 @@ def explain(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    before = current_user.daily_explain_count
     check_explain_limit(current_user, db, subject=payload.subject)
+    # Did the gate actually charge this user? (unlimited users pass
+    # through without an increment). Captured so a failed generation
+    # below can refund exactly what was charged.
+    charged = current_user.daily_explain_count != before
     try:
         result = QueryService.explain(
             query=payload.query,
@@ -70,6 +75,13 @@ def explain(
             db=db
         )
     except LLMGenerationError:
+        # Failed generation must not consume free-tier quota: refund the
+        # gate's pre-increment.
+        if charged:
+            db.rollback()
+            if current_user.daily_explain_count > 0:
+                current_user.daily_explain_count -= 1
+                db.commit()
         raise HTTPException(
             status_code=503,
             detail={
@@ -77,6 +89,13 @@ def explain(
                 "message": "We couldn't generate a reliable explanation for this topic right now. Please try again in a moment.",
             },
         )
+    except Exception:
+        if charged:
+            db.rollback()
+            if current_user.daily_explain_count > 0:
+                current_user.daily_explain_count -= 1
+                db.commit()
+        raise
     return ExplainResponse(**result)
 
 
@@ -88,13 +107,24 @@ def get_mcqs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    before = current_user.daily_mcq_count
     check_mcq_limit(current_user, db, subject=payload.subject)
-    result = QueryService.get_mcqs(
-        topic=payload.topic,
-        subject=payload.subject,
-        user=current_user,
-        db=db
-    )
+    charged = current_user.daily_mcq_count != before
+    try:
+        result = QueryService.get_mcqs(
+            topic=payload.topic,
+            subject=payload.subject,
+            user=current_user,
+            db=db
+        )
+    except Exception:
+        # Failed generation (live path) must not consume free-tier quota.
+        if charged:
+            db.rollback()
+            if current_user.daily_mcq_count > 0:
+                current_user.daily_mcq_count -= 1
+                db.commit()
+        raise
     return McqResponse(**result)
 
 
