@@ -2,13 +2,44 @@ import { NextRequest, NextResponse } from "next/server";
 import { Safepay } from "@sfpy/node-sdk";
 import { getSafepayEnvironment } from "@/lib/payment";
 import { getProduct } from "@/lib/products";
+import { api } from "@/lib/api";
+
+interface MeResponse {
+  user_id: string;
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, email, productId } = await req.json();
+    // Authenticate via the caller's JWT -- same Bearer-token pattern the
+    // client pages use. The backend verifies the signature and returns
+    // the trusted user identity; userId is never taken from the body.
+    const authHeader = req.headers.get("authorization");
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7).trim() : null;
+    if (!token) {
+      return NextResponse.json({ error: "Missing authentication token" }, { status: 401 });
+    }
 
-    if (!userId || !email || !productId) {
-      return NextResponse.json({ error: "Missing userId, email, or productId" }, { status: 400 });
+    let userId: string;
+    try {
+      const me = await api.get<MeResponse>("/auth/me", token);
+      userId = me.user_id;
+    } catch {
+      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+    }
+    if (!userId) {
+      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+    }
+
+    // userId is embedded in the orderId which splits on "_" -- an
+    // underscore would make the webhook parse ambiguous.
+    if (userId.includes("_")) {
+      return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
+    }
+
+    const { email, productId } = await req.json();
+
+    if (!email || !productId) {
+      return NextResponse.json({ error: "Missing email or productId" }, { status: 400 });
     }
 
     const product = getProduct(productId);

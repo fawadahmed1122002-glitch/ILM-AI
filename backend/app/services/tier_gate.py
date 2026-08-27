@@ -139,12 +139,13 @@ def check_mock_test_limit(user: User, db: Session):
     """
     Mock tests are gated differently from explain/MCQ: a full-length test
     spans multiple subjects, so subject-scoped product access doesn't
-    apply cleanly here. Pro + verified email = unlimited mock tests.
-    Free or unverified = 1 mock test total (lifetime, not daily).
+    apply cleanly here. Pro + verified email + unexpired subscription =
+    unlimited mock tests. Free, unverified, or expired = 1 mock test
+    total (lifetime, not daily).
     """
     from app.models.mock_test import MockTest
 
-    if user.plan == "pro" and user.is_email_verified:
+    if user.plan == "pro" and user.is_email_verified and _subscription_currently_valid(user):
         return
 
     existing_count = db.query(MockTest).filter(MockTest.user_id == user.id).count()

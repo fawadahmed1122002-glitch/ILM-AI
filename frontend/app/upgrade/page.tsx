@@ -99,8 +99,11 @@ export default function UpgradePage() {
     try {
       const res = await fetch("/api/payment/create-checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: freshUser.user_id, email: freshUser.email, productId: selectedProduct }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${freshUser.access_token}`,
+        },
+        body: JSON.stringify({ email: freshUser.email, productId: selectedProduct }),
       });
       const data = await res.json();
       if (!res.ok || !data.checkoutUrl) {

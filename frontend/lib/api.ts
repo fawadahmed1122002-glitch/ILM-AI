@@ -43,7 +43,14 @@ async function request<T>(
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  const data = await res.json();
+  let data: any;
+  try {
+    data = await res.json();
+  } catch {
+    // Non-JSON body (e.g. an HTML 502 from a proxy/CDN) -- surface a
+    // typed ApiError instead of an unhandled SyntaxError.
+    throw new ApiError("Invalid response from server", res.status, "BAD_GATEWAY", null);
+  }
 
   if (!res.ok) {
     const detail = data.detail;

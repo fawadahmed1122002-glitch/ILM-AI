@@ -15,7 +15,6 @@ slice is skipped and the shortfall is reported back to the client
 rather than failing the whole test -- so a full-length test with a
 temporarily-understocked subject still runs on what's actually stocked.
 """
-import random
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -77,34 +76,23 @@ TEST_COMPOSITIONS = {
 def _pick_random_approved(db: Session, subject: str, count: int) -> list[McqBank]:
     """
     Randomly select up to `count` approved, non-rejected MCQs for a
-    subject, deduped by question_text -- protects against duplicate or
-    near-duplicate rows in mcq_bank (e.g. from an early double-generation
-    before the duplicate-guard existed) ever putting the same question
-    into a single test twice, even if the bank itself isn't fully clean.
+    subject, letting the database do the random sampling
+    (ORDER BY RANDOM() LIMIT n) so the full approved bank is never
+    loaded into Python memory per test start.
     """
     if count <= 0:
         return []
-    rows = (
+    return (
         db.query(McqBank)
         .filter(
             McqBank.subject == subject,
             McqBank.is_verified == True,
             McqBank.rejected_at.is_(None),
         )
+        .order_by(func.random())
+        .limit(count)
         .all()
     )
-    random.shuffle(rows)
-
-    seen_text: set[str] = set()
-    deduped: list[McqBank] = []
-    for row in rows:
-        key = row.question_text.strip().lower()
-        if key in seen_text:
-            continue
-        seen_text.add(key)
-        deduped.append(row)
-
-    return deduped[:count]
 
 
 @router.get("/availability")

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from app.schemas.auth import (
     RegisterRequest, LoginRequest, TokenResponse, MeResponse,
@@ -9,6 +9,7 @@ from app.repositories.user_repo import UserRepository
 from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
 from app.api.deps import get_current_user
+from app.core.rate_limit import limiter
 from app.core.academic_fields import tests_for_field
 from app.services.email_verification_service import (
     create_verification_token, verify_token, send_verification_email,
@@ -18,7 +19,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def register(request: Request, payload: RegisterRequest, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     if repo.email_exists(payload.email):
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -58,7 +60,8 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
-def login(payload: LoginRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)):
     repo = UserRepository(db)
     user = repo.get_by_email(payload.email)
     if not user or not verify_password(payload.password, user.password_hash):
@@ -108,7 +111,8 @@ def verify_email(token: str, db: Session = Depends(get_db)):
 
 
 @router.post("/resend-verification", response_model=VerifyEmailResponse)
-def resend_verification(payload: ResendVerificationRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def resend_verification(request: Request, payload: ResendVerificationRequest, db: Session = Depends(get_db)):
     """
     Public endpoint (not auth-gated) so a user who's stuck unverified and
     maybe having trouble logging in can still request a resend. Always

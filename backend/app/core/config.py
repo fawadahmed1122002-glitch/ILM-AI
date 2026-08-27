@@ -11,6 +11,8 @@ DATABASE_URL = os.environ.get(
 
 # JWT
 JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret-change-in-production")
+if not JWT_SECRET_KEY or JWT_SECRET_KEY == "dev-secret-change-in-production":
+    raise RuntimeError("JWT_SECRET_KEY must be set to a secure value in production.")
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 

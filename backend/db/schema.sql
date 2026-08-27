@@ -13,6 +13,11 @@ CREATE TABLE users (
     full_name       VARCHAR(120) NOT NULL,
     email           VARCHAR(255) UNIQUE NOT NULL,
     phone           VARCHAR(20),
+    age             SMALLINT,
+    interested_tests VARCHAR[],
+    subjects        VARCHAR[],
+    field           VARCHAR(30),
+    product_id      VARCHAR(30),
     password_hash   TEXT NOT NULL,
     role            VARCHAR(20) NOT NULL DEFAULT 'student'
                         CHECK (role IN ('student', 'admin')),
@@ -22,7 +27,14 @@ CREATE TABLE users (
                         CHECK (language_pref IN ('en', 'ur', 'both')),
     is_active       BOOLEAN NOT NULL DEFAULT TRUE,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    daily_explain_count INTEGER NOT NULL DEFAULT 0,
+    daily_mcq_count     INTEGER NOT NULL DEFAULT 0,
+    last_reset_date     TIMESTAMPTZ,
+    current_streak      INTEGER NOT NULL DEFAULT 0,
+    longest_streak      INTEGER NOT NULL DEFAULT 0,
+    last_streak_date    TIMESTAMPTZ,
+    is_email_verified   BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE INDEX idx_users_email ON users(email);
@@ -82,6 +94,11 @@ CREATE TABLE mcq_bank (
                         CHECK (difficulty IN ('easy', 'medium', 'hard')),
     source_chunk_id TEXT,
     is_verified     BOOLEAN NOT NULL DEFAULT FALSE,
+    rejected_at     TIMESTAMPTZ,
+    reject_reason   TEXT,
+    target_tests    VARCHAR[] NOT NULL DEFAULT '{}',
+    approved_by     UUID REFERENCES users(id),
+    approved_at     TIMESTAMPTZ,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -153,11 +170,12 @@ CREATE TABLE payments (
     amount          NUMERIC(10,2) NOT NULL,
     currency        VARCHAR(3) NOT NULL DEFAULT 'PKR',
     method          VARCHAR(30) NOT NULL
-                        CHECK (method IN ('jazzcash', 'easypaisa', 'card', 'bank_transfer')),
+                        CHECK (method IN ('jazzcash', 'easypaisa', 'manual', 'safepay', 'card', 'bank_transfer')),
     status          VARCHAR(20) NOT NULL DEFAULT 'pending'
                         CHECK (status IN ('pending', 'completed', 'failed', 'refunded')),
     transaction_ref VARCHAR(255),
     plan            VARCHAR(30),
+    product_id      VARCHAR(30),
     valid_from      TIMESTAMPTZ,
     valid_until     TIMESTAMPTZ,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -259,3 +277,50 @@ CREATE TABLE study_chat_messages (
 
 CREATE INDEX idx_study_chat_threads_user ON study_chat_threads(user_id);
 CREATE INDEX idx_study_chat_messages_thread ON study_chat_messages(thread_id, created_at);
+
+-- ============================================================
+-- 11. MOCK TESTS (timed MCQ exams)
+-- ============================================================
+CREATE TABLE mock_tests (
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id             UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    test_type           VARCHAR(20) NOT NULL,
+    subject             VARCHAR(50),
+    question_count      INTEGER NOT NULL,
+    time_limit_minutes  INTEGER NOT NULL,
+    status              VARCHAR(20) NOT NULL DEFAULT 'in_progress'
+                            CHECK (status IN ('in_progress', 'completed')),
+    started_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    submitted_at        TIMESTAMPTZ,
+    score               INTEGER,
+    correct_count       INTEGER,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_mock_tests_user ON mock_tests(user_id);
+
+CREATE TABLE mock_test_questions (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    mock_test_id    UUID NOT NULL REFERENCES mock_tests(id) ON DELETE CASCADE,
+    mcq_id          UUID NOT NULL REFERENCES mcq_bank(id),
+    question_order  INTEGER NOT NULL,
+    selected_option CHAR(1) CHECK (selected_option IN ('A','B','C','D')),
+    is_correct      BOOLEAN,
+    time_spent_ms   INTEGER
+);
+
+CREATE INDEX idx_mock_test_questions_test ON mock_test_questions(mock_test_id);
+
+-- ============================================================
+-- 12. EMAIL VERIFICATIONS
+-- ============================================================
+CREATE TABLE email_verifications (
+    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id     UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token       VARCHAR(64) UNIQUE NOT NULL,
+    expires_at  TIMESTAMPTZ NOT NULL,
+    used_at     TIMESTAMPTZ,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_email_verifications_user ON email_verifications(user_id);

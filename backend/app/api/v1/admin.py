@@ -1,11 +1,12 @@
 import os
 import uuid
 import shutil
+from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta, timezone
-from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from app.db.session import get_db
+from app.db.session import get_db, SessionLocal
 from app.api.deps import get_current_admin
 from app.core.config import DATA_DIR
 from app.models.user import User
@@ -13,7 +14,7 @@ from app.models.document import Document
 from app.models.mcq_bank import McqBank
 from app.models.payment import Payment
 from app.schemas.admin import (
-    DocumentUploadResponse, PendingMcqResponse, McqRejectRequest,
+    PendingMcqResponse, McqRejectRequest,
     AdminPlanChangeRequest, PaymentRecordResponse, McqBankResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf
@@ -25,6 +26,40 @@ from app.services.mcq_generation_service import generate_mcqs_for_chapter
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 PDF_STORAGE_ROOT = os.path.join(DATA_DIR, "pdfs", "_admin_uploads")
+MAX_PDF_SIZE_BYTES = 50 * 1024 * 1024  # 50MB upload limit
+
+
+def _ingest_pdf_in_background(
+    doc_id: uuid.UUID,
+    dest_path: str,
+    subject: str,
+    chapter_number: int,
+    chapter_title: str,
+):
+    """Runs after the 202 response is sent. Uses its own DB session since
+    the request-scoped one is closed by then."""
+    db = SessionLocal()
+    try:
+        doc = db.query(Document).filter(Document.id == doc_id).first()
+        if not doc:
+            return
+        try:
+            chunk_count = ingest_single_pdf(
+                pdf_path=dest_path,
+                subject_display=subject,
+                chapter_number=chapter_number,
+                chapter_title=chapter_title,
+                doc_id=str(doc.id),
+            )
+            doc.status = "ready"
+            doc.chunk_count = chunk_count
+            doc.updated_at = datetime.utcnow()
+        except Exception as e:
+            doc.status = "failed"
+            print(f"⚠️  INGESTION_FAILED: document {doc_id} ({subject} ch{chapter_number}): {e}")
+        db.commit()
+    finally:
+        db.close()
 ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
 ALLOWED_PLANS = ["free", "pro"]
 ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual"]
@@ -87,8 +122,9 @@ def get_revenue_summary(
             for d in daily
         ],
     }
-@router.post("/upload-pdf", response_model=DocumentUploadResponse)
+@router.post("/upload-pdf", status_code=202)
 def upload_pdf(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     subject: str = Form(...),
     chapter_number: int = Form(...),
@@ -101,14 +137,33 @@ def upload_pdf(
             status_code=400,
             detail={"code": "INVALID_SUBJECT", "message": f"Subject must be one of: {', '.join(ALLOWED_SUBJECTS)}"},
         )
-    if not file.filename.lower().endswith(".pdf"):
+    # Sanitize the uploaded filename before any path operations so names
+    # like ../../etc/passwd can never escape PDF_STORAGE_ROOT.
+    safe_name = secure_filename(file.filename or "")
+    if not safe_name or not safe_name.lower().endswith(".pdf"):
         raise HTTPException(
             status_code=400,
             detail={"code": "INVALID_FILE_TYPE", "message": "Only PDF files are accepted."},
         )
 
+    file.file.seek(0, os.SEEK_END)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    if file_size > MAX_PDF_SIZE_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail={"code": "FILE_TOO_LARGE", "message": "File exceeds the 50MB size limit."},
+        )
+
+    if (file.content_type or "").lower() != "application/pdf":
+        raise HTTPException(
+            status_code=415,
+            detail={"code": "UNSUPPORTED_MEDIA_TYPE", "message": "Only PDF files are accepted (application/pdf)."},
+        )
+
     os.makedirs(PDF_STORAGE_ROOT, exist_ok=True)
-    dest_path = os.path.join(PDF_STORAGE_ROOT, file.filename)
+    # UUID prefix prevents silent overwrites of previously uploaded files.
+    dest_path = os.path.join(PDF_STORAGE_ROOT, f"{uuid.uuid4().hex}_{safe_name}")
     with open(dest_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -137,28 +192,18 @@ def upload_pdf(
     db.commit()
     db.refresh(doc)
 
-    try:
-        chunk_count = ingest_single_pdf(
-            pdf_path=dest_path,
-            subject_display=subject,
-            chapter_number=chapter_number,
-            chapter_title=chapter_title,
-            doc_id=str(doc.id),
-        )
-        doc.status = "ready"
-        doc.chunk_count = chunk_count
-        doc.updated_at = datetime.utcnow()
-    except Exception as e:
-        doc.status = "failed"
-        db.commit()
-        raise HTTPException(
-            status_code=500,
-            detail={"code": "INGESTION_FAILED", "message": f"PDF uploaded but ingestion failed: {str(e)}"},
-        )
+    # Ingestion (embed + ChromaDB upsert) is the slow part -- run it after
+    # the response is returned so large PDFs don't block the worker.
+    background_tasks.add_task(
+        _ingest_pdf_in_background,
+        doc.id,
+        dest_path,
+        subject,
+        chapter_number,
+        chapter_title,
+    )
 
-    db.commit()
-    db.refresh(doc)
-    return doc
+    return {"message": "Ingestion started", "document_id": str(doc.id)}
 
 
 @router.get("/mcqs/pending", response_model=list[PendingMcqResponse])
