@@ -12,3 +12,5 @@ from app.models.past_paper import PastPaper
 from app.models.past_paper_question import PastPaperQuestion
 from app.models.past_paper_attempt import PastPaperAttempt
 from app.models.past_paper_answer import PastPaperAnswer
+from app.models.study_chat_thread import StudyChatThread
+from app.models.study_chat_message import StudyChatMessage

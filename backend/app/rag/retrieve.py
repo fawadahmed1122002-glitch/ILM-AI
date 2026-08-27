@@ -17,12 +17,14 @@ _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 _collection = _client.get_or_create_collection(COLLECTION_NAME)
 
 
-def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5):
+def retrieve_top_chunks(query: str, subject: str = None, top_k: int = 5, already_normalized: bool = False):
     """
     Normalizes (Roman Urdu -> English), embeds the query, and retrieves
     top_k most relevant chunks. Optionally filters by subject metadata.
+    Pass already_normalized=True when the caller has already normalized
+    each query piece individually (skips a redundant LLM round-trip).
     """
-    normalized_query = normalize_query(query)
+    normalized_query = query if already_normalized else normalize_query(query)
 
     query_embedding = _model.encode([normalized_query]).tolist()
 
