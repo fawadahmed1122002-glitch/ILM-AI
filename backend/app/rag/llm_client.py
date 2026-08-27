@@ -80,6 +80,7 @@ def call_groq(system_prompt: str, user_message: str, temperature: float = 0.3, m
         ],
         temperature=temperature,
         max_tokens=max_tokens,
+        timeout=30,  # seconds -- a hung upstream call must not hold the worker
     )
     return response.choices[0].message.content
 

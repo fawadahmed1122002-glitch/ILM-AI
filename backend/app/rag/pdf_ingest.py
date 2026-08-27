@@ -91,6 +91,16 @@ def ingest_single_pdf(pdf_path: str, subject_display: str, chapter_number: int, 
     embeddings = model.encode(chunks, show_progress_bar=False)
 
     ids = [f"{doc_id}_{i}" for i in range(len(chunks))]
+
+    # Drop stale chunks from a previous version of this document: if the new
+    # pass produces fewer chunks than before, upsert alone would leave the
+    # extra old chunks (and their outdated text) retrievable forever.
+    prefix = f"{doc_id}_"
+    existing = collection.get(where={"document_id": doc_id})
+    stale_ids = [eid for eid in existing["ids"] if eid.startswith(prefix)]
+    if stale_ids:
+        collection.delete(ids=stale_ids)
+
     metadatas = [
         {
             "subject": subject_display,

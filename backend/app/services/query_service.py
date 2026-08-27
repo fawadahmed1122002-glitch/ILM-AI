@@ -45,6 +45,7 @@ class QueryService:
                 McqBank.is_verified == True,
                 McqBank.rejected_at.is_(None),
             )
+            .order_by(func.random())
             .limit(5)
             .all()
         )

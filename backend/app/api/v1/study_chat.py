@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
@@ -24,6 +25,11 @@ router = APIRouter(prefix="/study/chat", tags=["study-chat"])
 RECENT_TURNS = 3
 
 
+async def _normalize_pieces_concurrently(pieces: list[str]) -> list[str]:
+    """Runs independent normalize_query round-trips in parallel; order-preserving."""
+    return await asyncio.gather(*(asyncio.to_thread(normalize_query, p) for p in pieces))
+
+
 def _get_owned_thread(db: Session, thread_id: uuid.UUID, user: User) -> StudyChatThread:
     """Ownership check returns 404 (not 403) so foreign ids don't leak existence."""
     thread = (
@@ -40,6 +46,20 @@ def _get_owned_thread(db: Session, thread_id: uuid.UUID, user: User) -> StudyCha
 
 
 def _thread_messages(db: Session, thread_id: uuid.UUID) -> list[StudyChatMessage]:
+    """Last 3 messages of the thread, fetched with ORDER BY created_at DESC
+    LIMIT 3 and returned oldest-first to keep the caller's ordering contract."""
+    rows = (
+        db.query(StudyChatMessage)
+        .filter(StudyChatMessage.thread_id == thread_id)
+        .order_by(StudyChatMessage.created_at.desc())
+        .limit(3)
+        .all()
+    )
+    return rows[::-1]
+
+
+def _thread_all_messages(db: Session, thread_id: uuid.UUID) -> list[StudyChatMessage]:
+    """Full history, oldest-first -- for endpoints that render the whole thread."""
     return (
         db.query(StudyChatMessage)
         .filter(StudyChatMessage.thread_id == thread_id)
@@ -101,7 +121,7 @@ def start_chat(
         subject=thread.subject,
         topic=thread.topic,
         created=created,
-        messages=[ChatMessageOut.model_validate(m) for m in _thread_messages(db, thread.id)],
+        messages=[ChatMessageOut.model_validate(m) for m in _thread_all_messages(db, thread.id)],
     )
 
 
@@ -116,7 +136,7 @@ def get_thread(
         thread_id=thread.id,
         subject=thread.subject,
         topic=thread.topic,
-        messages=[ChatMessageOut.model_validate(m) for m in _thread_messages(db, thread.id)],
+        messages=[ChatMessageOut.model_validate(m) for m in _thread_all_messages(db, thread.id)],
     )
 
 
@@ -159,8 +179,14 @@ def send_message(
     # match garbage. Normalizing per-piece keeps every input in its
     # working range.
     user_turns = [content for role, content in recent_turns if role == "user"]
-    turn_parts = [normalize_query(t) for t in user_turns]
-    question_part = normalize_query(payload.content)[:300]
+    # All pieces are independent, so normalize them concurrently (one Groq
+    # round-trip each) instead of serially: N calls cost ~1 round-trip of
+    # wall time instead of N. asyncio.to_thread keeps the blocking
+    # call_groq off the loop; gather preserves input order.
+    pieces = [*user_turns, payload.content]
+    normalized = asyncio.run(_normalize_pieces_concurrently(pieces))
+    turn_parts = normalized[:-1]
+    question_part = normalized[-1][:300]
     retrieval_query = (
         f"{thread.topic}. {' '.join(p for p in turn_parts if p)} {question_part}"
     )[:1200]
