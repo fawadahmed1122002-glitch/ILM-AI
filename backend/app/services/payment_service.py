@@ -47,6 +47,20 @@ def grant_product(
     if not user:
         raise ValueError(f"User {user_id} not found")
 
+    # Idempotency guard: a replayed webhook with the same transaction_ref
+    # must not create a duplicate payment or extend the subscription.
+    if transaction_ref:
+        existing = (
+            db.query(Payment)
+            .filter(
+                Payment.transaction_ref == transaction_ref,
+                Payment.status == "completed",
+            )
+            .first()
+        )
+        if existing:
+            return existing
+
     # REPLACE model: this overwrites any previously active product.
     user.plan = "pro"
     user.product_id = product_id
