@@ -155,78 +155,94 @@ def send_message(
     # Free-tier daily message gate (mirrors check_explain_limit /
     # check_mcq_limit): pro users with unlimited access for this
     # thread's subject pass through without consuming quota.
+    before = current_user.daily_chat_count
     check_chat_limit(current_user, db, subject=thread.subject)
+    # Did the gate actually charge this user? (unlimited users pass
+    # through without an increment). Captured so a failed generation
+    # below can refund exactly what was charged.
+    charged = current_user.daily_chat_count != before
 
-    # Last 2-3 turns of THIS thread (oldest-first), for both retrieval
-    # and the prompt's RECENT CONVERSATION section.
-    recent_turns = [
-        (m.role, m.content)
-        for m in _thread_messages(db, thread.id)[-RECENT_TURNS:]
-    ]
-
-    # Retrieval query = topic anchor + recent turn text + new question.
-    # Follow-ups like "why?" or "explain the second part again" carry no
-    # topical signal on their own, so we combine them with what came
-    # before -- the new message alone would retrieve the wrong chunks.
-    # Budgets are fixed BEFORE concatenating so the new question can
-    # never be truncated off the end: turn_text keeps only the most
-    # recent tail (600 chars) and the question's retrieval copy is
-    # capped at 300 -- worst case 255+600+300+separators = 1158 < 1200.
-    # (The FULL question still goes into the prompt and the saved
-    # message; these caps only shape the embedding query.)
-    # (retrieve_top_chunks normalizes Roman Urdu -> English internally.)
-    # Only the student's OWN words feed retrieval -- assistant replies
-    # can be long and topically wander, diluting the embedding query.
-    # (The full both-roles history still reaches the LLM via the
-    # prompt's RECENT CONVERSATION section.)
-    # Each piece is normalized INDIVIDUALLY (Roman Urdu -> English):
-    # normalize_query is built for short inputs and returns empty on
-    # long mixed-language concatenations, which made the embedding query
-    # match garbage. Normalizing per-piece keeps every input in its
-    # working range.
-    user_turns = [content for role, content in recent_turns if role == "user"]
-    # All pieces are independent, so normalize them concurrently (one Groq
-    # round-trip each) instead of serially: N calls cost ~1 round-trip of
-    # wall time instead of N. asyncio.to_thread keeps the blocking
-    # call_groq off the loop; gather preserves input order.
-    pieces = [*user_turns, payload.content]
-    normalized = asyncio.run(_normalize_pieces_concurrently(pieces))
-    turn_parts = normalized[:-1]
-    question_part = normalized[-1][:300]
-    retrieval_query = (
-        f"{thread.topic}. {' '.join(p for p in turn_parts if p)} {question_part}"
-    )[:1200]
-
-    chunks, metadatas, distances, _ = retrieve_top_chunks(
-        query=retrieval_query, subject=thread.subject, top_k=5, already_normalized=True
-    )
-    # Guard: if normalization collapsed the query to nothing, fall back
-    # to the topic anchor alone rather than embedding an empty string.
-    if not retrieval_query.strip(". "):
-        chunks, metadatas, distances, _ = retrieve_top_chunks(
-            query=thread.topic, subject=thread.subject, top_k=5
-        )
-    context = format_context_string(chunks) if chunks else "(no relevant content retrieved)"
-
-    user_message = build_study_chat_prompt(
-        context=context,
-        subject=thread.subject,
-        topic=thread.topic,
-        recent_turns=recent_turns,
-        question=payload.content,
-    )
     try:
-        reply = call_groq(
-            STUDY_CHAT_SYSTEM_PROMPT, user_message, temperature=0.3, max_tokens=600
-        ).strip()
-    except Exception:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "code": "STUDY_CHAT_GENERATION_FAILED",
-                "message": "We couldn't generate a reply right now. Please try again in a moment.",
-            },
+        # Last 2-3 turns of THIS thread (oldest-first), for both retrieval
+        # and the prompt's RECENT CONVERSATION section.
+        recent_turns = [
+            (m.role, m.content)
+            for m in _thread_messages(db, thread.id)[-RECENT_TURNS:]
+        ]
+
+        # Retrieval query = topic anchor + recent turn text + new question.
+        # Follow-ups like "why?" or "explain the second part again" carry no
+        # topical signal on their own, so we combine them with what came
+        # before -- the new message alone would retrieve the wrong chunks.
+        # Budgets are fixed BEFORE concatenating so the new question can
+        # never be truncated off the end: turn_text keeps only the most
+        # recent tail (600 chars) and the question's retrieval copy is
+        # capped at 300 -- worst case 255+600+300+separators = 1158 < 1200.
+        # (The FULL question still goes into the prompt and the saved
+        # message; these caps only shape the embedding query.)
+        # (retrieve_top_chunks normalizes Roman Urdu -> English internally.)
+        # Only the student's OWN words feed retrieval -- assistant replies
+        # can be long and topically wander, diluting the embedding query.
+        # (The full both-roles history still reaches the LLM via the
+        # prompt's RECENT CONVERSATION section.)
+        # Each piece is normalized INDIVIDUALLY (Roman Urdu -> English):
+        # normalize_query is built for short inputs and returns empty on
+        # long mixed-language concatenations, which made the embedding query
+        # match garbage. Normalizing per-piece keeps every input in its
+        # working range.
+        user_turns = [content for role, content in recent_turns if role == "user"]
+        # All pieces are independent, so normalize them concurrently (one Groq
+        # round-trip each) instead of serially: N calls cost ~1 round-trip of
+        # wall time instead of N. asyncio.to_thread keeps the blocking
+        # call_groq off the loop; gather preserves input order.
+        pieces = [*user_turns, payload.content]
+        normalized = asyncio.run(_normalize_pieces_concurrently(pieces))
+        turn_parts = normalized[:-1]
+        question_part = normalized[-1][:300]
+        retrieval_query = (
+            f"{thread.topic}. {' '.join(p for p in turn_parts if p)} {question_part}"
+        )[:1200]
+
+        chunks, metadatas, distances, _ = retrieve_top_chunks(
+            query=retrieval_query, subject=thread.subject, top_k=5, already_normalized=True
         )
+        # Guard: if normalization collapsed the query to nothing, fall back
+        # to the topic anchor alone rather than embedding an empty string.
+        if not retrieval_query.strip(". "):
+            chunks, metadatas, distances, _ = retrieve_top_chunks(
+                query=thread.topic, subject=thread.subject, top_k=5
+            )
+        context = format_context_string(chunks) if chunks else "(no relevant content retrieved)"
+
+        user_message = build_study_chat_prompt(
+            context=context,
+            subject=thread.subject,
+            topic=thread.topic,
+            recent_turns=recent_turns,
+            question=payload.content,
+        )
+        try:
+            reply = call_groq(
+                STUDY_CHAT_SYSTEM_PROMPT, user_message, temperature=0.3, max_tokens=600
+            ).strip()
+        except Exception:
+            raise HTTPException(
+                status_code=503,
+                detail={
+                    "code": "STUDY_CHAT_GENERATION_FAILED",
+                    "message": "We couldn't generate a reply right now. Please try again in a moment.",
+                },
+            )
+    except Exception:
+        # Failed generation (Groq outage, quality gate, retrieval error)
+        # must not consume free-tier quota: refund the gate's
+        # pre-increment -- mirrors the refund in /query/explain.
+        if charged:
+            db.rollback()
+            if current_user.daily_chat_count > 0:
+                current_user.daily_chat_count -= 1
+                db.commit()
+        raise
 
     # Grounding evidence for the assistant row (mirrors chunks used).
     chunks_used = [

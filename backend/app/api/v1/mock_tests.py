@@ -19,11 +19,12 @@ import random
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.models.mcq_bank import McqBank
 from app.models.mock_test import MockTest
@@ -166,7 +167,9 @@ def get_mock_test_availability(
 
 
 @router.post("/start", response_model=MockTestStartResponse)
+@limiter.limit("20/minute")
 def start_mock_test(
+    request: Request,
     body: MockTestStartRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
@@ -376,8 +379,10 @@ def get_mock_test_detail(
 
 
 @router.patch("/{mock_test_id}/answer")
+@limiter.limit("20/minute")
 def save_mock_test_answer(
     mock_test_id: uuid.UUID,
+    request: Request,
     body: MockTestAnswerSaveRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
@@ -426,8 +431,10 @@ def save_mock_test_answer(
 
 
 @router.post("/{mock_test_id}/submit", response_model=MockTestSubmitResponse)
+@limiter.limit("20/minute")
 def submit_mock_test(
     mock_test_id: uuid.UUID,
+    request: Request,
     body: MockTestSubmitRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),

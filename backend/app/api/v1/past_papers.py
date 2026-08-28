@@ -13,11 +13,12 @@ see verified or published papers.
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.models.past_paper import PastPaper
 from app.models.past_paper_question import PastPaperQuestion
@@ -104,8 +105,10 @@ def list_past_papers(
 
 
 @router.post("/{paper_id}/start", response_model=PastPaperStartResponse)
+@limiter.limit("20/minute")
 def start_past_paper(
     paper_id: uuid.UUID,
+    request: Request,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
@@ -248,8 +251,10 @@ def get_past_paper_attempt(
 
 
 @router.patch("/attempts/{attempt_id}/answer")
+@limiter.limit("20/minute")
 def save_past_paper_answer(
     attempt_id: uuid.UUID,
+    request: Request,
     body: PastPaperAnswerSaveRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
@@ -334,8 +339,10 @@ def save_past_paper_answer(
 
 
 @router.post("/attempts/{attempt_id}/submit", response_model=PastPaperSubmitResponse)
+@limiter.limit("20/minute")
 def submit_past_paper_attempt(
     attempt_id: uuid.UUID,
+    request: Request,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
