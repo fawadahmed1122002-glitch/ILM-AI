@@ -230,7 +230,7 @@ CREATE TABLE past_paper_attempts (
     user_id            UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     paper_id           UUID NOT NULL REFERENCES past_papers(id) ON DELETE CASCADE,
     status             VARCHAR(20) NOT NULL DEFAULT 'in_progress'
-                           CHECK (status IN ('in_progress', 'completed')),
+                           CHECK (status IN ('in_progress', 'completed', 'expired')),
     started_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     submitted_at       TIMESTAMPTZ,
     score              INTEGER,
@@ -290,7 +290,7 @@ CREATE TABLE mock_tests (
     question_count      INTEGER NOT NULL,
     time_limit_minutes  INTEGER NOT NULL,
     status              VARCHAR(20) NOT NULL DEFAULT 'in_progress'
-                            CHECK (status IN ('in_progress', 'completed')),
+                            CHECK (status IN ('in_progress', 'completed', 'expired')),
     started_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     submitted_at        TIMESTAMPTZ,
     score               INTEGER,

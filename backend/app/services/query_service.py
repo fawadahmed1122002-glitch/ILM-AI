@@ -10,6 +10,19 @@ from app.rag.llm_client import generate_explanation, generate_mcqs
 from app.services.streak_service import update_streak
 from app.models.mcq_bank import McqBank
 
+
+def _as_uuid(value):
+    """Coerces a client-provided mcq id to a UUID, or None if absent/malformed."""
+    if value is None:
+        return None
+    if isinstance(value, uuid.UUID):
+        return value
+    try:
+        return uuid.UUID(str(value))
+    except (ValueError, AttributeError):
+        return None
+
+
 class QueryService:
 
     @staticmethod
@@ -82,35 +95,25 @@ class QueryService:
             "count": len(result["valid_mcqs"]),
             "source": "live",
         }
-        chunks, metadatas, distances, normalized_topic = retrieve_top_chunks(
-            query=topic, subject=subject, top_k=5
-        )
-        if not chunks:
-            return {"mcqs": [], "subject": subject, "topic": topic, "count": 0}
-        context = format_context_string(chunks)
-        result = generate_mcqs(context=context, subject=subject, topic=normalized_topic)
-        return {
-            "mcqs": result["valid_mcqs"],
-            "subject": subject,
-            "topic": normalized_topic,
-            "count": len(result["valid_mcqs"]),
-        }
 
     @staticmethod
     def submit_mcqs(subject: str, topic: str, answers: list, user: User, db: Session) -> dict:
         correct = 0
         question_results = []
+        # is_correct is computed server-side, never trusted from the
+        # client: resolve each answer's bank MCQ and compare its stored
+        # correct_option against the submitted selection. Answers without
+        # a resolvable bank id (live-generated MCQs) fall back to the
+        # client value. All referenced bank MCQs are fetched in ONE batch
+        # query instead of one SELECT per answer.
+        mcq_ids = [u for u in (_as_uuid(getattr(ans, "mcq_id", None)) for ans in answers) if u]
+        bank_by_id = (
+            {m.id: m for m in db.query(McqBank).filter(McqBank.id.in_(mcq_ids)).all()}
+            if mcq_ids else {}
+        )
         for ans in answers:
-            # is_correct is computed server-side, never trusted from the
-            # client: fetch the bank MCQ by id and compare its stored
-            # correct_option against the submitted selection. Answers
-            # without a resolvable bank id (live-generated MCQs) fall back
-            # to the client value.
-            mcq_id = getattr(ans, "mcq_id", None)
-            bank_mcq = (
-                db.query(McqBank).filter(McqBank.id == mcq_id).first()
-                if mcq_id else None
-            )
+            mcq_id = _as_uuid(getattr(ans, "mcq_id", None))
+            bank_mcq = bank_by_id.get(mcq_id) if mcq_id else None
             if bank_mcq is not None:
                 is_correct = (
                     ans.selected_option.strip().upper()

@@ -1,4 +1,5 @@
 # backend/app/api/v1/internal.py
+import hmac
 import os
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, Header
@@ -17,7 +18,8 @@ INTERNAL_SERVICE_SECRET = os.environ.get("INTERNAL_SERVICE_SECRET")
 def verify_internal_secret(x_internal_secret: str = Header(...)):
     if not INTERNAL_SERVICE_SECRET:
         raise HTTPException(status_code=500, detail="INTERNAL_SERVICE_SECRET not configured on server")
-    if x_internal_secret != INTERNAL_SERVICE_SECRET:
+    # Constant-time comparison to avoid timing side-channels on the secret.
+    if not hmac.compare_digest(x_internal_secret, INTERNAL_SERVICE_SECRET):
         raise HTTPException(status_code=403, detail="Invalid internal service secret")
 
 

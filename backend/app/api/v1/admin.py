@@ -1,6 +1,7 @@
 import os
 import uuid
 import shutil
+import logging
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, BackgroundTasks, Depends, UploadFile, File, Form, HTTPException
@@ -19,9 +20,10 @@ from app.schemas.admin import (
 )
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, grant_product
-from sqlalchemy import func
 from app.core.products import PRODUCT_CATALOG, PURCHASABLE_PRODUCTS
 from app.services.mcq_generation_service import generate_mcqs_for_chapter
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -56,7 +58,10 @@ def _ingest_pdf_in_background(
             doc.updated_at = datetime.now(timezone.utc)
         except Exception as e:
             doc.status = "failed"
-            print(f"⚠️  INGESTION_FAILED: document {doc_id} ({subject} ch{chapter_number}): {e}")
+            logger.error(
+                "INGESTION_FAILED: document %s (%s ch%s): %s",
+                doc_id, subject, chapter_number, e,
+            )
         db.commit()
     finally:
         db.close()

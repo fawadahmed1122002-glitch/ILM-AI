@@ -48,6 +48,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [progress, setProgress] = useState<ProgressData | null>(null);
   const [progressLoading, setProgressLoading] = useState(true);
+  const [progressError, setProgressError] = useState("");
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -58,7 +59,7 @@ export default function DashboardPage() {
     const token = authStorage.getToken();
     api.get<ProgressData>("/query/progress/me", token || undefined)
       .then(setProgress)
-      .catch(console.error)
+      .catch((err) => setProgressError(err instanceof Error ? err.message : "Failed to load progress"))
       .finally(() => setProgressLoading(false));
   }, [user]);
 
@@ -157,6 +158,11 @@ export default function DashboardPage() {
 
         {progressLoading ? (
           <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm">Loading progress...</div>
+        ) : progressError ? (
+          <div className="p-8 text-center">
+            <p className="text-red-600 dark:text-red-400 text-sm">Failed to load your progress: {progressError}</p>
+            <p className="text-slate-400 dark:text-slate-500 text-xs mt-1">Try refreshing the page.</p>
+          </div>
         ) : !progress || progress.topics.length === 0 ? (
           <div className="p-8 text-center">
             <p className="text-slate-400 dark:text-slate-500 text-sm">No topics studied yet.</p>

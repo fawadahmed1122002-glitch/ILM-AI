@@ -14,6 +14,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
@@ -66,6 +67,27 @@ def _get_paper_or_404(db: Session, paper_id: uuid.UUID) -> PastPaper:
     return paper
 
 
+def check_and_expire_abandoned_attempts(db: Session) -> int:
+    """
+    Marks in-progress past paper attempts whose paper duration has already
+    elapsed as 'expired' -- covers students who closed the browser
+    mid-paper and never submitted. Mirrors the mock-test sweep: an
+    abandoned attempt must not block retaking that paper forever. Runs as
+    a single SQL UPDATE. Returns the number of attempts expired. Active-
+    paper timer enforcement (answer-save cutoff, submission grading) is
+    untouched.
+    """
+    expired_count = db.execute(text(
+        "UPDATE past_paper_attempts a SET status = 'expired' "
+        "FROM past_papers p "
+        "WHERE a.paper_id = p.id AND a.status = 'in_progress' "
+        "AND a.started_at + p.duration_minutes * interval '1 minute' <= now()"
+    )).rowcount
+    if expired_count:
+        db.commit()
+    return expired_count
+
+
 @router.get("", response_model=list[PastPaperListItem])
 def list_past_papers(
     db: Session = Depends(get_db),
@@ -90,8 +112,10 @@ def start_past_paper(
     """
     Create an attempt and return the full question set in original order
     (mirrors mock_tests /start, which also returns all questions up front).
-    Resuming an existing in-progress attempt returns it instead of creating
-    a new row, so a double-click on Start doesn't orphan attempts.
+    Abandoned attempts (timer elapsed, never submitted) are expired first
+    by check_and_expire_abandoned_attempts so they don't block a retake;
+    an attempt still within its time window raises ATTEMPT_IN_PROGRESS
+    instead of creating a duplicate row.
     """
     paper = _get_paper_or_404(db, paper_id)
     if paper.status not in STUDENT_VISIBLE_STATUSES:
@@ -99,6 +123,11 @@ def start_past_paper(
             status_code=404,
             detail={"code": "NOT_FOUND", "message": "Past paper not found"},
         )
+
+    # Expire abandoned attempts (browser closed, timer ran out) before the
+    # in-progress guard evaluates them -- same cleanup mock-tests /start
+    # performs.
+    check_and_expire_abandoned_attempts(db)
 
     existing = (
         db.query(PastPaperAttempt)

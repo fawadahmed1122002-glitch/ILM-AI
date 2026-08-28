@@ -23,13 +23,6 @@ def get_current_user(
     return user
 
 
-def get_current_pro_user(current_user: User = Depends(get_current_user)) -> User:
-    """Use this dependency on any Pro-only endpoint."""
-    if current_user.plan != "pro":
-        raise HTTPException(status_code=403, detail="Pro subscription required")
-    return current_user
-
-
 def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
     """Use this dependency on any admin-only endpoint."""
     if current_user.role != "admin":

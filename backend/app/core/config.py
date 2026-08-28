@@ -30,3 +30,9 @@ CACHE_DB_PATH = os.path.join(DATA_DIR, "cache.sqlite")
 # RAG
 COLLECTION_NAME = "ilmai_knowledge_base"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+if not GROQ_API_KEY:
+    raise RuntimeError(
+        "GROQ_API_KEY must be set — explanations, MCQ generation and study "
+        "chat cannot work without it. Fail loudly at startup instead of on "
+        "the first user-facing LLM call."
+    )

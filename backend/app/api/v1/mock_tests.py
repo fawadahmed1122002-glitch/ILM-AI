@@ -20,7 +20,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import func
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
@@ -100,23 +100,16 @@ def check_and_expire_abandoned_tests(db: Session) -> int:
     """
     Marks in-progress mock tests whose time limit has already elapsed as
     'expired' -- covers students who closed the browser mid-test and never
-    submitted. Returns the number of attempts expired. Active-test timer
-    enforcement (answer-save cutoff, submission grading) is untouched.
+    submitted. Runs as a single SQL UPDATE so the in_progress set is never
+    loaded into Python. Returns the number of attempts expired. Active-
+    test timer enforcement (answer-save cutoff, submission grading) is
+    untouched.
     """
-    now = datetime.now(timezone.utc)
-    expired_count = 0
-    abandoned = (
-        db.query(MockTest)
-        .filter(MockTest.status == "in_progress")
-        .all()
-    )
-    for test in abandoned:
-        started = test.started_at
-        if started.tzinfo is None:
-            started = started.replace(tzinfo=timezone.utc)
-        if started + timedelta(minutes=test.time_limit_minutes) <= now:
-            test.status = "expired"
-            expired_count += 1
+    expired_count = db.execute(text(
+        "UPDATE mock_tests SET status = 'expired' "
+        "WHERE status = 'in_progress' "
+        "AND started_at + time_limit_minutes * interval '1 minute' <= now()"
+    )).rowcount
     if expired_count:
         db.commit()
     return expired_count

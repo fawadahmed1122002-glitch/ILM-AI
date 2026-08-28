@@ -15,7 +15,7 @@ class MockTest(Base):
     subject: Mapped[str | None] = mapped_column(String(50), nullable=True)  # only set when test_type == "subject"
     question_count: Mapped[int] = mapped_column(Integer, nullable=False)
     time_limit_minutes: Mapped[int] = mapped_column(Integer, nullable=False)
-    status: Mapped[str] = mapped_column(String(20), nullable=False, server_default="in_progress")  # "in_progress" | "completed"
+    status: Mapped[str] = mapped_column(String(20), nullable=False, server_default="in_progress")  # "in_progress" | "completed" | "expired"
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=text("now()"))
     submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     score: Mapped[int | None] = mapped_column(Integer, nullable=True)

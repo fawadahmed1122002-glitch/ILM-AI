@@ -2,6 +2,7 @@
 Email verification service.
 """
 
+import logging
 import os
 import secrets
 from datetime import datetime, timedelta, timezone
@@ -9,6 +10,8 @@ from sqlalchemy.orm import Session
 import resend
 from app.models.user import User
 from app.models.email_verification import EmailVerification
+
+logger = logging.getLogger(__name__)
 
 TOKEN_EXPIRY_HOURS = 24
 
@@ -107,10 +110,22 @@ def send_verification_email(user: User, token: str) -> None:
                 </div>
             """,
         })
-        print(f"📧 Verification email sent to {user.email}")
+        logger.info("Verification email sent to %s", user.email)
     except Exception as e:
-        print(f"⚠️  Failed to send verification email to {user.email}: {e}")
+        logger.warning("Failed to send verification email to %s: %s", user.email, e)
 
 
 def _get_frontend_url() -> str:
-    return os.environ.get("FRONTEND_URL", "http://localhost:3000")
+    url = os.environ.get("FRONTEND_URL")
+    if not url:
+        # Loud warning instead of a startup crash: verification is a
+        # soft requirement (free tier still works unverified), so the
+        # app keeps booting -- but every email link will be broken
+        # until FRONTEND_URL is set to the deployed frontend origin.
+        logger.warning(
+            "FRONTEND_URL is not set -- verification emails will link to "
+            "http://localhost:3000, which only works in local development. "
+            "Set FRONTEND_URL to the deployed frontend origin."
+        )
+        return "http://localhost:3000"
+    return url

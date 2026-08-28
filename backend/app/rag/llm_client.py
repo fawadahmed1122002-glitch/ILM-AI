@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 _client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-# Groq's fast Llama 3.3 model — good balance of speed + quality for MVP
+# Open-weight 120B model served via Groq — good balance of speed + quality for MVP
 MODEL_NAME = "openai/gpt-oss-120b"
 
 
