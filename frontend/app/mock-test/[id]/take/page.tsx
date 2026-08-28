@@ -68,6 +68,7 @@ export default function MockTestTakePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitFailed, setSubmitFailed] = useState(false);
   const questionStartRef = useRef<number>(Date.now());
   const autoSubmittedRef = useRef(false);
 
@@ -146,6 +147,7 @@ export default function MockTestTakePage() {
       if (!confirmed) return;
     }
     setSubmitting(true);
+    setSubmitFailed(false);
     setError("");
     try {
       const token = authStorage.getToken();
@@ -159,6 +161,7 @@ export default function MockTestTakePage() {
         router.push(`/mock-test/${testId}/results`);
       } else {
         setError(err instanceof Error ? err.message : "Failed to submit");
+        setSubmitFailed(true);
         setSubmitting(false);
       }
     }
@@ -214,7 +217,20 @@ export default function MockTestTakePage() {
 
       {expired ? (
         <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-400 text-sm rounded-xl text-center">
-          Time&apos;s up — {submitting ? "submitting your answers..." : "your answers have been submitted."}
+          Time&apos;s up —{" "}
+          {submitting
+            ? "submitting your answers..."
+            : submitFailed
+            ? "auto-submit failed, so your answers are NOT submitted yet. Your saved answers are safe."
+            : "your answers have been submitted."}
+          {submitFailed && !submitting && (
+            <button
+              onClick={() => handleSubmit(true)}
+              className="ml-3 font-semibold underline hover:no-underline"
+            >
+              Retry submit
+            </button>
+          )}
         </div>
       ) : (
         timeCritical && (
@@ -304,7 +320,7 @@ export default function MockTestTakePage() {
           </button>
         ) : (
           <button
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             disabled={submitting}
             className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
@@ -315,7 +331,7 @@ export default function MockTestTakePage() {
 
       {currentIndex < test.questions.length - 1 && (
         <button
-          onClick={handleSubmit}
+          onClick={() => handleSubmit()}
           disabled={submitting}
           className="w-full py-2 text-xs text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors disabled:opacity-50"
         >

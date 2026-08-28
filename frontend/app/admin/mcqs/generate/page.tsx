@@ -25,6 +25,12 @@ interface GenerateResult {
   chapter_title?: string;
 }
 
+interface GenerationStatusResponse {
+  status: "idle" | "running" | "completed" | "failed";
+  result: GenerateResult | null;
+  message: string | null;
+}
+
 interface LogEntry {
   chapter_number: number;
   chapter_title: string;
@@ -34,6 +40,10 @@ interface LogEntry {
 
 const SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"];
 const DELAY_MS = 4000;
+// /mcqs/generate returns 202 and runs the Groq round-trip in the
+// background, so poll generation-status until the job finishes.
+const POLL_INTERVAL_MS = 5000;
+const POLL_TIMEOUT_MS = 180000;
 
 export default function AdminMcqGeneratePage() {
   const { user, loading } = useAuth();
@@ -77,16 +87,102 @@ export default function AdminMcqGeneratePage() {
 
   const isQuotaError = (err: unknown): boolean => {
     if (!(err instanceof ApiError)) return false;
-    const text = (err.message || "").toLowerCase();
+    return isQuotaText(err.message || "") || err.status === 429 || err.status === 413;
+  };
+
+  const isQuotaText = (text: string): boolean => {
+    const t = text.toLowerCase();
     return (
-      text.includes("rate_limit") ||
-      text.includes("rate limit") ||
-      text.includes("tokens per day") ||
-      text.includes("tpd") ||
-      text.includes("request too large") ||
-      err.status === 429 ||
-      err.status === 413
+      t.includes("rate_limit") ||
+      t.includes("rate limit") ||
+      t.includes("tokens per day") ||
+      t.includes("tpm") ||
+      t.includes("tpd") ||
+      t.includes("request too large") ||
+      t.includes("too many requests") ||
+      t.includes("429")
     );
+  };
+
+  const waitForGeneration = async (
+    chapter: ChapterStatus,
+    token: string | null
+  ): Promise<{ ok: boolean; quota: boolean }> => {
+    const deadline = Date.now() + POLL_TIMEOUT_MS;
+    while (Date.now() < deadline) {
+      await sleep(POLL_INTERVAL_MS);
+      let status: GenerationStatusResponse;
+      try {
+        status = await api.get<GenerationStatusResponse>(
+          `/admin/mcqs/generation-status?subject=${encodeURIComponent(subject)}&chapter_number=${chapter.chapter_number}`,
+          token || undefined
+        );
+      } catch {
+        // Transient poll hiccup -- keep polling until the deadline.
+        continue;
+      }
+      if (status.status === "running" || status.status === "idle") continue;
+      if (status.status === "completed") {
+        const result = status.result;
+        const parseError = result?.parse_error;
+        if (parseError) {
+          setLog((prev) => [
+            ...prev,
+            {
+              chapter_number: chapter.chapter_number,
+              chapter_title: chapter.chapter_title,
+              status: "error",
+              message: `Parse error: ${parseError.slice(0, 120)}...`,
+            },
+          ]);
+          return { ok: false, quota: false };
+        }
+        setLog((prev) => [
+          ...prev,
+          {
+            chapter_number: chapter.chapter_number,
+            chapter_title: chapter.chapter_title,
+            status: "success",
+            message: `Generated ${result?.generated ?? 0} MCQs`,
+          },
+        ]);
+        return { ok: true, quota: false };
+      }
+      // failed
+      const msg = status.message || "Generation failed";
+      if (isQuotaText(msg)) {
+        setLog((prev) => [
+          ...prev,
+          {
+            chapter_number: chapter.chapter_number,
+            chapter_title: chapter.chapter_title,
+            status: "quota",
+            message: "Groq daily/rate quota reached — stopping run. Resume later.",
+          },
+        ]);
+        return { ok: false, quota: true };
+      }
+      setLog((prev) => [
+        ...prev,
+        {
+          chapter_number: chapter.chapter_number,
+          chapter_title: chapter.chapter_title,
+          status: "error",
+          message: msg,
+        },
+      ]);
+      return { ok: false, quota: false };
+    }
+    setLog((prev) => [
+      ...prev,
+      {
+        chapter_number: chapter.chapter_number,
+        chapter_title: chapter.chapter_title,
+        status: "error",
+        message: "Generation may still complete in the background — refresh chapter-status in a minute to check.",
+      },
+    ]);
+    return { ok: false, quota: false };
   };
 
   const generateOne = async (
@@ -95,34 +191,13 @@ export default function AdminMcqGeneratePage() {
   ): Promise<{ ok: boolean; quota: boolean }> => {
     const token = authStorage.getToken();
     try {
-      const result = await api.post<GenerateResult>(
+      await api.post<{ message: string }>(
         `/admin/mcqs/generate?subject=${encodeURIComponent(subject)}&chapter_number=${chapter.chapter_number}&force=${force}`,
         {},
         token || undefined
       );
-      if (result.parse_error) {
-        setLog((prev) => [
-          ...prev,
-          {
-            chapter_number: chapter.chapter_number,
-            chapter_title: chapter.chapter_title,
-            status: "error",
-            message: `Parse error: ${result.parse_error.slice(0, 120)}...`,
-          },
-        ]);
-        return { ok: false, quota: false };
-      }
-      setLog((prev) => [
-        ...prev,
-        {
-          chapter_number: chapter.chapter_number,
-          chapter_title: chapter.chapter_title,
-          status: "success",
-          message: `Generated ${result.generated ?? 0} MCQs`,
-        },
-      ]);
-      return { ok: true, quota: false };
     } catch (err) {
+      // Synchronous rejection (400 invalid chapter, 409 already running).
       if (isQuotaError(err)) {
         setLog((prev) => [
           ...prev,
@@ -146,6 +221,8 @@ export default function AdminMcqGeneratePage() {
       ]);
       return { ok: false, quota: false };
     }
+    // 202 accepted -- the Groq call runs in the background; poll for it.
+    return waitForGeneration(chapter, token);
   };
 
   const handleGenerateSingle = async (chapter: ChapterStatus) => {

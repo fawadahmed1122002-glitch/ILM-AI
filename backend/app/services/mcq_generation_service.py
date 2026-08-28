@@ -26,14 +26,12 @@ _client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 _collection = _client.get_or_create_collection(COLLECTION_NAME)
 
 
-def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, force: bool = False) -> dict:
+def validate_chapter_for_generation(subject: str, chapter_number: int, db: Session, force: bool = False) -> Document:
     """
-    Generates MCQs for a specific ingested chapter and persists valid ones
-    to mcq_bank as unverified (is_verified=False). Returns a summary dict.
-
-    Raises ValueError if the chapter isn't found, isn't ready, or if MCQs
-    already exist for this chapter and force=False (prevents accidental
-    duplicate generation from a double-click or repeated request).
+    Fast preflight used by the API endpoint's synchronous phase: the
+    document exists, is fully ingested, and (unless force) has no MCQs
+    yet. Raises ValueError on any failure; returns the Document so the
+    caller can hand the slow generation step to a background task.
     """
     document = (
         db.query(Document)
@@ -55,6 +53,21 @@ def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, fo
             f"MCQs already exist for {subject} chapter {chapter_number} "
             f"({existing_count} rows). Pass force=true to generate more anyway."
         )
+    return document
+
+
+def generate_mcqs_for_chapter(subject: str, chapter_number: int, db: Session, force: bool = False) -> dict:
+    """
+    Generates MCQs for a specific ingested chapter and persists valid ones
+    to mcq_bank as unverified (is_verified=False). Returns a summary dict.
+
+    Raises ValueError if the chapter isn't found, isn't ready, or if MCQs
+    already exist for this chapter and force=False (prevents accidental
+    duplicate generation from a double-click or repeated request). The
+    preflight is re-run here (not just in the endpoint) because background
+    tasks open a fresh session and state may have changed since acceptance.
+    """
+    document = validate_chapter_for_generation(subject, chapter_number, db, force)
 
     # Pull ALL chunks for this chapter via metadata filter -- not a
     # semantic search, since we want comprehensive chapter coverage for

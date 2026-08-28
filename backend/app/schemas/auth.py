@@ -95,6 +95,10 @@ class TokenResponse(BaseModel):
     subjects: list[str] | None = None
     interested_tests: list[str] | None = None
     is_email_verified: bool = False
+    # Only meaningful on /auth/register: False when the signup verification
+    # email could not be sent, so the frontend can prompt a resend instead
+    # of the student waiting for an email that never went out.
+    verification_email_sent: bool = True
 
 
 class MeResponse(BaseModel):

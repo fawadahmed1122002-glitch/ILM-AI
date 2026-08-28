@@ -39,11 +39,12 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
     )
 
     # Send verification email. Failure to send does NOT block registration
-    # -- the account is still created and usable at free-tier limits; the
-    # user can request a resend later if this attempt fails silently
-    # (e.g. Resend down, or domain not yet verified for this recipient).
+    # -- the account is still created and usable at free-tier limits. The
+    # failure IS surfaced via verification_email_sent so the frontend can
+    # prompt a resend right away (e.g. Resend down, or domain not yet
+    # verified for this recipient).
     verification_token = create_verification_token(user, db)
-    send_verification_email(user, verification_token)
+    verification_email_sent = send_verification_email(user, verification_token)
 
     token = create_access_token(str(user.id))
     return TokenResponse(
@@ -56,6 +57,7 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
         interested_tests=user.interested_tests,
         subjects=user.subjects,
         is_email_verified=user.is_email_verified,
+        verification_email_sent=verification_email_sent,
     )
 
 
@@ -131,6 +133,16 @@ def resend_verification(request: Request, payload: ResendVerificationRequest, db
         return VerifyEmailResponse(success=True, message="This email is already verified.")
 
     verification_token = create_verification_token(user, db)
-    send_verification_email(user, verification_token)
+    email_sent = send_verification_email(user, verification_token)
+
+    if not email_sent:
+        # Honest failure for a KNOWN unverified account -- the
+        # already-verified branch above already reveals account state, so
+        # this leaks nothing new, and it lets the student retry instead of
+        # waiting forever for an email that was never sent.
+        return VerifyEmailResponse(
+            success=False,
+            message="We couldn't send the verification email right now. Please try again in a moment.",
+        )
 
     return VerifyEmailResponse(success=True, message="If that email is registered, a verification link has been sent.")

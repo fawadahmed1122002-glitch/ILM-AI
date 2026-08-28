@@ -18,6 +18,10 @@ export default function EmailVerificationBanner() {
 
   if (!user || user.is_email_verified || dismissed) return null;
 
+  // Register response flagged the signup email as unsent -- tell the
+  // student up front instead of leaving them waiting for a missing email.
+  const sendFailedAtSignup = user.verification_email_sent === false;
+
   const handleResend = async () => {
     setSending(true);
     setError("");
@@ -38,6 +42,8 @@ export default function EmailVerificationBanner() {
         <p className="text-sm text-amber-800 dark:text-amber-300">
           {sent
             ? "Verification email sent — check your inbox (and spam folder)."
+            : sendFailedAtSignup
+            ? "We couldn't send your verification email during signup — use Resend below to try again."
             : "Please verify your email to unlock unlimited access on your plan."}
         </p>
         <div className="flex items-center gap-3 flex-shrink-0">

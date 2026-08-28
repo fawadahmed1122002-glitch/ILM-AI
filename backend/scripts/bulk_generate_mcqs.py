@@ -47,16 +47,42 @@ def get_ready_chapters(subject: str, token: str) -> list[int]:
 
 
 def generate_for_chapter(subject: str, chapter: int, token: str) -> dict:
+    headers = {"Authorization": f"Bearer {token}"}
     resp = requests.post(
         f"{BASE_URL}/admin/mcqs/generate",
         params={"subject": subject, "chapter_number": chapter},
-        headers={"Authorization": f"Bearer {token}"},
-        timeout=60,
+        headers=headers,
+        timeout=30,
     )
-    try:
-        return resp.json()
-    except Exception:
-        return {"error": resp.text, "status_code": resp.status_code}
+    if resp.status_code != 202:
+        # Synchronous rejection (400 invalid chapter, 409 already running,
+        # auth failures...) -- surface it as-is.
+        try:
+            return resp.json()
+        except Exception:
+            return {"error": resp.text, "status_code": resp.status_code}
+
+    # Accepted: the Groq round-trip runs in the background. Poll
+    # /generation-status until the job completes or fails (up to ~3 min).
+    deadline = time.time() + 180
+    while time.time() < deadline:
+        time.sleep(5)
+        try:
+            st = requests.get(
+                f"{BASE_URL}/admin/mcqs/generation-status",
+                params={"subject": subject, "chapter_number": chapter},
+                headers=headers,
+                timeout=30,
+            )
+            data = st.json()
+        except Exception:
+            continue  # transient poll hiccup -- keep polling
+        status = data.get("status")
+        if status == "completed":
+            return data.get("result") or {}
+        if status == "failed":
+            return {"error": data.get("message"), "status": "failed"}
+    return {"error": "generation polling timed out", "status": "timeout"}
 
 
 def main():

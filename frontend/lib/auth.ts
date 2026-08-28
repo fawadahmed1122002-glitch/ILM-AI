@@ -26,6 +26,10 @@ export interface AuthUser {
   interested_tests: string[] | null;
   subjects: string[] | null;
   is_email_verified: boolean;
+  // Only present on the /auth/register response: false when the signup
+  // verification email could not be sent, so the banner can prompt a
+  // resend immediately instead of the student waiting for a missing email.
+  verification_email_sent?: boolean;
 }
 
 export const authStorage = {

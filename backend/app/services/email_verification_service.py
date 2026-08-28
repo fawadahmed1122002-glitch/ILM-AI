@@ -75,7 +75,7 @@ def verify_token(token: str, db: Session) -> tuple[bool, str]:
     return True, "Email verified successfully."
 
 
-def send_verification_email(user: User, token: str) -> None:
+def send_verification_email(user: User, token: str) -> bool:
     """
     Sends the verification email via Resend. Does NOT raise on failure --
     registration should succeed even if the email send fails (e.g. Resend
@@ -83,6 +83,10 @@ def send_verification_email(user: User, token: str) -> None:
     Failures are logged so they're visible in Railway logs, matching the
     same "log but don't block" pattern used for the Safepay webhook grant
     failures earlier in this project.
+
+    Returns True if the email was handed to Resend successfully, False if
+    sending failed -- callers surface this to the student so they know to
+    request a resend instead of waiting for an email that never went out.
     """
     verify_url = f"{_get_frontend_url()}/verify-email?token={token}"
 
@@ -111,8 +115,10 @@ def send_verification_email(user: User, token: str) -> None:
             """,
         })
         logger.info("Verification email sent to %s", user.email)
+        return True
     except Exception as e:
         logger.warning("Failed to send verification email to %s: %s", user.email, e)
+        return False
 
 
 def _get_frontend_url() -> str:

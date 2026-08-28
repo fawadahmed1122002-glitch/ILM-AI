@@ -2,6 +2,7 @@ import os
 import uuid
 import shutil
 import logging
+import threading
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, BackgroundTasks, Depends, UploadFile, File, Form, HTTPException
@@ -21,7 +22,10 @@ from app.schemas.admin import (
 from app.rag.pdf_ingest import ingest_single_pdf
 from app.services.payment_service import grant_pro_plan, grant_product
 from app.core.products import PRODUCT_CATALOG, PURCHASABLE_PRODUCTS
-from app.services.mcq_generation_service import generate_mcqs_for_chapter
+from app.services.mcq_generation_service import (
+    generate_mcqs_for_chapter,
+    validate_chapter_for_generation,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +69,53 @@ def _ingest_pdf_in_background(
         db.commit()
     finally:
         db.close()
+
+
+# In-memory job registry for background MCQ generation: /mcqs/generate
+# returns 202 immediately, so the admin UI polls /mcqs/generation-status
+# for the outcome (mirrors how PDF ingestion reports via Document.status).
+# Single-worker deployment, so a process-local dict is enough; a restart
+# simply forgets old jobs (they read as "idle").
+_mcq_generation_jobs: dict[tuple[str, int], dict] = {}
+_mcq_jobs_lock = threading.Lock()
+
+
+def _generate_mcqs_in_background(subject: str, chapter_number: int, force: bool):
+    """Runs after the 202 response is sent. Uses its own DB session since
+    the request-scoped one is closed by then."""
+    db = SessionLocal()
+    try:
+        result = generate_mcqs_for_chapter(
+            subject=subject, chapter_number=chapter_number, db=db, force=force
+        )
+        with _mcq_jobs_lock:
+            _mcq_generation_jobs[(subject, chapter_number)] = {
+                "status": "completed",
+                "result": result,
+                "message": None,
+            }
+    except ValueError as e:
+        # State changed between accept and run (e.g. another run just
+        # generated rows for this chapter) -- record it for the poller.
+        with _mcq_jobs_lock:
+            _mcq_generation_jobs[(subject, chapter_number)] = {
+                "status": "failed",
+                "result": None,
+                "message": str(e),
+            }
+        logger.warning("MCQ_GENERATION_REJECTED: %s ch%s: %s", subject, chapter_number, e)
+    except Exception as e:
+        with _mcq_jobs_lock:
+            _mcq_generation_jobs[(subject, chapter_number)] = {
+                "status": "failed",
+                "result": None,
+                "message": str(e),
+            }
+        logger.error("MCQ_GENERATION_FAILED: %s ch%s: %s", subject, chapter_number, e)
+    finally:
+        db.close()
+
+
 ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"]
 ALLOWED_PLANS = ["free", "pro"]
 ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual", "safepay"]
@@ -258,19 +309,60 @@ def reject_mcq(
     return {"id": str(mcq_id), "status": "rejected", "reason": payload.reason}
 
 
-@router.post("/mcqs/generate")
+@router.post("/mcqs/generate", status_code=202)
 def generate_mcqs_endpoint(
+    background_tasks: BackgroundTasks,
     subject: str,
     chapter_number: int,
     force: bool = False,
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin),
 ):
+    """
+    Kicks off MCQ generation in the background: Groq round-trips can take
+    tens of seconds, so -- like PDF ingestion -- the endpoint validates
+    fast, returns 202, and lets the client poll /mcqs/generation-status.
+    """
+    key = (subject, chapter_number)
+    with _mcq_jobs_lock:
+        job = _mcq_generation_jobs.get(key)
+        if job and job["status"] == "running":
+            # Double-click guard: a generation for this chapter is already
+            # in flight, so a second request would just duplicate rows.
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "code": "GENERATION_IN_PROGRESS",
+                    "message": f"MCQ generation for {subject} chapter {chapter_number} is already running.",
+                },
+            )
     try:
-        result = generate_mcqs_for_chapter(subject=subject, chapter_number=chapter_number, db=db, force=force)
+        validate_chapter_for_generation(subject, chapter_number, db, force)
     except ValueError as e:
         raise HTTPException(status_code=400, detail={"code": "GENERATION_FAILED", "message": str(e)})
-    return result
+
+    with _mcq_jobs_lock:
+        _mcq_generation_jobs[key] = {"status": "running", "result": None, "message": None}
+    background_tasks.add_task(_generate_mcqs_in_background, subject, chapter_number, force)
+    return {"message": "MCQ generation started", "subject": subject, "chapter_number": chapter_number}
+
+
+@router.get("/mcqs/generation-status")
+def mcq_generation_status(
+    subject: str,
+    chapter_number: int,
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Poll target for /mcqs/generate: status is idle (never ran in this
+    process), running, completed (result = the generation summary), or
+    failed (message = why). A restart clears the registry back to idle.
+    """
+    with _mcq_jobs_lock:
+        job = _mcq_generation_jobs.get((subject, chapter_number))
+    if not job:
+        return {"status": "idle", "result": None, "message": None}
+    return job
 
 @router.post("/users/{user_id}/plan", response_model=PaymentRecordResponse)
 def change_user_plan(
