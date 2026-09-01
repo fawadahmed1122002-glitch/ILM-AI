@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
@@ -26,6 +26,12 @@ interface BankMcq {
 
 const SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"];
 const OPTIONS = ["A", "B", "C", "D"] as const;
+const PAGE_SIZE = 50;
+
+interface BankMeta {
+  chapters: number[];
+  counts: { total: number; verified: number; pending: number; rejected: number };
+}
 
 type StatusFilter = "all" | "verified" | "pending" | "rejected";
 
@@ -41,73 +47,121 @@ export default function AdminMcqBankPage() {
   const [subject, setSubject] = useState("Biology");
   const [mcqs, setMcqs] = useState<BankMcq[]>([]);
   const [mcqsLoading, setMcqsLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState("");
   const [selectedChapter, setSelectedChapter] = useState<number | "all">("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [chapterNumbers, setChapterNumbers] = useState<number[]>([]);
+  const [counts, setCounts] = useState<BankMeta["counts"]>({
+    total: 0,
+    verified: 0,
+    pending: 0,
+    rejected: 0,
+  });
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const fetchSeq = useRef(0);
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
   }, [user, loading, router]);
 
-  const fetchBank = async () => {
-    setMcqsLoading(true);
-    setError("");
+  // Debounce the search box so typing doesn't fire a fetch per keystroke
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const buildBankQuery = (offset: number) => {
+    const params = new URLSearchParams({
+      subject,
+      limit: String(PAGE_SIZE),
+      offset: String(offset),
+    });
+    if (selectedChapter !== "all") params.set("chapter_number", String(selectedChapter));
+    if (statusFilter !== "all") params.set("status", statusFilter);
+    if (debouncedSearch) params.set("q", debouncedSearch);
+    return params.toString();
+  };
+
+  const fetchBank = async (offset: number, replace: boolean) => {
+    const seq = ++fetchSeq.current;
+    if (replace) {
+      setMcqsLoading(true);
+      setError("");
+    } else {
+      setLoadingMore(true);
+    }
     try {
       const token = authStorage.getToken();
-      const data = await api.get<BankMcq[]>(
-        `/admin/mcqs/bank?subject=${encodeURIComponent(subject)}`,
+      const rows = await api.get<BankMcq[]>(
+        `/admin/mcqs/bank?${buildBankQuery(offset)}`,
         token || undefined
       );
-      setMcqs(data);
+      if (seq !== fetchSeq.current) return;
+      if (replace) {
+        setMcqs(rows);
+      } else {
+        // Guard against any duplicate rows across pages
+        setMcqs((prev) => {
+          const seen = new Set(prev.map((m) => m.id));
+          return [...prev, ...rows.filter((r) => !seen.has(r.id))];
+        });
+      }
+      setHasMore(rows.length === PAGE_SIZE);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load MCQ bank");
+      if (seq === fetchSeq.current) {
+        setError(err instanceof Error ? err.message : "Failed to load MCQ bank");
+      }
     } finally {
-      setMcqsLoading(false);
+      if (seq === fetchSeq.current) {
+        setMcqsLoading(false);
+        setLoadingMore(false);
+      }
+    }
+  };
+
+  const fetchMeta = async () => {
+    try {
+      const token = authStorage.getToken();
+      const meta = await api.get<BankMeta>(
+        `/admin/mcqs/bank/meta?subject=${encodeURIComponent(subject)}`,
+        token || undefined
+      );
+      setChapterNumbers(meta.chapters);
+      setCounts(meta.counts);
+    } catch {
+      // counts/chapters are supplementary; list errors surface via fetchBank
     }
   };
 
   useEffect(() => {
-    if (user) fetchBank();
-    setSelectedChapter("all");
+    if (user) fetchBank(0, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, subject, selectedChapter, statusFilter, debouncedSearch]);
+
+  useEffect(() => {
+    if (user) fetchMeta();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, subject]);
 
-  const chapterNumbers = useMemo(() => {
-    const set = new Set(mcqs.map((m) => m.chapter_number));
-    return Array.from(set).sort((a, b) => a - b);
-  }, [mcqs]);
-
-  const filtered = useMemo(() => {
-    return mcqs.filter((m) => {
-      if (selectedChapter !== "all" && m.chapter_number !== selectedChapter) return false;
-      if (statusFilter !== "all" && getMcqStatus(m) !== statusFilter) return false;
-      if (search.trim()) {
-        const q = search.toLowerCase();
-        if (
-          !m.question_text.toLowerCase().includes(q) &&
-          !(m.question_text_ur ?? "").includes(search)
-        ) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }, [mcqs, selectedChapter, statusFilter, search]);
-
-  const counts = useMemo(() => {
-    const verified = mcqs.filter((m) => getMcqStatus(m) === "verified").length;
-    const pending = mcqs.filter((m) => getMcqStatus(m) === "pending").length;
-    const rejected = mcqs.filter((m) => getMcqStatus(m) === "rejected").length;
-    return { verified, pending, rejected, total: mcqs.length };
-  }, [mcqs]);
+  const shiftCounts = (
+    from: "verified" | "pending" | "rejected",
+    to: "verified" | "pending" | "rejected"
+  ) => {
+    if (from === to) return;
+    setCounts((prev) => ({ ...prev, [from]: prev[from] - 1, [to]: prev[to] + 1 }));
+  };
 
   const handleApprove = async (id: string) => {
+    const target = mcqs.find((m) => m.id === id);
     setProcessingId(id);
     try {
       const token = authStorage.getToken();
       await api.patch(`/admin/mcqs/${id}/approve`, {}, token || undefined);
+      if (target) shiftCounts(getMcqStatus(target), "verified");
       setMcqs((prev) =>
         prev.map((m) => (m.id === id ? { ...m, is_verified: true, rejected_at: null } : m))
       );
@@ -121,10 +175,12 @@ export default function AdminMcqBankPage() {
   const handleReject = async (id: string) => {
     const reason = prompt("Reason for rejecting this MCQ:");
     if (reason === null) return;
+    const target = mcqs.find((m) => m.id === id);
     setProcessingId(id);
     try {
       const token = authStorage.getToken();
       await api.patch(`/admin/mcqs/${id}/reject`, { reason }, token || undefined);
+      if (target) shiftCounts(getMcqStatus(target), "rejected");
       setMcqs((prev) =>
         prev.map((m) =>
           m.id === id ? { ...m, is_verified: false, rejected_at: new Date().toISOString() } : m
@@ -160,7 +216,10 @@ export default function AdminMcqBankPage() {
         {SUBJECTS.map((s) => (
           <button
             key={s}
-            onClick={() => setSubject(s)}
+            onClick={() => {
+              setSubject(s);
+              setSelectedChapter("all");
+            }}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               subject === s
                 ? "bg-teal-700 dark:bg-teal-600 text-white"
@@ -220,7 +279,7 @@ export default function AdminMcqBankPage() {
         </div>
       )}
 
-      {!mcqsLoading && filtered.length === 0 && !error && (
+      {!mcqsLoading && mcqs.length === 0 && !error && (
         <div className="p-8 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <p className="text-slate-500 dark:text-slate-400 text-sm">
             No MCQs match the current filters.
@@ -229,7 +288,7 @@ export default function AdminMcqBankPage() {
       )}
 
       <div className="space-y-4">
-        {filtered.map((mcq) => {
+        {mcqs.map((mcq) => {
           const status = getMcqStatus(mcq);
           return (
             <div
@@ -324,6 +383,16 @@ export default function AdminMcqBankPage() {
           );
         })}
       </div>
+
+      {!mcqsLoading && hasMore && !error && (
+        <button
+          onClick={() => fetchBank(mcqs.length, false)}
+          disabled={loadingMore}
+          className="mt-4 w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+        >
+          {loadingMore ? "Loading..." : "Load more"}
+        </button>
+      )}
     </div>
   );
 }

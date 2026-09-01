@@ -1,4 +1,5 @@
-from http.client import HTTPException
+import logging
+
 from fastapi import HTTPException
 from app.rag.llm_client import LLMGenerationError
 from fastapi import APIRouter, Depends, Request
@@ -15,6 +16,9 @@ from app.schemas.query import (
     McqRequest, McqResponse,
     McqSubmitRequest, McqSubmitResponse
 )
+
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/query", tags=["query"])
 
 
@@ -149,10 +153,11 @@ def get_usage(
     if current_user.plan != "pro" or not current_user.is_email_verified:
         unlimited_subjects = []
     elif plan_product_mismatch:
-        print(
-            f"⚠️  PLAN_PRODUCT_MISMATCH: user {current_user.id} "
-            f"({current_user.email}) has plan='pro' but no product_id -- "
-            f"usage/me falling back to legacy_full_access subjects."
+        logger.warning(
+            "PLAN_PRODUCT_MISMATCH: user %s (%s) has plan='pro' but no "
+            "product_id -- usage/me falling back to legacy_full_access subjects.",
+            current_user.id,
+            current_user.email,
         )
         unlimited_subjects = PRODUCT_CATALOG["legacy_full_access"]["subjects"]
     else:

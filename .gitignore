@@ -4,12 +4,15 @@ venv/
 __pycache__/
 *.pyc
 .env
+.env.local
+.env.*.local
 
 # Data (per Master Doc 3.10 security checklist)
 chroma_db/
 data/pdfs/
 data/mcq_cleanup/
 *.sqlite
+*.sqlite3
 
 # data/past_paper/ is deliberately TRACKED: it holds the verified
 # ECAT 2015 past-paper source artifact (ilmai_ecat_2015_questions.json)

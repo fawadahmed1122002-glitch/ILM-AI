@@ -1,355 +1,107 @@
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1549.76it/s]
-INFO:     Started server process [749002]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:52412 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52424 - "GET /api/v1/past-papers HTTP/1.1" 401 Unauthorized
-⚠️  Failed to send verification email to e2e_pastpaper_1787738519@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
-INFO:     127.0.0.1:37768 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:37772 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37786 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37796 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:37804 - "PATCH /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37806 - "PATCH /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37810 - "PATCH /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37824 - "PATCH /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37826 - "PATCH /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37828 - "POST /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37834 - "GET /api/v1/past-papers/attempts/83ebfbfb-a599-4635-b34e-6c456138fa4d/results HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51538 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51546 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51562 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51568 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51568 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51568 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51568 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51568 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51578 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52798 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50432 - "OPTIONS /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50432 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50432 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50448 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50432 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50448 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50452 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50452 - "PATCH /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47366 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47366 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47366 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47366 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43914 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43920 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43920 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43920 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43920 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:43920 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43920 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56894 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56894 - "POST /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/submit HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:56896 - "POST /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/submit HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:56908 - "GET /api/v1/past-papers HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:56908 - "GET /api/v1/past-papers HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:55496 - "OPTIONS /api/v1/auth/login HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:55496 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55502 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55506 - "POST /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55506 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/results HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55508 - "OPTIONS /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/results HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55506 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/results HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55508 - "GET /api/v1/past-papers/attempts/b8caceb5-ad9f-4770-9b0a-ea395ea0aeab/results HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37070 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37070 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37070 - "POST /api/v1/past-papers/c5a16c38-cee4-4ff8-94a5-472b471074e8/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37070 - "OPTIONS /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "OPTIONS /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "GET /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "GET /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "OPTIONS /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37076 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54486 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54496 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53110 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53120 - "PATCH /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3/answer HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45364 - "OPTIONS /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45364 - "GET /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45366 - "GET /api/v1/past-papers/attempts/e9a00a3d-03c5-4a39-93be-7d26cf10d4c3 HTTP/1.1" 200 OK
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1183.02it/s]
-INFO:     Started server process [905432]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1120.12it/s]
+INFO:     Started server process [1142606]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:41776 - "GET /docs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41780 - "GET /api/v1/tiers/limits HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:55388 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36450 - "GET /api/v1/auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:42212 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42228 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42212 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:42212 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:48508 - "OPTIONS /api/v1/auth/login HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48508 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48508 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48516 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48516 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48516 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48516 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48516 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48532 - "OPTIONS /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48532 - "POST /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45078 - "OPTIONS /api/v1/query/mcqs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45078 - "POST /api/v1/query/mcqs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49602 - "OPTIONS /api/v1/query/mcq/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49602 - "POST /api/v1/query/mcq/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37920 - "POST /api/v1/query/mcqs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33594 - "POST /api/v1/query/mcq/submit HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33610 - "OPTIONS /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33610 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44110 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44114 - "OPTIONS /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44114 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44114 - "GET /api/v1/past-papers HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44114 - "OPTIONS /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44110 - "OPTIONS /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44110 - "GET /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44110 - "GET /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44128 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44128 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37388 - "GET /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37388 - "GET /api/v1/query/analytics/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39134 - "OPTIONS /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39134 - "POST /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39136 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39150 - "OPTIONS /api/v1/study/chat/threads/163240ff-ad64-48ce-b712-6b9214ce87fd/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39150 - "POST /api/v1/study/chat/threads/163240ff-ad64-48ce-b712-6b9214ce87fd/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48952 - "POST /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48952 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57700 - "OPTIONS /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57700 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57706 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57716 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py", line 421, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 62, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/applications.py", line 1163, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/applications.py", line 96, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 96, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py", line 154, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 193, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/slowapi/middleware.py", line 128, in dispatch
-    return await call_next(request)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 168, in call_next
-    raise app_exc from app_exc.__cause__ or app_exc.__context__
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/routing.py", line 670, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2531, in app
-    await route.handle(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1700, in handle
-    await self.original_router.handle(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 2586, in handle
-    await included_router._handle_selected(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1720, in _handle_selected
-    await original_route.handle(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 1239, in handle
-    await app(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 150, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 136, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 690, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/fastapi/routing.py", line 346, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/anyio/to_thread.py", line 65, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2641, in run_sync_in_worker_thread
-    return await future
-           ^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1033, in run
-    result = context.run(func, *args)
-             ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/slowapi/extension.py", line 770, in sync_wrapper
-    response = func(*args, **kwargs)
-               ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/app/api/v1/study_chat.py", line 253, in send_message
-    db.commit()
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2035, in commit
-    trans.commit(_to_root=True)
-  File "<string>", line 2, in commit
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1316, in commit
-    self._prepare_impl()
-  File "<string>", line 2, in _prepare_impl
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
-    ret_value = fn(self, *arg, **kw)
-                ^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1290, in _prepare_impl
-    self.session.flush()
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4353, in flush
-    self._flush(objects)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4488, in _flush
-    with util.safe_reraise():
-         ^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 4449, in _flush
-    flush_context.execute()
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/unitofwork.py", line 465, in execute
-    rec.execute(self)
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/unitofwork.py", line 641, in execute
-    util.preloaded.orm_persistence.save_obj(
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/persistence.py", line 94, in save_obj
-    _emit_insert_statements(
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/orm/persistence.py", line 1234, in _emit_insert_statements
-    result = connection.execute(
-             ^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
-    return meth(
-           ^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2368, in _handle_dbapi_exception
-    raise exc_info[1].with_traceback(exc_info[2])
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
-    self.dialect.do_execute(
-  File "/home/fawad/project/ILM-AI/backend/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
-    cursor.execute(statement, parameters)
-ValueError: A string literal cannot contain NUL (0x00) characters.
-INFO:     127.0.0.1:44886 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44902 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38444 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56068 - "OPTIONS /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56068 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56068 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56080 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56086 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44652 - "POST /api/v1/study/chat/threads/ff95c317-deea-42dd-bfda-14c6bb808524/messages HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37802 - "OPTIONS /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37802 - "POST /api/v1/query/explain HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37812 - "OPTIONS /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37818 - "POST /api/v1/study/chat/start HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55822 - "GET /docs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55908 - "POST /api/v1/mock-tests/start HTTP/1.1" 401 Unauthorized
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [905432]
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1644.51it/s]
-INFO:     Started server process [928890]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:49064 - "GET /docs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49078 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52706 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35066 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35082 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42242 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46196 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46206 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60270 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60284 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39796 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39804 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46568 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:46576 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35510 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35526 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53876 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53886 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56984 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56992 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50882 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50892 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39432 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39440 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43536 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43542 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53724 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53736 - "GET /api/v1/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34180 - "GET /api/v1/admin/mcqs/bank?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34190 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34196 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34204 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34206 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=150 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34210 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34214 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55804 - "GET /api/v1/admin/mcqs/bank?subject=Biology&status=verified HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55808 - "GET /api/v1/admin/mcqs/bank?subject=Biology&status=pending HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55816 - "GET /api/v1/admin/mcqs/bank?subject=Biology&status=rejected HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "GET /api/v1/admin/mcqs/bank?subject=Biology&q=of HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55840 - "GET /api/v1/admin/mcqs/bank?subject=Biology&chapter_number=3&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55846 - "GET /api/v1/admin/mcqs/bank?subject=Biology&status=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:43092 - "GET /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43392 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43406 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43406 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43392 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43418 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41884 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41884 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41884 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41884 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32934 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=verified HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32934 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=verified HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32944 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=rejected HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32944 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=rejected HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53820 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=en HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=en HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=enz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=enz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=enzyme HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53836 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&q=enzyme HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46530 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46538 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46554 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46566 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46572 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46530 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46538 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46554 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46566 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46588 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46572 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46572 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46566 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46530 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46538 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46566 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46530 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46538 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46554 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46554 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47170 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47174 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47182 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47170 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47174 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47182 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&chapter_number=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&chapter_number=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47198 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Chemistry&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Chemistry HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "GET /api/v1/admin/mcqs/bank?subject=Chemistry&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47214 - "GET /api/v1/admin/mcqs/bank/meta?subject=Chemistry HTTP/1.1" 200 OK

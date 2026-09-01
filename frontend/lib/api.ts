@@ -26,23 +26,7 @@ function isPydanticErrorArray(detail: unknown): detail is PydanticErrorItem[] {
   return Array.isArray(detail) && detail.length > 0 && typeof detail[0] === "object" && detail[0] !== null && "msg" in detail[0];
 }
 
-async function request<T>(
-  method: HttpMethod,
-  path: string,
-  body?: unknown,
-  token?: string
-): Promise<T> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
-
+async function handleResponse<T>(res: Response): Promise<T> {
   let data: any;
   try {
     data = await res.json();
@@ -89,9 +73,37 @@ async function request<T>(
   return data as T;
 }
 
+async function request<T>(
+  method: HttpMethod,
+  path: string,
+  body?: unknown,
+  token?: string
+): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  return handleResponse<T>(res);
+}
+
 export const api = {
   post: <T>(path: string, body: unknown, token?: string) =>
     request<T>("POST", path, body, token),
+  // Multipart form uploads (e.g. PDF ingestion) -- no Content-Type header
+  // so the browser sets the multipart boundary itself.
+  postForm: <T>(path: string, form: FormData, token?: string) => {
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return fetch(`${BASE_URL}${path}`, { method: "POST", headers, body: form })
+      .then((res) => handleResponse<T>(res));
+  },
   patch: <T>(path: string, body: unknown, token?: string) =>
     request<T>("PATCH", path, body, token),
   get: <T>(path: string, token?: string) =>

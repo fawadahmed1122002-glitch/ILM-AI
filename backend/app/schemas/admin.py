@@ -59,6 +59,18 @@ class McqRejectRequest(BaseModel):
     reason: str
 
 
+class McqBankStatusCounts(BaseModel):
+    total: int
+    verified: int
+    pending: int
+    rejected: int
+
+
+class McqBankMetaResponse(BaseModel):
+    chapters: list[int]
+    counts: McqBankStatusCounts
+
+
 class AdminPlanChangeRequest(BaseModel):
     plan: str  # "free" or "pro"
     method: str  # "jazzcash", "easypaisa", "manual"
