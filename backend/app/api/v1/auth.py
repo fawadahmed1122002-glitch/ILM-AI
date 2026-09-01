@@ -57,6 +57,9 @@ def register(request: Request, payload: RegisterRequest, db: Session = Depends(g
         interested_tests=user.interested_tests,
         subjects=user.subjects,
         is_email_verified=user.is_email_verified,
+        target_tracks=user.target_tracks,
+        current_class=user.current_class,
+        diagnostic_completed_at=user.diagnostic_completed_at,
         verification_email_sent=verification_email_sent,
     )
 
@@ -81,6 +84,9 @@ def login(request: Request, payload: LoginRequest, db: Session = Depends(get_db)
         interested_tests=user.interested_tests,
         subjects=user.subjects,
         is_email_verified=user.is_email_verified,
+        target_tracks=user.target_tracks,
+        current_class=user.current_class,
+        diagnostic_completed_at=user.diagnostic_completed_at,
     )
 
 
@@ -98,6 +104,9 @@ def me(current_user: User = Depends(get_current_user)):
         interested_tests=current_user.interested_tests,
         subjects=current_user.subjects,
         is_email_verified=current_user.is_email_verified,
+        target_tracks=current_user.target_tracks,
+        current_class=current_user.current_class,
+        diagnostic_completed_at=current_user.diagnostic_completed_at,
     )
 
 

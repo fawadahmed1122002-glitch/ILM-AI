@@ -85,6 +85,16 @@ const ADMIN_PAGES = [
     title: "Chapter Ingestion",
     description: "Ingest chapter PDFs and inspect vector store coverage.",
   },
+  {
+    href: "/admin/payments",
+    title: "Payment Audit Log",
+    description: "Read-only audit trail of payments and manual plan changes.",
+  },
+  {
+    href: "/admin/users",
+    title: "User Management",
+    description: "Search users, view payment history, and change plans with confirmation.",
+  },
 ];
 
 function formatTime(iso: string | null): string {

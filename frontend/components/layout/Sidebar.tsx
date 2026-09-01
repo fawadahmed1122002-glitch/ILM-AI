@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { href: "/mock-test", label: "Mock Test", short: "M" },
   { href: "/past-papers", label: "Past Papers", short: "P" },
   { href: "/analytics", label: "Analytics", short: "A" },
+  { href: "/settings", label: "Settings", short: "Se" },
 ];
 
 export default function Sidebar() {

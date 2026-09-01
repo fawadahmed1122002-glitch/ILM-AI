@@ -26,6 +26,13 @@ export interface AuthUser {
   interested_tests: string[] | null;
   subjects: string[] | null;
   is_email_verified: boolean;
+  // Registration diagnostic (track selection) -- product ids from the
+  // product catalog (ecat/mdcat/nust/fast). Null when the user skipped
+  // the post-signup diagnostic or registered before it existed.
+  // Personalization only; never affects tier-gating.
+  target_tracks: string[] | null;
+  current_class: string | null;
+  diagnostic_completed_at: string | null;
   // Only present on the /auth/register response: false when the signup
   // verification email could not be sent, so the banner can prompt a
   // resend immediately instead of the student waiting for a missing email.

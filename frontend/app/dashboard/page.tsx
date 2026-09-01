@@ -6,6 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import { subjectsForField } from "@/lib/academicFields";
+import { subjectsForTracks } from "@/lib/products";
 
 interface TopicStat {
   subject: string;
@@ -65,6 +67,18 @@ export default function DashboardPage() {
 
   if (loading) return <div className="p-8 text-gray-500">Loading...</div>;
   if (!user) return null;
+
+  // Diagnostic personalization: reorder the subject list so subjects
+  // covered by the student's target track(s) come first and get
+  // highlighted. Purely additive -- same visible subjects as before
+  // (driven by the existing subjectsForField logic), no access change.
+  const visibleSubjects = subjectsForField(user.field, user.subjects);
+  const trackSubjects = subjectsForTracks(user.target_tracks);
+  const trackSubjectSet = new Set(trackSubjects.filter((s) => visibleSubjects.includes(s)));
+  const orderedSubjects = [
+    ...trackSubjects.filter((s) => visibleSubjects.includes(s)),
+    ...visibleSubjects.filter((s) => !trackSubjectSet.has(s)),
+  ];
 
   const avgScore = progress?.topics.length
     ? Math.round(progress.topics.reduce((sum, t) => sum + t.score_percent, 0) / progress.topics.length)
@@ -147,6 +161,47 @@ export default function DashboardPage() {
               Upgrade Now
             </Link>
           )}
+        </div>
+      </div>
+
+      {/* Your Subjects -- track-personalized ordering/highlight only;
+          every subject stays accessible on the free tier. */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="font-semibold text-slate-900 dark:text-slate-100">Your Subjects</h2>
+          {trackSubjectSet.size > 0 && (
+            <span className="text-xs text-slate-400 dark:text-slate-500">
+              Ordered for your track{user.target_tracks!.length > 1 ? "s" : ""}
+            </span>
+          )}
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {orderedSubjects.map((subject) => {
+            const forTrack = trackSubjectSet.has(subject);
+            return (
+              <Link
+                key={subject}
+                href={`/study?subject=${encodeURIComponent(subject)}`}
+                className={`relative p-4 rounded-2xl border transition-all hover:-translate-y-0.5 hover:shadow-md no-underline ${
+                  forTrack
+                    ? "bg-teal-50 dark:bg-teal-900/20 border-teal-200 dark:border-teal-800"
+                    : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+                }`}
+              >
+                {forTrack && (
+                  <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-teal-600 dark:bg-teal-500 text-white">
+                    For you
+                  </span>
+                )}
+                <h3 className={`font-semibold text-sm sm:text-base ${forTrack ? "text-teal-800 dark:text-teal-300" : "text-slate-900 dark:text-slate-100"}`}>
+                  {subject}
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Explanations + MCQs
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

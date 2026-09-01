@@ -61,7 +61,10 @@ export default function RegisterPage() {
       };
       const user = await api.post<AuthUser>("/auth/register", payload);
       login(user);
-      router.push("/dashboard");
+      // Post-signup diagnostic (track selection) screen before the
+      // dashboard. Skippable from there -- skipping lands on /dashboard
+      // with empty target_tracks, which nothing downstream requires.
+      router.push("/diagnostic");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {

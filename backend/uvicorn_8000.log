@@ -68,3 +68,332 @@ INFO:     127.0.0.1:43980 - "GET /api/v1/admin/mcqs/bank/meta?subject=Computer%2
 INFO:     127.0.0.1:43986 - "GET /api/v1/mock-tests/availability HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51688 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=rejected HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51688 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0&status=rejected HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59464 - "GET /health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1146851]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2432.51it/s]
+INFO:     Started server process [1149460]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:47770 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47772 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47770 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47780 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47790 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47790 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47772 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47828 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47832 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47848 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47854 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47868 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47828 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47832 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47848 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47854 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47868 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47780 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47848 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47828 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47770 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47816 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47832 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47790 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47854 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47780 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47848 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47816 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47854 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47802 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47828 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47770 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47780 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47772 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47780 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47868 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47868 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48860 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48866 - "GET /openapi.json HTTP/1.1" 200 OK
+FRONTEND_URL is not set -- verification emails will link to http://localhost:3000, which only works in local development. Set FRONTEND_URL to the deployed frontend origin.
+Failed to send verification email to e2e-diag@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
+INFO:     127.0.0.1:47542 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:47550 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47558 - "GET /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47560 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:47564 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:47572 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47586 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:47588 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33428 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33434 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33444 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37584 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37584 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58694 - "OPTIONS /api/v1/auth/register HTTP/1.1" 200 OK
+FRONTEND_URL is not set -- verification emails will link to http://localhost:3000, which only works in local development. Set FRONTEND_URL to the deployed frontend origin.
+Failed to send verification email to e2e-ui@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
+INFO:     127.0.0.1:58694 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:58694 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58698 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "OPTIONS /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "OPTIONS /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "GET /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45980 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "OPTIONS /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "OPTIONS /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "GET /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38888 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45982 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45990 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38898 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38898 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38902 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38902 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42676 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42676 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42686 - "POST /api/v1/users/me/diagnostic HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42686 - "GET /api/v1/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42686 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+FRONTEND_URL is not set -- verification emails will link to http://localhost:3000, which only works in local development. Set FRONTEND_URL to the deployed frontend origin.
+Failed to send verification email to e2e-skip@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
+INFO:     127.0.0.1:54996 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:54996 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55012 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58734 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58734 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33664 - "GET /api/v1/admin/products HTTP/1.1" 401 Unauthorized
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1149460]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2304.60it/s]
+INFO:     Started server process [1153371]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:40844 - "GET /api/v1/admin/products HTTP/1.1" 401 Unauthorized
+FRONTEND_URL is not set -- verification emails will link to http://localhost:3000, which only works in local development. Set FRONTEND_URL to the deployed frontend origin.
+Failed to send verification email to adminpages.test.20260902@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
+INFO:     127.0.0.1:50286 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
+FRONTEND_URL is not set -- verification emails will link to http://localhost:3000, which only works in local development. Set FRONTEND_URL to the deployed frontend origin.
+Failed to send verification email to planchange.target.20260902@example.com: Invalid `to` field. Please use our testing email address instead of domains like `example.com`. See our documentation for more information.
+INFO:     127.0.0.1:50292 - "POST /api/v1/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:58712 - "GET /api/v1/admin/users?q=planchange&limit=50&offset=0 HTTP/1.1" 403 Forbidden
+INFO:     127.0.0.1:44196 - "GET /api/v1/admin/users?q=planchange HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53962 - "GET /api/v1/admin/users?limit=5&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53968 - "GET /api/v1/admin/users?limit=5&offset=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53982 - "GET /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44230 - "POST /api/v1/admin/users/65020553-f5b2-4f1f-8c56-563a899623b8/plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54488 - "POST /api/v1/admin/users/65020553-f5b2-4f1f-8c56-563a899623b8/plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46982 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46990 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46990 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46990 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:40226 - "OPTIONS /api/v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40226 - "POST /api/v1/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40226 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40236 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40236 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40226 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43196 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43202 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43206 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43196 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43220 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43202 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43234 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43206 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43242 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43196 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43242 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43220 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43234 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43242 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43196 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43220 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43206 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43220 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49406 - "OPTIONS /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49418 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49430 - "OPTIONS /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49418 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49418 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49408 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49418 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52262 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52272 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52254 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52278 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52282 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52254 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49438 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52254 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51886 - "OPTIONS /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51886 - "OPTIONS /api/v1/admin/users?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "OPTIONS /api/v1/admin/users?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51906 - "OPTIONS /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51886 - "GET /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51906 - "GET /api/v1/admin/users?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51894 - "GET /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51886 - "GET /api/v1/admin/users?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51942 - "OPTIONS /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51948 - "OPTIONS /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51964 - "OPTIONS /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51966 - "OPTIONS /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51948 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51942 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51948 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51966 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51976 - "OPTIONS /api/v1/admin/payments?user_id=3e31a3fd-7152-42ec-b3a6-ec6dc30aa467&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51976 - "GET /api/v1/admin/payments?user_id=3e31a3fd-7152-42ec-b3a6-ec6dc30aa467&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48404 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48424 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48422 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48424 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48422 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48404 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48424 - "GET /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48404 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48422 - "GET /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48424 - "GET /api/v1/admin/mcqs/pending?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48402 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48424 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59538 - "OPTIONS /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59548 - "OPTIONS /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59538 - "OPTIONS /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59558 - "OPTIONS /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59548 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59558 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59562 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59528 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59572 - "OPTIONS /api/v1/admin/users?limit=50&offset=0&q=planchange HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59572 - "GET /api/v1/admin/users?limit=50&offset=0&q=planchange HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38754 - "OPTIONS /api/v1/admin/payments?user_id=65020553-f5b2-4f1f-8c56-563a899623b8&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38754 - "GET /api/v1/admin/payments?user_id=65020553-f5b2-4f1f-8c56-563a899623b8&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38768 - "OPTIONS /api/v1/admin/users/65020553-f5b2-4f1f-8c56-563a899623b8/plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38768 - "POST /api/v1/admin/users/65020553-f5b2-4f1f-8c56-563a899623b8/plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38768 - "GET /api/v1/admin/payments?user_id=65020553-f5b2-4f1f-8c56-563a899623b8&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35594 - "POST /api/v1/admin/users/65020553-f5b2-4f1f-8c56-563a899623b8/plan HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35594 - "GET /api/v1/admin/payments?user_id=65020553-f5b2-4f1f-8c56-563a899623b8&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35608 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55772 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55800 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55810 - "OPTIONS /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55822 - "OPTIONS /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55784 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55800 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55772 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55822 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55784 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55800 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55834 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37948 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37962 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37978 - "GET /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55834 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37978 - "GET /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46470 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46486 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46492 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46492 - "GET /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46486 - "GET /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46470 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34936 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34946 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34950 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34958 - "OPTIONS /api/v1/query/progress/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34972 - "OPTIONS /api/v1/admin/coverage HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34980 - "OPTIONS /api/v1/admin/ingest/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/mcqs/bank/meta?subject=Biology HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/mcqs/bank?subject=Biology&limit=50&offset=0 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "OPTIONS /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34958 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "OPTIONS /api/v1/admin/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/products HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/products HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/users?limit=50&offset=0 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "OPTIONS /api/v1/admin/payments?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34972 - "OPTIONS /api/v1/admin/users?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34958 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/payments?limit=200 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/users?limit=200 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/payments?limit=200 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/users?limit=200 HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "OPTIONS /api/v1/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34958 - "OPTIONS /api/v1/admin/revenue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/stats HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/revenue HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/stats HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/admin/revenue HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34958 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46890 - "GET /api/v1/admin/revenue HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/stats HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46894 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46894 - "GET /api/v1/admin/ingest/status HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34972 - "GET /api/v1/query/progress/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46890 - "GET /api/v1/admin/stats HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:46908 - "GET /api/v1/admin/coverage HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34950 - "GET /api/v1/admin/revenue HTTP/1.1" 401 Unauthorized

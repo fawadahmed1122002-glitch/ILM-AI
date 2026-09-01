@@ -36,6 +36,9 @@ interface MeResponse {
   subjects: string[] | null;
   interested_tests: string[] | null;
   is_email_verified: boolean;
+  target_tracks: string[] | null;
+  current_class: string | null;
+  diagnostic_completed_at: string | null;
 }
 
 interface AuthContextType {
@@ -117,6 +120,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         subjects: fresh.subjects,
         interested_tests: fresh.interested_tests,
         is_email_verified: fresh.is_email_verified,
+        target_tracks: fresh.target_tracks,
+        current_class: fresh.current_class,
+        diagnostic_completed_at: fresh.diagnostic_completed_at,
       };
       authStorage.save(updated);
       dispatch({ type: "SET_USER", payload: updated });

@@ -19,6 +19,7 @@ from app.schemas.admin import (
     PendingMcqResponse, McqRejectRequest,
     AdminPlanChangeRequest, PaymentRecordResponse, McqBankResponse,
     McqBankMetaResponse, McqBankStatusCounts,
+    AdminUserResponse, AdminUserListResponse,
 )
 from app.rag.pdf_ingest import ingest_single_pdf, _get_collection
 from app.services.payment_service import grant_pro_plan, grant_product
@@ -699,6 +700,57 @@ def mcq_generation_status(
     if not job:
         return {"status": "idle", "result": None, "message": None}
     return job
+
+@router.get("/users", response_model=AdminUserListResponse)
+def list_users(
+    q: str | None = None,
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_current_admin),
+):
+    """
+    Read-only user directory for the /admin/users UI: paginated list of
+    users (newest first) with optional email/full-name search. Returns
+    the total match count alongside the page so the browser can render
+    pagination without fetching every row. No mutations here -- plan
+    changes still go through POST /users/{user_id}/plan.
+    """
+    query = db.query(User)
+    if q is not None and q.strip():
+        escaped = q.strip().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        pattern = f"%{escaped}%"
+        query = query.filter(
+            or_(User.email.ilike(pattern), User.full_name.ilike(pattern))
+        )
+
+    total = query.count()
+    # id tiebreaker keeps offset pagination stable across page fetches
+    users = (
+        query.order_by(User.created_at.desc(), User.id)
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+    return AdminUserListResponse(
+        total=total,
+        users=[
+            AdminUserResponse(
+                id=u.id,
+                email=u.email,
+                full_name=u.full_name,
+                role=u.role,
+                plan=u.plan,
+                product_id=u.product_id,
+                target_tracks=u.target_tracks,
+                current_class=u.current_class,
+                is_email_verified=u.is_email_verified,
+                created_at=u.created_at,
+            )
+            for u in users
+        ],
+    )
+
 
 @router.post("/users/{user_id}/plan", response_model=PaymentRecordResponse)
 def change_user_plan(

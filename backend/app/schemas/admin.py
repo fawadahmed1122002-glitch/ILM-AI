@@ -79,6 +79,26 @@ class AdminPlanChangeRequest(BaseModel):
     product_id: Optional[str] = None  # e.g. "ecat", "mdcat", "engineering_bundle" -- if omitted, falls back to legacy_full_access
 
 
+class AdminUserResponse(BaseModel):
+    id: uuid.UUID
+    email: str
+    full_name: str
+    role: str
+    plan: str
+    product_id: Optional[str] = None
+    target_tracks: Optional[list[str]] = None
+    current_class: Optional[str] = None
+    is_email_verified: bool
+    created_at: datetime
+    class Config:
+        from_attributes = True
+
+
+class AdminUserListResponse(BaseModel):
+    total: int
+    users: list[AdminUserResponse]
+
+
 class PaymentRecordResponse(BaseModel):
     id: uuid.UUID
     user_id: uuid.UUID

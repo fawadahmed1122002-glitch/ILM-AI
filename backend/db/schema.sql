@@ -18,6 +18,12 @@ CREATE TABLE users (
     subjects        VARCHAR[],
     field           VARCHAR(30),
     product_id      VARCHAR(30),
+    -- Registration diagnostic (track selection) -- purely personalization
+    -- data, never consulted by tier-gating/subject-access logic.
+    target_tracks   VARCHAR(30)[],
+    current_class   VARCHAR(10)
+                        CHECK (current_class IN ('11', '12', 'other')),
+    diagnostic_completed_at TIMESTAMPTZ,
     password_hash   TEXT NOT NULL,
     role            VARCHAR(20) NOT NULL DEFAULT 'student'
                         CHECK (role IN ('student', 'admin')),

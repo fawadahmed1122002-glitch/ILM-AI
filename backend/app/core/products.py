@@ -54,6 +54,15 @@ PRODUCT_CATALOG: dict[str, dict] = {
 
 PURCHASABLE_PRODUCTS = {k: v for k, v in PRODUCT_CATALOG.items() if v.get("purchasable", True)}
 
+# Product ids selectable as registration-diagnostic target tracks.
+# Derived from the catalog rather than a parallel list: single-test,
+# purchasable products only (bundles and legacy_full_access are not
+# "tracks" a student preps for). Currently: ecat, mdcat, nust, fast.
+DIAGNOSTIC_TRACKS = tuple(
+    k for k, v in PRODUCT_CATALOG.items()
+    if v.get("purchasable", True) and len(v["tests"]) == 1
+)
+
 
 def get_product(product_id: str | None) -> dict | None:
     if not product_id:

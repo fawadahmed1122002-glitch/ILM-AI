@@ -16,6 +16,11 @@ class User(Base):
     subjects: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     field: Mapped[str | None] = mapped_column(String(30), nullable=True)
     product_id: Mapped[str | None] = mapped_column(String(30), nullable=True)
+    # Registration diagnostic (track selection) -- personalization only,
+    # never consulted by tier-gating/subject-access logic.
+    target_tracks: Mapped[list[str] | None] = mapped_column(ARRAY(String(30)), nullable=True)
+    current_class: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    diagnostic_completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     password_hash: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(String(20), nullable=False, server_default="student")
     plan: Mapped[str] = mapped_column(String(20), nullable=False, server_default="free")

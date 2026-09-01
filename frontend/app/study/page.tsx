@@ -116,6 +116,15 @@ export default function StudyPage() {
     if (!loading && !user) router.push("/login");
   }, [user, loading, router]);
 
+  // Honor ?subject= deep links (e.g. dashboard "Your Subjects" cards) --
+  // only accepted when the value is one of this student's visible
+  // subjects; anything else silently falls back to the default subject.
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("subject");
+    if (param && SUBJECTS.includes(param)) setSubject(param);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (loading) return <div className="p-8 text-gray-500">Loading...</div>;
   if (!user) return null;
 

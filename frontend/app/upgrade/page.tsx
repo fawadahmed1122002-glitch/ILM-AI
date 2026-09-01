@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import Link from "next/link";
 import { PRODUCTS, getProduct } from "@/lib/products";
 
@@ -76,6 +76,17 @@ export default function UpgradePage() {
   const [selectedProduct, setSelectedProduct] = useState<string>(PRODUCTS[0].id);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  // Diagnostic personalization: once, when the user first loads, default
+  // the picker to the product matching their first target track (if any).
+  // Never overrides a manual selection -- personalization, not steering.
+  const didInitFromTracks = useRef(false);
+
+  useEffect(() => {
+    if (didInitFromTracks.current || !user) return;
+    didInitFromTracks.current = true;
+    const preferred = user.target_tracks?.find((t) => getProduct(t));
+    if (preferred) setSelectedProduct(preferred);
+  }, [user]);
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -152,6 +163,10 @@ export default function UpgradePage() {
         <div className="grid grid-cols-1 gap-3 mb-6">
           {PRODUCTS.map((product) => {
             const selected = selectedProduct === product.id;
+            // Pre-highlight products matching the student's diagnostic
+            // target tracks -- shown alongside all other products, which
+            // remain fully selectable.
+            const matchesTrack = user.target_tracks?.includes(product.id) ?? false;
             return (
               <button
                 key={product.id}
@@ -165,8 +180,19 @@ export default function UpgradePage() {
                 aria-pressed={selected}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`font-display text-base font-bold ${selected ? "text-white" : "text-slate-900 dark:text-slate-100"}`}>
-                    {product.name}
+                  <span className="flex items-center gap-2">
+                    <span className={`font-display text-base font-bold ${selected ? "text-white" : "text-slate-900 dark:text-slate-100"}`}>
+                      {product.name}
+                    </span>
+                    {matchesTrack && (
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide ${
+                        selected
+                          ? "bg-white/20 text-white"
+                          : "bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400"
+                      }`}>
+                        Your track
+                      </span>
+                    )}
                   </span>
                   <span className={`font-mono text-lg font-bold ${selected ? "text-white" : "text-teal-700 dark:text-teal-400"}`}>
                     PKR {product.price}

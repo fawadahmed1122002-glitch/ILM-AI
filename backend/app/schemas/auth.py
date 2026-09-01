@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from app.core.academic_fields import VALID_FIELDS
 
@@ -95,6 +96,12 @@ class TokenResponse(BaseModel):
     subjects: list[str] | None = None
     interested_tests: list[str] | None = None
     is_email_verified: bool = False
+    # Registration diagnostic (track selection) -- NULL for users who
+    # skipped the flow or registered before it existed. Personalization
+    # only, never affects tier-gating.
+    target_tracks: list[str] | None = None
+    current_class: str | None = None
+    diagnostic_completed_at: datetime | None = None
     # Only meaningful on /auth/register: False when the signup verification
     # email could not be sent, so the frontend can prompt a resend instead
     # of the student waiting for an email that never went out.
@@ -110,6 +117,9 @@ class MeResponse(BaseModel):
     subjects: list[str] | None = None
     interested_tests: list[str] | None = None
     is_email_verified: bool = False
+    target_tracks: list[str] | None = None
+    current_class: str | None = None
+    diagnostic_completed_at: datetime | None = None
 
 
 class VerifyEmailResponse(BaseModel):
