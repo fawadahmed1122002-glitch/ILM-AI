@@ -617,7 +617,13 @@ def approve_mcq(
     if not mcq:
         raise HTTPException(status_code=404, detail={"code": "MCQ_NOT_FOUND", "message": "MCQ not found."})
 
+    # Approve is a full override of any prior rejection: clear the
+    # rejection state so the MCQ reads as approved everywhere
+    # (student-facing pulls, pending list, and bank counts all key off
+    # is_verified + rejected_at IS NULL).
     mcq.is_verified = True
+    mcq.rejected_at = None
+    mcq.reject_reason = None
     db.commit()
     return {"id": str(mcq_id), "status": "approved"}
 

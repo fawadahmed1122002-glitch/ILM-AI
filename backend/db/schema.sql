@@ -187,6 +187,12 @@ CREATE TABLE payments (
 
 CREATE INDEX idx_payments_user ON payments(user_id);
 CREATE INDEX idx_payments_status ON payments(status);
+-- Webhook idempotency backstop: at most one COMPLETED payment per
+-- transaction_ref (replayed/concurrent webhooks must not double-grant).
+-- See migration 009.
+CREATE UNIQUE INDEX uq_payments_completed_transaction_ref
+    ON payments(transaction_ref)
+    WHERE transaction_ref IS NOT NULL AND status = 'completed';
 
 -- ============================================================
 -- 9. PAST PAPERS (past papers practice module)

@@ -155,29 +155,6 @@ def ingest_subject(subject_folder: str):
             traceback.print_exc()
             continue
 
-        embeddings = model.encode(chunks, show_progress_bar=False)
-
-        ids = [f"{subject_folder}_ch{chapter_num}_{i}" for i in range(len(chunks))]
-        metadatas = [
-            {
-                "subject": subject_display,
-                "chapter": chapter_num if chapter_num else 0,
-                "chapter_name": chapter_name,
-                "source_file": filename,
-            }
-            for _ in chunks
-        ]
-
-        collection.add(
-            ids=ids,
-            embeddings=embeddings.tolist(),
-            documents=chunks,
-            metadatas=metadatas,
-        )
-
-        print(f"✅ Stored {len(chunks)} chunks for Ch.{chapter_num}: {chapter_name}")
-        total_chunks_stored += len(chunks)
-
     print(f"\n🎉 Done. Total chunks stored for {subject_display}: {total_chunks_stored}")
 
 

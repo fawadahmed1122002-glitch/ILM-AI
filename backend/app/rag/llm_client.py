@@ -187,6 +187,10 @@ def validate_mcq(mcq: dict) -> list[str]:
     Validates a single MCQ dict. Returns a list of error strings (empty list = valid).
     """
     errors = []
+    if not isinstance(mcq, dict):
+        # LLMs occasionally emit non-object array elements (numbers,
+        # strings); treat them as invalid instead of crashing on indexing.
+        return [f"MCQ entry is not an object: {type(mcq).__name__}"]
     required_fields = ["question_en", "question_ur", "opt_a", "opt_b", "opt_c", "opt_d",
                         "correct", "explanation_en", "difficulty"]
 

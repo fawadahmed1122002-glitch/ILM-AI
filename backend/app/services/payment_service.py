@@ -1,6 +1,7 @@
 # backend/app/services/payment_service.py
 import uuid
 from datetime import datetime, timedelta, timezone
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.models.payment import Payment
@@ -8,6 +9,17 @@ from app.core.products import get_product, price_for_product
 
 PRO_PLAN_DURATION_DAYS = 30
 ALLOWED_METHODS = ["jazzcash", "easypaisa", "manual", "safepay"]
+
+
+def _is_completed_ref_conflict(exc: IntegrityError) -> bool:
+    """True if this IntegrityError is a violation of the partial unique
+    index uq_payments_completed_transaction_ref (migration 009) -- i.e.
+    a completed payment with this transaction_ref already exists."""
+    diag = getattr(getattr(exc, "orig", None), "diag", None)
+    constraint = getattr(diag, "constraint_name", None)
+    if constraint:
+        return constraint == "uq_payments_completed_transaction_ref"
+    return "uq_payments_completed_transaction_ref" in str(exc)
 
 
 def grant_product(
@@ -81,7 +93,28 @@ def grant_product(
         valid_until=valid_until,
     )
     db.add(payment)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError as exc:
+        # DB-level backstop for the idempotency guard above: two concurrent
+        # webhooks with the same transaction_ref can both pass the SELECT
+        # check, but the partial unique index lets only one INSERT win.
+        # The rollback also reverts the user.plan/product_id changes made
+        # in this session, so the loser grants nothing -- then we return
+        # the winning payment, same contract as the app-level check.
+        db.rollback()
+        if transaction_ref and _is_completed_ref_conflict(exc):
+            existing = (
+                db.query(Payment)
+                .filter(
+                    Payment.transaction_ref == transaction_ref,
+                    Payment.status == "completed",
+                )
+                .first()
+            )
+            if existing:
+                return existing
+        raise
     db.refresh(payment)
 
     return payment
