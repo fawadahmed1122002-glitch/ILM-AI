@@ -27,3 +27,7 @@ node_modules/
 .vscode/
 
 .qoder/
+
+.uvicorn_8000.log
+
+CODEBASE_ANALYSIS.md

@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface DetailQuestion {
   mcq_id: string;
@@ -272,11 +273,9 @@ export default function MockTestTakePage() {
           {q.subject} · Ch.{q.chapter_number}
         </span>
 
-        <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1">{q.question_text}</p>
+        <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1" text={q.question_text} />
         {q.question_text_ur && (
-          <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl">
-            {q.question_text_ur}
-          </p>
+          <MathText className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl" text={q.question_text_ur} />
         )}
 
         <div className="space-y-2">
@@ -294,7 +293,7 @@ export default function MockTestTakePage() {
                 }`}
               >
                 <span className="font-semibold mr-2">{opt}.</span>
-                {getOptionText(q, opt)}
+                <MathText inline text={getOptionText(q, opt)} />
               </button>
             );
           })}

@@ -6,11 +6,23 @@ import { useRouter } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
 
+interface CompositionState {
+  runnable: boolean;
+  reason: string | null;
+  question_count: number;
+  nominal_question_count: number;
+  available_percent: number;
+  time_limit_minutes: number;
+  nominal_time_limit_minutes: number;
+  missing_subjects: string[];
+}
+
 interface Availability {
   subjects: Record<string, number>;
-  single_subject_runnable: Record<string, boolean>;
-  full_ecat: { runnable: boolean; question_count: number; nominal_question_count: number; time_limit_minutes: number };
-  full_mdcat: { runnable: boolean; question_count: number; nominal_question_count: number; time_limit_minutes: number };
+  single_subject: Record<string, CompositionState>;
+  min_runnable_percent: number;
+  full_ecat: CompositionState;
+  full_mdcat: CompositionState;
   has_used_free_test: boolean;
 }
 
@@ -82,6 +94,8 @@ export default function MockTestSetupPage() {
   if (loading) return <div className="p-8 text-gray-500">Loading...</div>;
   if (!user) return null;
 
+  const selectedSingle = selectedSubject ? availability?.single_subject?.[selectedSubject] : undefined;
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8">
       <div className="mb-6 sm:mb-8">
@@ -151,15 +165,30 @@ export default function MockTestSetupPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
-                      {data.question_count} questions · {data.time_limit_minutes} min
-                      {partial && data.runnable && (
+                    {data.runnable ? (
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                        {data.question_count} questions · {data.time_limit_minutes} min
+                        {partial && (
+                          <span className="text-amber-600 dark:text-amber-400">
+                            {" "}
+                            — partial test: {data.question_count} of {data.nominal_question_count}{" "}
+                            questions available ({data.available_percent}%), so the timer is{" "}
+                            {data.time_limit_minutes} min instead of {data.nominal_time_limit_minutes}
+                            {data.missing_subjects?.length > 0 &&
+                              ` · ${data.missing_subjects.join(", ")} not stocked yet`}
+                          </span>
+                        )}
+                      </p>
+                    ) : (
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
                         <span className="text-amber-600 dark:text-amber-400">
-                          {" "}
-                          (full version has {data.nominal_question_count} — more content coming soon)
+                          Only {data.question_count} of {data.nominal_question_count} questions
+                          available ({data.available_percent}%) — below the{" "}
+                          {availability.min_runnable_percent}% needed to run a meaningful test.
+                          More content coming soon.
                         </span>
-                      )}
-                    </p>
+                      </p>
+                    )}
                     <button
                       onClick={() => startTest(key)}
                       disabled={disabled}
@@ -181,7 +210,7 @@ export default function MockTestSetupPage() {
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
               <div className="flex gap-2 flex-wrap mb-4">
                 {SUBJECTS.map((s) => {
-                  const runnable = availability.single_subject_runnable[s];
+                  const runnable = availability.single_subject?.[s]?.runnable ?? false;
                   return (
                     <button
                       key={s}
@@ -200,7 +229,18 @@ export default function MockTestSetupPage() {
                 })}
               </div>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                25 questions · 30 minutes
+                {selectedSingle
+                  ? `${selectedSingle.question_count} questions · ${selectedSingle.time_limit_minutes} minutes`
+                  : "25 questions · 30 minutes"}
+                {selectedSingle && selectedSingle.question_count < selectedSingle.nominal_question_count && (
+                  <span className="text-amber-600 dark:text-amber-400">
+                    {" "}
+                    — partial test: {selectedSingle.question_count} of{" "}
+                    {selectedSingle.nominal_question_count} questions available, so the timer is{" "}
+                    {selectedSingle.time_limit_minutes} min instead of{" "}
+                    {selectedSingle.nominal_time_limit_minutes}
+                  </span>
+                )}
               </p>
               <button
                 onClick={() => selectedSubject && startTest("subject", selectedSubject)}

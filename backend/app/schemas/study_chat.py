@@ -3,7 +3,17 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
 
-VALID_SUBJECTS = {"biology", "chemistry", "physics", "computer_science", "mathematics"}
+# Display case, matching the subject metadata actually stored in ChromaDB
+# and the subject lists used by the rest of the app (schemas/query.py,
+# schemas/auth.py, admin.py, mock_tests.py). The persisted
+# study_chat_threads.subject is passed straight through as the ChromaDB
+# `where` filter in retrieve_top_chunks and as the tier-gate subject, so it
+# must be byte-identical to those display-case values.
+# "English" is deliberately absent: it has no ingested content yet.
+VALID_SUBJECTS = {"Biology", "Chemistry", "Physics", "Mathematics", "Computer Science"}
+
+# Lookup from a case/whitespace-folded input to its canonical display form.
+_CANONICAL_SUBJECTS = {s.strip().lower(): s for s in VALID_SUBJECTS}
 
 
 class ChatStartRequest(BaseModel):
@@ -14,11 +24,17 @@ class ChatStartRequest(BaseModel):
     @field_validator("subject")
     @classmethod
     def subject_must_be_valid(cls, v: str) -> str:
-        if v.strip().lower() not in VALID_SUBJECTS:
+        # Accept the subject case-insensitively but RETURN the canonical
+        # display-case spelling: the old version validated the folded form
+        # while passing the original value through, so anything not typed
+        # exactly as ChromaDB stores it (e.g. "Computer Science") either
+        # 422'd or silently retrieved zero chunks.
+        canonical = _CANONICAL_SUBJECTS.get(v.strip().lower())
+        if canonical is None:
             raise ValueError(
                 f"subject must be one of: {', '.join(sorted(VALID_SUBJECTS))}"
             )
-        return v
+        return canonical
 
 
 class ChatMessageOut(BaseModel):

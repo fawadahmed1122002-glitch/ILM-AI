@@ -77,6 +77,53 @@
   line-height: 2.4;
 }
 
+/* ---------------------------------------------------------------------------
+   MathText (react-markdown + remark-math + rehype-katex) wrapper.
+   The Markdown output must not disturb layouts that previously rendered a
+   single plain <p>: collapse the default paragraph margins so one-paragraph
+   content sits exactly as before, and only add spacing BETWEEN blocks (chat
+   messages / explanations that legitimately contain multiple paragraphs).
+   --------------------------------------------------------------------------- */
+.math-text > :first-child { margin-top: 0; }
+.math-text > :last-child { margin-bottom: 0; }
+.math-text p { margin: 0; }
+.math-text p + p { margin-top: 0.6em; }
+.math-text ul,
+.math-text ol { margin: 0.5em 0; padding-left: 1.4em; }
+.math-text li { margin: 0.15em 0; }
+.math-text li > p { margin: 0; }
+.math-text h1,
+.math-text h2,
+.math-text h3,
+.math-text h4 { font-size: inherit; font-weight: 600; margin: 0.5em 0 0.25em; }
+.math-text code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: rgba(148, 163, 184, 0.18);
+  padding: 0.1em 0.35em;
+  border-radius: 0.3em;
+}
+.math-text pre { margin: 0.5em 0; overflow-x: auto; }
+.math-text pre code { background: transparent; padding: 0; }
+.math-text a { color: inherit; text-decoration: underline; }
+
+/* Inline math should not change the surrounding line's rhythm. */
+.math-text .katex { font-size: 1.05em; }
+.math-text .katex-html { direction: ltr; }
+
+/* Display math: keep it LTR even inside an RTL (Urdu) block, and let wide
+   formulas scroll horizontally instead of overflowing the card. */
+.math-text .katex-display {
+  margin: 0.6em 0;
+  padding: 0.15em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  direction: ltr;
+  text-align: center;
+}
+.math-text .katex-display > .katex { font-size: 1.1em; }
+.math-text .katex-display::-webkit-scrollbar { height: 4px; }
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

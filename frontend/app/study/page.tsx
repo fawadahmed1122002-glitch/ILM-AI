@@ -8,6 +8,7 @@ import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
 import { subjectsForField } from "@/lib/academicFields";
 import StudyChatDrawer from "@/components/StudyChatDrawer";
+import MathText from "@/components/MathText";
 
 interface ExplainResponse {
   explanation: string;
@@ -294,25 +295,25 @@ export default function StudyPage() {
           {sections.english && (
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">English</h3>
-              <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{sections.english}</p>
+              <MathText className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed" text={sections.english} />
             </div>
           )}
           {sections.urdu && (
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm">
               <h3 className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-3">اردو</h3>
-              <p className="font-urdu text-slate-700 dark:text-slate-300 text-sm leading-loose text-right" dir="rtl">{sections.urdu}</p>
+              <MathText className="font-urdu text-slate-700 dark:text-slate-300 text-sm leading-loose text-right" dir="rtl" text={sections.urdu} />
             </div>
           )}
           {sections.keyPoint && (
             <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl p-5">
               <h3 className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wide mb-2">Key Exam Point</h3>
-              <p className="text-amber-900 dark:text-amber-200 text-sm font-medium">{sections.keyPoint}</p>
+              <MathText className="text-amber-900 dark:text-amber-200 text-sm font-medium" text={sections.keyPoint} />
             </div>
           )}
           {sections.example && (
             <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-2xl p-5">
               <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide mb-2">Real-Life Example</h3>
-              <p className="text-blue-900 dark:text-blue-200 text-sm">{sections.example}</p>
+              <MathText className="text-blue-900 dark:text-blue-200 text-sm" text={sections.example} />
             </div>
           )}
 
@@ -353,8 +354,8 @@ export default function StudyPage() {
               </span>
 
               {/* Question */}
-              <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1">{mcq.question_en}</p>
-              <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl">{mcq.question_ur}</p>
+              <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-1" text={mcq.question_en} />
+              <MathText className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl" text={mcq.question_ur} />
 
               {/* Options */}
               <div className="space-y-2">
@@ -374,7 +375,7 @@ export default function StudyPage() {
                       onClick={() => setAnswers({ ...answers, [i]: opt })}
                       className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-colors ${optClass}`}>
                       <span className="font-semibold mr-2">{opt}.</span>
-                      {getOptionText(mcq, opt)}
+                      <MathText inline text={getOptionText(mcq, opt)} />
                     </button>
                   );
                 })}
@@ -384,9 +385,7 @@ export default function StudyPage() {
               {submitted && (
                 <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mb-1">Explanation</p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300">
-                    {(gradedQuestions?.find(q => q.mcq_index === i)?.explanation_en) ?? "No explanation available for this question."}
-                  </p>
+                  <MathText className="text-sm text-slate-700 dark:text-slate-300" text={(gradedQuestions?.find(q => q.mcq_index === i)?.explanation_en) ?? "No explanation available for this question."} />
                 </div>
               )}
             </div>

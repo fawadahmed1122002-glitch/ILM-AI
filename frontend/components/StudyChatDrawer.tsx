@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface ChatMessage {
   id: string;
@@ -214,12 +215,12 @@ export default function StudyChatDrawer({
 
           {messages.map((m) => (
             <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words ${
+              <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed break-words ${
                 m.role === "user"
                   ? "bg-teal-700 dark:bg-teal-600 text-white rounded-br-md"
                   : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-bl-md"
               }`}>
-                {m.content}
+                <MathText className="break-words" text={m.content} />
               </div>
             </div>
           ))}

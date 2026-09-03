@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface ResultQuestion {
   question_id: string;
@@ -232,7 +233,7 @@ export default function PastPaperResultsPage() {
               )}
             </div>
 
-            <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-4">{q.question_text}</p>
+            <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-4" text={q.question_text} />
 
             <div className="space-y-1.5">
               {OPTIONS.map((opt) => {
@@ -250,7 +251,7 @@ export default function PastPaperResultsPage() {
                 return (
                   <div key={opt} className={`px-3 py-2 rounded-lg text-sm ${cls}`}>
                     <span className="font-semibold mr-2">{opt}.</span>
-                    {getOptionText(q, opt)}
+                    <MathText inline text={getOptionText(q, opt)} />
                     {isCorrectOpt && <span className="ml-2 text-xs">✓ correct answer</span>}
                     {isSelectedOpt && !isCorrectOpt && <span className="ml-2 text-xs">✗ your answer</span>}
                   </div>

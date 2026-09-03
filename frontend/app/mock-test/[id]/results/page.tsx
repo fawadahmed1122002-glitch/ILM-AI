@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { api } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface ResultQuestion {
   mcq_id: string;
@@ -222,11 +223,9 @@ export default function MockTestResultsPage() {
               )}
             </div>
 
-            <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-1">{q.question_text}</p>
+            <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-1" text={q.question_text} />
             {q.question_text_ur && (
-              <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl">
-                {q.question_text_ur}
-              </p>
+              <MathText className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl" text={q.question_text_ur} />
             )}
 
             <div className="space-y-1.5 mb-4">
@@ -245,7 +244,7 @@ export default function MockTestResultsPage() {
                 return (
                   <div key={opt} className={`px-3 py-2 rounded-lg text-sm ${cls}`}>
                     <span className="font-semibold mr-2">{opt}.</span>
-                    {getOptionText(q, opt)}
+                    <MathText inline text={getOptionText(q, opt)} />
                     {isCorrectOpt && <span className="ml-2 text-xs">✓ correct answer</span>}
                     {isSelectedOpt && !isCorrectOpt && <span className="ml-2 text-xs">✗ your answer</span>}
                   </div>
@@ -255,7 +254,7 @@ export default function MockTestResultsPage() {
 
             {q.explanation && (
               <p className="text-xs text-slate-400 dark:text-slate-500">
-                <span className="font-medium">Explanation:</span> {q.explanation}
+                <span className="font-medium">Explanation:</span> <MathText inline text={q.explanation} />
               </p>
             )}
           </div>

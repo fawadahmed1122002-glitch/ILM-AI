@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface DetailQuestion {
   question_id: string;
@@ -315,7 +316,7 @@ export default function PastPaperTakePage() {
           Q{q.question_number} · {q.subject_tag || "General"}
         </span>
 
-        <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-4">{q.question_text}</p>
+        <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mt-3 mb-4" text={q.question_text} />
 
         <div className="space-y-2">
           {OPTIONS.map((opt) => {
@@ -332,7 +333,7 @@ export default function PastPaperTakePage() {
                 }`}
               >
                 <span className="font-semibold mr-2">{opt}.</span>
-                {getOptionText(q, opt)}
+                <MathText inline text={getOptionText(q, opt)} />
               </button>
             );
           })}

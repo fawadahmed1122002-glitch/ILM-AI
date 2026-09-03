@@ -9,12 +9,24 @@ ECAT (UET pattern): 100 MCQs -- Math 30, Physics 30, Chemistry 30, English 10.
 MDCAT (PMDC 2026 pattern): 180 MCQs -- Biology 81, Chemistry 45, Physics 36,
 English 9, Logical Reasoning 9.
 
-If a subject in a composition doesn't have enough approved MCQs yet
-(e.g. English has zero until that content is ingested), that subject's
-slice is skipped and the shortfall is reported back to the client
-rather than failing the whole test -- so a full-length test with a
-temporarily-understocked subject still runs on what's actually stocked.
+Two rules keep an understocked bank from producing a misleading test:
+
+1. Runnability floor. A composition is only offered (and only starts) once
+   at least MIN_RUNNABLE_PERCENT of its nominal questions are approved.
+   Below that the student gets `runnable: false` with reason
+   "insufficient_content" instead of a stub paper -- which matters because a
+   free plan spends its single lifetime mock test on whatever starts.
+2. Proportional timer. A composition that is above the floor but still
+   short (e.g. English not yet ingested) runs on a clock scaled to the
+   questions actually served, holding minutes-per-question constant. A fully
+   stocked composition keeps the exact nominal duration.
+
+A subject slice that is entirely unstocked does NOT block a test on its own
+-- English is a known content gap (data/pdfs/english/ is empty) and is only
+10% of ECAT / 5% of MDCAT, so requiring it would permanently disable both
+papers. What the floor does block is losing the body of the exam.
 """
+import math
 import random
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -52,6 +64,19 @@ ALLOWED_SUBJECTS = ["Biology", "Chemistry", "Physics", "Mathematics", "Computer 
 SINGLE_SUBJECT_QUESTION_COUNT = 25
 SINGLE_SUBJECT_TIME_LIMIT_MIN = 30
 
+# Runnability floor, as a percentage of a composition's nominal question
+# count. 60% is not arbitrary -- it sits exactly on the boundary that
+# matters for these two papers:
+#   ECAT  (30/30/30/10): losing one 30-question section leaves 70% -> still
+#     runnable; losing two leaves 40% -> blocked. English alone (10%) leaves
+#     90% -> runnable.
+#   MDCAT (81/45/36/9/9): losing Biology, the dominant subject, leaves 55% ->
+#     blocked. Losing English + Logical Reasoning (the two known gaps) leaves
+#     90% -> runnable; losing Chemistry leaves 75% -> runnable.
+# So the floor tolerates the small non-core slices while refusing to serve a
+# paper whose score is no longer comparable to the real exam.
+MIN_RUNNABLE_PERCENT = 60
+
 TEST_COMPOSITIONS = {
     "full_ecat": {
         "time_limit_minutes": 100,
@@ -73,6 +98,66 @@ TEST_COMPOSITIONS = {
         ],
     },
 }
+
+
+def _min_runnable_questions(nominal_questions: int) -> int:
+    """Smallest number of served questions that still counts as runnable."""
+    return math.ceil(nominal_questions * MIN_RUNNABLE_PERCENT / 100)
+
+
+def _scaled_time_limit(
+    nominal_minutes: int, nominal_questions: int, actual_questions: int
+) -> int:
+    """
+    Clock for a composition that runs short: minutes-per-question is held
+    constant, so a 90-question ECAT gets 90 minutes rather than the 100
+    budgeted for 100 questions, and a 161-question MDCAT gets 188 rather
+    than 210. A fully stocked composition returns nominal_minutes
+    untouched. Rounded up so a short paper never gets less than its
+    proportional share of the time, and floored at 1 minute so a started test
+    can never carry a zero-length clock.
+    """
+    if nominal_questions <= 0 or actual_questions >= nominal_questions:
+        return nominal_minutes
+    return max(1, math.ceil(nominal_minutes * actual_questions / nominal_questions))
+
+
+def _composition_state(
+    nominal_minutes: int,
+    subject_slices: list[tuple[str, int]],
+    available_by_subject: dict[str, int],
+) -> dict:
+    """
+    One source of truth for "can this run, how many questions will it serve,
+    and how long is the clock". /availability uses it to tell the student the
+    truth before they commit a mock test; /start re-derives it from the rows
+    it actually picked so the server enforces the same rule rather than
+    trusting the client to have read the setup screen. Also used for the
+    single-subject paper, which is just a one-slice composition.
+    """
+    nominal_questions = sum(want for _, want in subject_slices)
+    served = {
+        subj: min(available_by_subject.get(subj, 0), want)
+        for subj, want in subject_slices
+    }
+    actual_questions = sum(served.values())
+    runnable = actual_questions >= _min_runnable_questions(nominal_questions)
+    return {
+        "runnable": runnable,
+        "reason": None if runnable else "insufficient_content",
+        "question_count": actual_questions,
+        "nominal_question_count": nominal_questions,
+        "available_percent": (
+            round(actual_questions * 100 / nominal_questions) if nominal_questions else 0
+        ),
+        "time_limit_minutes": _scaled_time_limit(
+            nominal_minutes, nominal_questions, actual_questions
+        ),
+        "nominal_time_limit_minutes": nominal_minutes,
+        "missing_subjects": [
+            subj for subj, want in subject_slices if served[subj] < want
+        ],
+    }
 
 
 def _pick_random_approved(db: Session, subject: str, count: int) -> list[McqBank]:
@@ -126,6 +211,12 @@ def get_mock_test_availability(
     which single-subject and full-length tests are actually runnable
     right now (and grey out the rest) instead of failing after a
     student picks an option that turns out to be understocked.
+
+    Each composition reports the questions it would really serve, the
+    percentage of its nominal paper that is stocked, the scaled clock it
+    would run on, and -- when it falls below MIN_RUNNABLE_PERCENT --
+    `runnable: false` plus `reason: "insufficient_content"` so the client
+    can say why rather than just greying out.
     """
     # Clean up abandoned attempts (browser closed, timer ran out) BEFORE
     # availability / free-test state is evaluated, so an expired attempt
@@ -144,22 +235,31 @@ def get_mock_test_availability(
 
     subjects_out = {s: counts.get(s, 0) for s in all_subjects}
 
-    def composition_available(test_type: str) -> dict:
-        comp = TEST_COMPOSITIONS[test_type]
-        total_wanted = sum(want for _, want in comp["subjects"])
-        total_available = sum(min(counts.get(s, 0), want) for s, want in comp["subjects"])
-        return {
-            "runnable": total_available > 0,
-            "question_count": total_available,
-            "nominal_question_count": total_wanted,
-            "time_limit_minutes": comp["time_limit_minutes"],
-        }
+    # The single-subject paper is a one-slice composition, so it goes through
+    # the same floor and the same proportional clock as the full-length ones.
+    single_subject_out = {
+        s: _composition_state(
+            SINGLE_SUBJECT_TIME_LIMIT_MIN,
+            [(s, SINGLE_SUBJECT_QUESTION_COUNT)],
+            counts,
+        )
+        for s in ALLOWED_SUBJECTS
+    }
 
     return {
         "subjects": subjects_out,
-        "single_subject_runnable": {s: subjects_out[s] > 0 for s in ALLOWED_SUBJECTS},
-        "full_ecat": composition_available("full_ecat"),
-        "full_mdcat": composition_available("full_mdcat"),
+        "single_subject": single_subject_out,
+        "min_runnable_percent": MIN_RUNNABLE_PERCENT,
+        "full_ecat": _composition_state(
+            TEST_COMPOSITIONS["full_ecat"]["time_limit_minutes"],
+            TEST_COMPOSITIONS["full_ecat"]["subjects"],
+            counts,
+        ),
+        "full_mdcat": _composition_state(
+            TEST_COMPOSITIONS["full_mdcat"]["time_limit_minutes"],
+            TEST_COMPOSITIONS["full_mdcat"]["subjects"],
+            counts,
+        ),
         "has_used_free_test": db.query(MockTest).filter(
             MockTest.user_id == user.id, MockTest.status != "expired"
         ).count() > 0,
@@ -213,21 +313,33 @@ def start_mock_test(
                 },
             )
         picked = _pick_random_approved(db, body.subject, SINGLE_SUBJECT_QUESTION_COUNT)
-        if len(picked) == 0:
+        if len(picked) < _min_runnable_questions(SINGLE_SUBJECT_QUESTION_COUNT):
             raise HTTPException(
                 status_code=400,
                 detail={
-                    "code": "INSUFFICIENT_QUESTIONS",
-                    "message": f"No approved questions available yet for {body.subject}.",
+                    "code": "INSUFFICIENT_CONTENT",
+                    "reason": "insufficient_content",
+                    "message": (
+                        f"Only {len(picked)} of {SINGLE_SUBJECT_QUESTION_COUNT} approved "
+                        f"{body.subject} questions are available, below the "
+                        f"{MIN_RUNNABLE_PERCENT}% needed for a meaningful test. "
+                        f"More content is on the way."
+                    ),
+                    "question_count": len(picked),
+                    "nominal_question_count": SINGLE_SUBJECT_QUESTION_COUNT,
                 },
             )
-        time_limit = SINGLE_SUBJECT_TIME_LIMIT_MIN
+        # Scales only when the subject is short but still above the floor;
+        # a fully stocked subject keeps the nominal 30 minutes.
+        time_limit = _scaled_time_limit(
+            SINGLE_SUBJECT_TIME_LIMIT_MIN, SINGLE_SUBJECT_QUESTION_COUNT, len(picked)
+        )
         subject_field = body.subject
         selected_mcqs = picked
 
     elif body.test_type in TEST_COMPOSITIONS:
         comp = TEST_COMPOSITIONS[body.test_type]
-        time_limit = comp["time_limit_minutes"]
+        nominal_questions = sum(want for _, want in comp["subjects"])
         subject_field = None
         selected_mcqs = []
         shortfalls = []
@@ -236,19 +348,32 @@ def start_mock_test(
             selected_mcqs.extend(got)
             if len(got) < want:
                 shortfalls.append({"subject": subj, "wanted": want, "available": len(got)})
-        if len(selected_mcqs) == 0:
+        # Server-side enforcement of the same floor /availability advertises:
+        # a client that skips the setup screen cannot start a stub paper and
+        # burn a free plan's single lifetime mock test on it.
+        if len(selected_mcqs) < _min_runnable_questions(nominal_questions):
             raise HTTPException(
                 status_code=400,
                 detail={
-                    "code": "INSUFFICIENT_QUESTIONS",
-                    "message": "No approved questions available yet for this test type.",
+                    "code": "INSUFFICIENT_CONTENT",
+                    "reason": "insufficient_content",
+                    "message": (
+                        f"Only {len(selected_mcqs)} of {nominal_questions} questions for "
+                        f"this test are approved, below the {MIN_RUNNABLE_PERCENT}% needed "
+                        f"for a meaningful mock. More content is on the way."
+                    ),
+                    "question_count": len(selected_mcqs),
+                    "nominal_question_count": nominal_questions,
                     "shortfalls": shortfalls,
                 },
             )
-        # Shortfalls are allowed through (test runs on what's stocked) but
-        # surfaced via response headers-equivalent isn't available here,
-        # so we just proceed -- the client sees fewer questions than the
-        # nominal composition and question_count reflects reality.
+        # Above the floor but short (e.g. English not yet ingested): the test
+        # runs on what is stocked and the clock shrinks with it, so the
+        # student is not handed 100 minutes for 90 questions. A fully stocked
+        # composition gets the untouched nominal duration.
+        time_limit = _scaled_time_limit(
+            comp["time_limit_minutes"], nominal_questions, len(selected_mcqs)
+        )
     else:
         raise HTTPException(
             status_code=400,

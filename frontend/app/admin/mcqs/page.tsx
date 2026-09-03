@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { authStorage } from "@/lib/auth";
+import MathText from "@/components/MathText";
 
 interface PendingMcq {
   id: string;
@@ -154,10 +155,8 @@ export default function AdminMcqReviewPage() {
               </span>
             </div>
 
-            <p className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-1">{mcq.question_text}</p>
-            <p className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl">
-              {mcq.question_text_ur}
-            </p>
+            <MathText className="text-slate-900 dark:text-slate-100 font-medium text-sm mb-1" text={mcq.question_text} />
+            <MathText className="font-urdu text-slate-500 dark:text-slate-400 text-sm leading-loose text-right mb-4" dir="rtl" text={mcq.question_text_ur} />
 
             <div className="space-y-1.5 mb-4">
               {OPTIONS.map((opt) => (
@@ -170,14 +169,14 @@ export default function AdminMcqReviewPage() {
                   }`}
                 >
                   <span className="font-semibold mr-2">{opt}.</span>
-                  {getOptionText(mcq, opt)}
+                  <MathText inline text={getOptionText(mcq, opt)} />
                   {mcq.correct_option === opt && <span className="ml-2 text-xs">✓ correct</span>}
                 </div>
               ))}
             </div>
 
             <p className="text-xs text-slate-400 dark:text-slate-500 mb-4">
-              <span className="font-medium">Explanation:</span> {mcq.explanation}
+              <span className="font-medium">Explanation:</span> <MathText inline text={mcq.explanation} />
             </p>
 
             <div className="flex gap-2">
